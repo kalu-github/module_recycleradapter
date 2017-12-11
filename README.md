@@ -1,5 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion)           [戳我下载 ==>](https://pan.baidu.com/s/1jH5G8su)
-
+[ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion)
 ```
 
 java版本：
@@ -8,6 +7,8 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 kotlin版本 - 还没有搞好：
 compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
 ```
+
+ [戳我下载 ==>](https://pan.baidu.com/s/1jH5G8su)
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/20171205045053.png ) 
 
