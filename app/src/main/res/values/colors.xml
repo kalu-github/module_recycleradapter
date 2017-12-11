@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="color_light_blue">#00DDB6</color>
+    <color name="txt_color">#48495F</color>
+    <color name="item_bg">#FFFFFF</color>
+    <color name="bg">#F0F0F0</color>
+    <color name="spinner_bg">#333244</color>
+    <color name="new_text_color">#555771</color>
+    <color name="white_text_color">#F0F0F0</color>
+    <color name="gray_color">#4b4b58</color>
+    <color name="hard_color">#48495f</color>
+    <color name="clickspan_color">#00ddb6</color>
+    <color name="dull_blue">#3B4BBF</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="bg1">#42CFBE</color>
+    <color name="bg2">#57B1CC</color>
+    <color name="bg3">#B888E5</color>
+    <color name="bg4">#F695A8</color>
+    <color name="bg5">#F9D461</color>
+
+    <!--默认背景色-->
+    <color name="background">#F8F7F5</color>
+    <!--主题色（橙色）-->
+    <color name="color_theme">#FFA42F</color>
+    <color name="color_theme_90">#e5ffa42f</color>
+    <color name="color_theme_40">#66FFA42F</color>
+    <color name="color_theme_00">#00ffa42f</color>
+    <!--所有黑色文本-->
+    <color name="text">#333333</color>
+    <!--所有灰色文本-->
+    <color name="text_gray">#999999</color>
+    <color name="text_ecru">#958574</color>
+    <color name="gray_70">#B3B3B3</color>
+    <color name="gray_80">#CCCCCC</color>
+    <color name="gray_90">#E6E6E6</color>
+    <color name="gray_95">#F2F2F2</color>
+    <color name="color_666666">#666666</color>
+    <color name="gray_10">#19e6e6e6</color>
+    <color name="gray_20">#33e6e6e6</color>
+    <color name="gray_30">#4ce6e6e6</color>
+    <color name="gray_40">#66e6e6e6</color>
+
+    <!-- 透明度颜色 -->
+    <color name="black_10">#19000000</color>
+    <color name="black_20">#33000000</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_60">#99000000</color>
+    <color name="black_70">#b2000000</color>
+    <color name="black_80">#cc000000</color>
+    <color name="black_85">#d9000000</color>
+    <color name="black_90">#e5000000</color>
+    <color name="black_95">#f2000000</color>
+    <color name="black">#000000</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="white_10">#19ffffff</color>
+    <color name="white_20">#33ffffff</color>
+    <color name="white_30">#4cffffff</color>
+    <color name="white_40">#66ffffff</color>
+    <color name="white_50">#80ffffff</color>
+    <color name="white_60">#99ffffff</color>
+    <color name="white_70">#b2ffffff</color>
+    <color name="white_80">#ccffffff</color>
+    <color name="white_85">#d9ffffff</color>
+    <color name="white_90">#e5ffffff</color>
+
+    <!--股票涨-->
+    <color name="stock_red">#F3575B</color>
+    <!--股票跌-->
+    <color name="stock_green">#64C67A</color>
+    <!--股票平-->
+    <color name="stock_flat">#999999</color>
+
+    <!--股票可点击颜色-->
+    <color name="stock_text">#5882B2</color>
+
+
+    <color name="nickName">#4d6580</color>
+    <color name="normal">#0092c8</color>
+    <color name="color_242334">#242334</color>
+    <color name="color_e6e6e6">#e6e6e6</color>
+    <color name="color_60ffffff">#60ffffff</color>
+    <color name="color_e64340">#e64340</color>
+    <color name="color_b3b3b3">#b3b3b3</color>
+    <color name="color_fcfcfc">#fcfcfc</color>
+    <color name="color_ededed">#ededed</color>
+    <color name="color_f2f2f2">#f2f2f2</color>
+    <color name="color_50f2f2f2">#50f2f2f2</color>
+    <color name="color_cccccc">#cccccc</color>
+    <color name="color_8b572a">#8b572a</color>
+    <color name="color_3f3f3f">#3f3f3f</color>
+    <color name="color_5882b2">#5882b2</color>
+    <color name="color_ff8c3f">#ff8c3f</color>
+    <color name="color_message_unread">#FFF8EE</color>
+
+    <color name="color_20ffffff">#20ffffff</color>
+    <color name="color_b07c52">#b07c52</color>
+    <color name="color_fff2e0">#fff2e0</color>
+    <color name="color_f7f7f7">#f7f7f7</color>
+    <color name="color_f3575b">#f3575b</color>
+    <color name="color_d9d9d9">#d9d9d9</color><!-- tab下方横线 -->
+
+    <color name="ecru">#FFF8EE</color>
+    <color name="ecru_10">#19FFF8EE</color>
+    <color name="ecru_40">#80FFF8EE</color>
+
+    <color name="blue">#6C9FFF</color>
+
+    <color name="kc_pink_color">#f4676b</color>
+</resources>

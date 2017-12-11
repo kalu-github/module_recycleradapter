@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">适配器</string>
+    <string name="title_activity_header_and_footer_use">HeaderAndFooterUseActivity</string>
+    <string name="error">Network error</string>
+    <string name="network_err">Simulation network error</string>
+    <string name="empty_network_error">Network error, Click Retry</string>
+    <string name="empty_no_data">There is no data, Click Retry</string>
+
+    <string name="loading">正在加载中...</string>
+    <string name="load_failed">加载失败，请点我重试</string>
+    <string name="load_end">没有更多数据</string>
+
+    <string name="txt_pull_refresh_normal">下拉刷新</string>
+    <string name="txt_pull_refresh_release">释放刷新</string>
+    <string name="txt_pull_refresh_loading">正在刷新</string>
+    <string name="txt_pull_refresh_success">刷新成功</string>
+    <string name="txt_pull_load_normal">上拉加载</string>
+    <string name="txt_pull_load_success">加载成功</string>
+    <string name="txt_pull_load_release">释放加载</string>
+    <string name="txt_pull_load_loading">正在加载</string>
+</resources>

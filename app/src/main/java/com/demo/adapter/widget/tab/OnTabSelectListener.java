@@ -1,0 +1,8 @@
+package com.demo.adapter.widget.tab;
+
+public interface OnTabSelectListener {
+
+    void onTabSelect(int position);
+
+    void onTabReselect(int position);
+}
