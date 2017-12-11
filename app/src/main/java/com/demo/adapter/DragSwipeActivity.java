@@ -16,6 +16,7 @@ import com.demo.adapter.adapter.ItemDragAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.kalu.adapter.BaseLoadAdapter;
 import lib.kalu.adapter.callback.SwipeDragCallback;
 import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.listener.OnDragChangeListener;
