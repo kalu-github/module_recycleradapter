@@ -26,7 +26,7 @@ public class MulitActivity extends AppCompatActivity {
     private final BaseCommonMultAdapter mBaseCommonMultAdapter = new BaseCommonMultAdapter<NewMulitItem, RecyclerHolder>(mArrayList) {
 
         @Override
-        protected int onMerge(int position) {
+        public int onMerge(int position) {
             switch (position) {
                 case 0:
                 case 1:

@@ -48,8 +48,8 @@ public abstract class BaseLoadSwipeDragAdapter<T, K extends RecyclerHolder> exte
         super.onBindViewHolder(holder, positions);
         int viewType = holder.getItemViewType();
 
-        if (mItemTouchHelper != null && itemDragEnabled && viewType != RecyclerHolder.Companion.getLOAD_VIEW() && viewType != RecyclerHolder.Companion.getHEAD_VIEW()
-                && viewType != RecyclerHolder.Companion.getNULL_VIEW() && viewType != RecyclerHolder.Companion.getFOOT_VIEW()) {
+        if (mItemTouchHelper != null && itemDragEnabled && viewType != RecyclerHolder.LOAD_VIEW && viewType != RecyclerHolder.HEAD_VIEW
+                && viewType != RecyclerHolder.NULL_VIEW && viewType != RecyclerHolder.FOOT_VIEW) {
             if (mToggleViewId != NO_TOGGLE_VIEW) {
                 View toggleView = holder.getView(mToggleViewId);
                 if (toggleView != null) {

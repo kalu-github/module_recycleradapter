@@ -32,10 +32,10 @@ class SwipeDragCallback(internal var mAdapter: BaseCommonSwipeDragAdapter<*, *>)
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && !isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onItemDragStart(viewHolder)
+            mAdapter!!.onItemDragStart(viewHolder!!)
             viewHolder!!.itemView.setTag(DragCallback.DRAG_ID_TAG, true)
         } else if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && !isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onItemSwipeStart(viewHolder)
+            mAdapter!!.onItemSwipeStart(viewHolder!!)
             viewHolder!!.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, true)
         }
         super.onSelectedChanged(viewHolder, actionState)

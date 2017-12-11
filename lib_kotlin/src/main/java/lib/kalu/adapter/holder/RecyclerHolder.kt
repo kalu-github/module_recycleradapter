@@ -244,10 +244,10 @@ class RecyclerHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val HOLDER_ID_TAG = RecyclerHolder::class.java.hashCode()
 
-        val NULL_VIEW = -1 //空布局
-        val HEAD_VIEW = -2 // 头布局
-        val FOOT_VIEW = -3 // 脚布局
-        val LOAD_VIEW = -4 // 加载布局
-        val SECTION_VIEW = -5 // 分组布局
+        const val NULL_VIEW = -1 //空布局
+        const val HEAD_VIEW = -2 // 头布局
+        const val FOOT_VIEW = -3 // 脚布局
+        const val LOAD_VIEW = -4 // 加载布局
+        const val SECTION_VIEW = -5 // 分组布局
     }
 }

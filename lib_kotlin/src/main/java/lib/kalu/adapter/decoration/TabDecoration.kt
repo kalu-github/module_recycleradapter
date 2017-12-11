@@ -114,7 +114,7 @@ abstract class TabDecoration : RecyclerView.ItemDecoration() {
 
     /** */
 
-    fun hasHead(): Boolean {
+    open fun hasHead(): Boolean {
         return false
     }
 

@@ -144,7 +144,7 @@ abstract class BaseCommonAdapter<T, K : RecyclerHolder>
 
     /***********************************       方法API        */
 
-    protected fun onMerge(position: Int): Int {
+    open fun onMerge(position: Int): Int {
         return 1
     }
 
