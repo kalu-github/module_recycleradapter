@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion)   [戳我下载 ==>](https://pan.baidu.com/s/1jH5G8su)
+[ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion)           [戳我下载 ==>](https://pan.baidu.com/s/1jH5G8su)
 
 ```
 
