@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lib.kalu.adapter.BaseCommonAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.decoration.TabDecoration;
+import lib.kalu.adapter.holder.RecyclerHolder;
 
 public class TabSubPresenter implements TabSubContract.Presenter {
 

@@ -3,12 +3,9 @@ package lib.kalu.adapter.callback
 import android.graphics.Canvas
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.View
-
+import android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE
 import lib.kalu.adapter.BaseLoadSwipeDragAdapter
 import lib.kalu.adapter.holder.RecyclerHolder
-
-import android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE
 
 /**
  * description: 侧滑

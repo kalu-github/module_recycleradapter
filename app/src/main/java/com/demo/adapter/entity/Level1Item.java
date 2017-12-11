@@ -2,8 +2,8 @@ package com.demo.adapter.entity;
 
 import com.demo.adapter.adapter.TransAdapter;
 
-import lib.kalu.adapter.model.TransModel;
 import lib.kalu.adapter.model.MultModel;
+import lib.kalu.adapter.model.TransModel;
 
 public class Level1Item extends TransModel<Person> implements MultModel {
     public String title;

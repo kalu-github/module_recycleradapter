@@ -1,6 +1,5 @@
 package com.demo.adapter
 
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
@@ -9,8 +8,8 @@ import android.view.View
 import android.widget.Toast
 import com.demo.adapter.R.id.sticky_recycler
 import lib.kalu.adapter.BaseCommonAdapter
-import lib.kalu.adapter.decoration.SpaceDecoration
 import lib.kalu.adapter.decoration.FloatDecoration
+import lib.kalu.adapter.decoration.SpaceDecoration
 import lib.kalu.adapter.holder.RecyclerHolder
 import lib.kalu.adapter.manager.CrashLinearLayoutManager
 import java.util.*

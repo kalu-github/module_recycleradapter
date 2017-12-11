@@ -11,14 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.util.Linkify
 import android.view.View
 import android.view.animation.AlphaAnimation
-import android.widget.Adapter
-import android.widget.AdapterView
-import android.widget.CheckedTextView
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 
 class RecyclerHolder(view: View) : RecyclerView.ViewHolder(view) {
 

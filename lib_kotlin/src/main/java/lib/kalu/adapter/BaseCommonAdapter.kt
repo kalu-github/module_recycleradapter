@@ -1,6 +1,5 @@
 package lib.kalu.adapter
 
-import android.animation.Animator
 import android.content.Context
 import android.support.annotation.IdRes
 import android.support.annotation.IntDef
@@ -14,29 +13,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Interpolator
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-
+import lib.kalu.adapter.animation.*
+import lib.kalu.adapter.holder.RecyclerHolder
+import lib.kalu.adapter.model.TransModel
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 import java.lang.reflect.Constructor
 import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
-
-import lib.kalu.adapter.animation.AlphaInAnimation
-import lib.kalu.adapter.animation.BaseAnimation
-import lib.kalu.adapter.animation.ScaleInAnimation
-import lib.kalu.adapter.animation.SlideInBottomAnimation
-import lib.kalu.adapter.animation.SlideInLeftAnimation
-import lib.kalu.adapter.animation.SlideInRightAnimation
-import lib.kalu.adapter.holder.RecyclerHolder
-import lib.kalu.adapter.model.TransModel
-
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 
 
 /**

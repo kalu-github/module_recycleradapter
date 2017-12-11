@@ -3,8 +3,6 @@ package lib.kalu.adapter.callback
 import android.graphics.Canvas
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.View
-
 import lib.kalu.adapter.BaseCommonSwipeDragAdapter
 import lib.kalu.adapter.holder.RecyclerHolder
 

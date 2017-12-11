@@ -3,9 +3,7 @@ package lib.kalu.adapter
 import android.support.annotation.LayoutRes
 import android.util.SparseArray
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-
 import lib.kalu.adapter.holder.RecyclerHolder
 import lib.kalu.adapter.model.MultModel
 

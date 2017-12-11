@@ -1,6 +1,5 @@
 package com.demo.adapter.adapter;
 
-import com.demo.adapter.R;
 import com.demo.adapter.entity.MyTab;
 
 import java.util.List;

@@ -7,12 +7,10 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.MotionEvent
 import android.view.View
-
-import java.util.Collections
-
 import lib.kalu.adapter.holder.RecyclerHolder
 import lib.kalu.adapter.listener.OnDragChangeListener
 import lib.kalu.adapter.listener.OnSwipeChangeListener
+import java.util.*
 
 /**
  * description: 侧滑, 拖拽

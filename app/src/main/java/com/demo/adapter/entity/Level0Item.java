@@ -3,8 +3,8 @@ package com.demo.adapter.entity;
 
 import com.demo.adapter.adapter.TransAdapter;
 
-import lib.kalu.adapter.model.TransModel;
 import lib.kalu.adapter.model.MultModel;
+import lib.kalu.adapter.model.TransModel;
 
 public class Level0Item extends TransModel<Level1Item> implements MultModel {
     public String title;

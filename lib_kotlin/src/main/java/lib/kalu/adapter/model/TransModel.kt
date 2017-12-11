@@ -1,6 +1,6 @@
 package lib.kalu.adapter.model
 
-import java.util.ArrayList
+import java.util.*
 
 /**
  * description: 多级菜单
