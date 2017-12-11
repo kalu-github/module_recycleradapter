@@ -7,15 +7,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.demo.adapter.adapter.EmptyAdapter;
 import com.demo.adapter.data.DataServer;
 
-public class EmptyActivity extends AppCompatActivity implements View.OnClickListener {
+public class EmptyActivity extends AppCompatActivity {
+
     private RecyclerView mRecyclerView;
     private EmptyAdapter mEmptyAdapter;
-    private View notDataView;
-    private View errorView;
+    private View nullView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,57 +26,35 @@ public class EmptyActivity extends AppCompatActivity implements View.OnClickList
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) mRecyclerView.getParent(), false);
-        notDataView.setOnClickListener(new View.OnClickListener() {
+        nullView = getLayoutInflater().inflate(R.layout.activity_empty_null, (ViewGroup) mRecyclerView.getParent(), false);
+        nullView.findViewById(R.id.empty_text).setClickable(false);
+        nullView.findViewById(R.id.empty_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onRefresh();
-            }
-        });
-        errorView = getLayoutInflater().inflate(R.layout.error_view, (ViewGroup) mRecyclerView.getParent(), false);
-        errorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
-        initAdapter();
-        onRefresh();
-    }
 
-    private void initAdapter() {
+                ((TextView) nullView.findViewById(R.id.empty_text)).setText("加载数据");
+                nullView.findViewById(R.id.empty_circle).setVisibility(View.VISIBLE);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mEmptyAdapter.clearAddData(DataServer.getSampleData(10));
+                    }
+                }, 2000);
+            }
+        });
+
         mEmptyAdapter = new EmptyAdapter(0);
+        mEmptyAdapter.setNullView(nullView);
         mRecyclerView.setAdapter(mEmptyAdapter);
-    }
 
-    @Override
-    public void onClick(View v) {
-        mError = true;
-        mNoData = true;
-        mEmptyAdapter.clearAddData(null);
-        onRefresh();
-    }
-
-    private boolean mError = true;
-    private boolean mNoData = true;
-
-    private void onRefresh() {
-        mEmptyAdapter.setNullView(getApplicationContext(), R.layout.activity_empty_null);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mError) {
-                    mEmptyAdapter.setNullView(errorView);
-                    mError = false;
-                } else {
-                    if (mNoData) {
-                        mEmptyAdapter.setNullView(notDataView);
-                        mNoData = false;
-                    } else {
-                        mEmptyAdapter.clearAddData(DataServer.getSampleData(10));
-                    }
-                }
+                nullView.findViewById(R.id.empty_text).setClickable(true);
+                ((TextView) nullView.findViewById(R.id.empty_text)).setText("加载失败, 点击重试");
+                nullView.findViewById(R.id.empty_circle).setVisibility(View.INVISIBLE);
             }
-        }, 1000);
+        }, 2000);
     }
 }

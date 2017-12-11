@@ -190,7 +190,8 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
 
     @Override
     public int getItemCount() {
-        return mModelList.size() + getNullCount() + getHeadCount() + getFootCount();
+        final int size = mModelList.size();
+        return size == 0 ? getNullCount() : size + getNullCount() + getHeadCount() + getFootCount();
     }
 
     @Override
