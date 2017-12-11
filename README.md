@@ -72,13 +72,13 @@ BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String, RecyclerHolder
         # 合并单元格
         @Override
         protected int onMerge(int position) {
-         }
+        }
          
         # 添加分类型布局
         @Override
         protected void onMult() {       
             addItemType(布局类型(int), item布局文件id);
-         }
+        }
 
         # 设置数据
         @Override
