@@ -440,15 +440,15 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
         return mHeaderLayout;
     }
 
-    public int addHeadView(View header) {
-        return addHeadView(header, -1);
+    public void addHeadView(View header) {
+        addHeadView(header, -1);
     }
 
-    public int addHeadView(View header, int index) {
-        return addHeadView(header, index, LinearLayout.VERTICAL);
+    public void addHeadView(View header, int index) {
+        addHeadView(header, index, LinearLayout.VERTICAL);
     }
 
-    public int addHeadView(View header, int index, int orientation) {
+    public void addHeadView(View header, int index, int orientation) {
         if (mHeaderLayout == null) {
             mHeaderLayout = new LinearLayout(header.getContext());
             if (orientation == LinearLayout.VERTICAL) {
@@ -470,24 +470,22 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
                 notifyItemInserted(position);
             }
         }
-        return index;
     }
 
-    public int setHeadView(View header) {
-        return setHeadView(header, 0, LinearLayout.VERTICAL);
+    public void changeHeadView(View header) {
+        changeHeadView(header, 0, LinearLayout.VERTICAL);
     }
 
-    public int setHeadView(View header, int index) {
-        return setHeadView(header, index, LinearLayout.VERTICAL);
+    public void changeHeadView(View header, int index) {
+        changeHeadView(header, index, LinearLayout.VERTICAL);
     }
 
-    public int setHeadView(View header, int index, int orientation) {
+    public void changeHeadView(View header, int index, int orientation) {
         if (mHeaderLayout == null || mHeaderLayout.getChildCount() <= index) {
-            return addHeadView(header, index, orientation);
+            addHeadView(header, index, orientation);
         } else {
             mHeaderLayout.removeViewAt(index);
             mHeaderLayout.addView(header, index);
-            return index;
         }
     }
 
@@ -535,15 +533,15 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
         return mFooterLayout;
     }
 
-    public int addFootView(View footer) {
-        return addFootView(footer, -1, LinearLayout.VERTICAL);
+    public void addFootView(View footer) {
+        addFootView(footer, -1, LinearLayout.VERTICAL);
     }
 
-    public int addFootView(View footer, int index) {
-        return addFootView(footer, index, LinearLayout.VERTICAL);
+    public void addFootView(View footer, int index) {
+        addFootView(footer, index, LinearLayout.VERTICAL);
     }
 
-    public int addFootView(View footer, int index, int orientation) {
+    public void addFootView(View footer, int index, int orientation) {
         if (mFooterLayout == null) {
             mFooterLayout = new LinearLayout(footer.getContext());
             if (orientation == LinearLayout.VERTICAL) {
@@ -565,24 +563,22 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
                 notifyItemInserted(position);
             }
         }
-        return index;
     }
 
-    public int setFootView(View header) {
-        return setFootView(header, 0, LinearLayout.VERTICAL);
+    public void changeFootView(View header) {
+        changeFootView(header, 0, LinearLayout.VERTICAL);
     }
 
-    public int setFootView(View header, int index) {
-        return setFootView(header, index, LinearLayout.VERTICAL);
+    public void changeFootView(View header, int index) {
+        changeFootView(header, index, LinearLayout.VERTICAL);
     }
 
-    public int setFootView(View header, int index, int orientation) {
+    public void changeFootView(View header, int index, int orientation) {
         if (mFooterLayout == null || mFooterLayout.getChildCount() <= index) {
-            return addFootView(header, index, orientation);
+            addFootView(header, index, orientation);
         } else {
             mFooterLayout.removeViewAt(index);
             mFooterLayout.addView(header, index);
-            return index;
         }
     }
 

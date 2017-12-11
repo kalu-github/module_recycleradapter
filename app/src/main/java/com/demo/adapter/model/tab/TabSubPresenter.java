@@ -102,7 +102,7 @@ public class TabSubPresenter implements TabSubContract.Presenter {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(fragment.getContext(), 250));
         textView.setLayoutParams(layoutParams);
 
-        mAdapter.setHeadView(textView);
+        mAdapter.addHeadView(textView);
 
         recycler.setAdapter(mAdapter);
     }

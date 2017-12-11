@@ -33,8 +33,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //implementation project(':lib_java')
-    implementation project(':lib_kotlin')
+    implementation project(':lib_java')
+    //implementation project(':lib_kotlin')
 
     //compile 'lib.recycler.adapter:recycleradapter:1.0'
     implementation 'com.android.support:appcompat-v7:26.+'

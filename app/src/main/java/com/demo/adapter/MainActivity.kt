@@ -9,6 +9,7 @@ import com.demo.adapter.model.tab.StickyActivity2
 import lib.kalu.adapter.BaseCommonAdapter
 import lib.kalu.adapter.decoration.SpaceDecoration
 import lib.kalu.adapter.holder.RecyclerHolder
+import lib.kalu.adapter.manager.CrashGridLayoutManager
 import lib.kalu.adapter.manager.CrashLinearLayoutManager
 import java.util.*
 
@@ -43,8 +44,8 @@ class MainActivity : AppCompatActivity() {
         ArrayList<String>()
     }
 
-    private val mLayoutManager: CrashLinearLayoutManager? by lazy {
-        CrashLinearLayoutManager(applicationContext)
+    private val mLayoutManager: CrashGridLayoutManager? by lazy {
+        CrashGridLayoutManager(applicationContext, 2)
     }
 
     private val mSpaceDecoration: SpaceDecoration? by lazy {
