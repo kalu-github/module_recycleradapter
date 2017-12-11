@@ -44,6 +44,23 @@ RecyclerView.setAdapter(adapter);
 #### 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
+
+# 创建bean, 实现MultModel
+class NewMulitItem implements MultModel {
+
+    // 布局
+    类型private int itemType;
+
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
+
+    @Override
+    public int getItemType() {
+        return itemType;
+    }
+}
+
 # 创建adapter
 BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String, RecyclerHolder>(List数据集合) {
 
