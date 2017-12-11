@@ -48,12 +48,12 @@ public abstract class BaseLoadSwipeDragAdapter<T, K extends RecyclerHolder> exte
         super.onBindViewHolder(holder, positions);
         int viewType = holder.getItemViewType();
 
-        if (mItemTouchHelper != null && itemDragEnabled && viewType != RecyclerHolder.LOAD_VIEW && viewType != RecyclerHolder.HEAD_VIEW
-                && viewType != RecyclerHolder.NULL_VIEW && viewType != RecyclerHolder.FOOT_VIEW) {
+        if (mItemTouchHelper != null && itemDragEnabled && viewType != RecyclerHolder.Companion.getLOAD_VIEW() && viewType != RecyclerHolder.Companion.getHEAD_VIEW()
+                && viewType != RecyclerHolder.Companion.getNULL_VIEW() && viewType != RecyclerHolder.Companion.getFOOT_VIEW()) {
             if (mToggleViewId != NO_TOGGLE_VIEW) {
                 View toggleView = holder.getView(mToggleViewId);
                 if (toggleView != null) {
-                    toggleView.setTag(RecyclerHolder.HOLDER_ID_TAG, holder);
+                    toggleView.setTag(RecyclerHolder.Companion.getHOLDER_ID_TAG(), holder);
                     if (mDragOnLongPress) {
                         toggleView.setOnLongClickListener(mOnToggleViewLongClickListener);
                     } else {
@@ -61,7 +61,7 @@ public abstract class BaseLoadSwipeDragAdapter<T, K extends RecyclerHolder> exte
                     }
                 }
             } else {
-                holder.itemView.setTag(RecyclerHolder.HOLDER_ID_TAG, holder);
+                holder.itemView.setTag(RecyclerHolder.Companion.getHOLDER_ID_TAG(), holder);
                 holder.itemView.setOnLongClickListener(mOnToggleViewLongClickListener);
             }
         }
@@ -79,7 +79,7 @@ public abstract class BaseLoadSwipeDragAdapter<T, K extends RecyclerHolder> exte
                 @Override
                 public boolean onLongClick(View v) {
                     if (mItemTouchHelper != null && itemDragEnabled) {
-                        mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(RecyclerHolder.HOLDER_ID_TAG));
+                        mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(RecyclerHolder.Companion.getHOLDER_ID_TAG()));
                     }
                     return true;
                 }
@@ -91,7 +91,7 @@ public abstract class BaseLoadSwipeDragAdapter<T, K extends RecyclerHolder> exte
                     if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN
                             && !mDragOnLongPress) {
                         if (mItemTouchHelper != null && itemDragEnabled) {
-                            mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(RecyclerHolder.HOLDER_ID_TAG));
+                            mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(RecyclerHolder.Companion.getHOLDER_ID_TAG()));
                         }
                         return true;
                     } else {

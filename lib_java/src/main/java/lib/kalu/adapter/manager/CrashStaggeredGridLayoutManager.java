@@ -1,28 +1,24 @@
 package lib.kalu.adapter.manager;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 
 /**
  * description: fix-bug-IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter的解决方案
  * created by kalu on 2017/3/24 15:05
  */
-public class CrashGridLayoutManager extends GridLayoutManager {
+public class CrashStaggeredGridLayoutManager extends StaggeredGridLayoutManager {
 
-    private final String TAG = CrashGridLayoutManager.class.getSimpleName();
+    private final String TAG = CrashStaggeredGridLayoutManager.class.getSimpleName();
 
-    public CrashGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CrashStaggeredGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public CrashGridLayoutManager(Context context, int spanCount) {
-        super(context, spanCount);
-    }
-
-    public CrashGridLayoutManager(Context context, int spanCount, int orientation, boolean reverseLayout) {
-        super(context, spanCount, orientation, reverseLayout);
+    public CrashStaggeredGridLayoutManager(int spanCount, int orientation) {
+        super(spanCount, orientation);
     }
 
     @Override

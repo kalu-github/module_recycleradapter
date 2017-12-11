@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 26
@@ -25,12 +26,26 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+        warning 'InvalidPackage'
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:recyclerview-v7:26.+'
-    compile 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.0'
+    implementation 'com.android.support:recyclerview-v7:26.+'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.0'
 }
+
+//publish {
+//    userOrg = 'zhanghang'//bintray.com用户名
+//    groupId = 'lib.kalu.adapter'//jcenter上的路径
+//    artifactId = 'recycleradapter_kotlin'//项目名称
+//    publishVersion = '1.3'//版本号
+//    desc = 'This is a recyclerview adapter kotlin version'//描述，不重要
+//    website = 'https://github.com/153437803/RecyclerAdapter'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+//}
