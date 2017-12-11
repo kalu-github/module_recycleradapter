@@ -71,7 +71,7 @@ BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String, RecyclerHolder
 
         # 合并单元格
         @Override
-        protected void onMerge() {
+        protected int onMerge(int position) {
          }
          
         # 添加分类型布局
