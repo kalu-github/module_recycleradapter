@@ -48,7 +48,7 @@ RecyclerView.setAdapter(adapter);
 # 创建bean, 实现MultModel
 class NewMulitItem implements MultModel {
 
-    // 布局
+    // 布局类型
     类型private int itemType;
 
     public void setItemType(int itemType) {
