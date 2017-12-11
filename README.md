@@ -90,6 +90,8 @@ BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String, RecyclerHolder
 RecyclerView.setAdapter(adapter);
 ```
 
+#### ***********************************************************************************************************************************
+
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif ) 
