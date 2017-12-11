@@ -1,6 +1,5 @@
 [ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion)
 ```
-java版本：
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ```
 
