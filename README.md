@@ -10,6 +10,16 @@ compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
  [戳我下载 ==>](https://pan.baidu.com/s/1jH5G8su)
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
+```
+BaseCommonAdapter: 基类, 添加头视图, 添加尾视图, 添加空视图
+BaseCommonMultAdapter: 分类型， 继承BaseCommonAdapter
+BaseCommonSwipeDragAdapter: 侧滑, 拖拽， 继承BaseCommonAdapter
+BaseCommonTabAdapter: 分组， 继承BaseCommonAdapter
+BaseLoadAdapter: 加载更多， 继承BaseCommonAdapter
+BaseLoadMultAdapter: 加载更多, 分类型， 继承BaseLoadAdapter
+BaseLoadSwipeDragAdapter: 加载更多, 侧滑, 拖拽， 继承BaseLoadAdapter
+BaseLoadTabAdapter：加载更多, 分组， 继承BaseLoadAdapter
+```
 
 #### ***********************************************************************************************************************************
 
