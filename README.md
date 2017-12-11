@@ -9,7 +9,7 @@ compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
 
  [戳我下载 ==>](https://pan.baidu.com/s/1jH5G8su)
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/20171205045053.png )
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
 
 #### ***********************************************************************************************************************************
 
