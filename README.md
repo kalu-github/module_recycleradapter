@@ -11,7 +11,8 @@ compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/20171205045053.png ) 
 
-<font color=red size=5>加载更多(BaseLoadAdapter.class)：</font>
+#### 加载更多(BaseLoadAdapter.class)：
+
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 ```
 # 加载结束, 没有数据了
