@@ -11,11 +11,19 @@ compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/20171205045053.png ) 
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
-
 #### 加载更多(BaseLoadAdapter.class)：
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 ```
-1. 创建adapter
+# 加载结束, 没有数据了
+loadOverNotifyDataSetChanged(RecyclerView recycler);
+
+# 加载完成, 不显示loading
+loadCompleteNotifyDataSetChanged(RecyclerView recycler);
+
+# 刷新数据, 重置所有标记位
+loadResetNotifyDataSetChanged(RecyclerView recycler);
+
+# 创建adapter
 BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据集合 , item布局文件id, load布局文件id) {
 
         # 设置数据
@@ -26,9 +34,10 @@ BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据
         # 加载监听
         @Override
         protected void onLoad() {
-        }
+         }
     };
-1. 设置adapter
+    
+# 设置adapter
 RecyclerView.setAdapter(adapter);
 ```
 
