@@ -40,9 +40,10 @@ BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据
         }
 
         # 加载监听
-        @Override
-        protected void onLoad() {
-         }
+        # isOver，是否需要显示loading，之后自己判断逻辑部分, 服务器告诉没有数据了, 需要调用loadOverNotifyDataSetChanged(recycler)
+        @Override
+        protected void onLoad(boolean isOver) {
+        }
     };
     
 # 设置adapter
