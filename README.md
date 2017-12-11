@@ -5,7 +5,7 @@
 java版本：
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
-kotlin版本(正在搞...)：
+kotlin版本：
 compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
 ```
 
