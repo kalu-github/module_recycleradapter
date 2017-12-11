@@ -58,7 +58,6 @@ RecyclerView.setAdapter(adapter);
 #### 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
-
 # 创建bean, 实现MultModel
 class NewMulitItem implements MultModel {
 
