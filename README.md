@@ -2,9 +2,6 @@
 ```
 java版本：
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
-
-kotlin版本 - 还没有搞好：
-compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
 ```
 
  [戳我下载 ==>](https://pan.baidu.com/s/1jH5G8su)
