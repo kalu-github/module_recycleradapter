@@ -13,9 +13,9 @@ compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 
-### 1.加载更多(BaseLoadAdapter.class)：
+#### 加载更多(BaseLoadAdapter.class)：
 ```
-1.1. 创建adapter
+1. 创建adapter
 BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据集合 , item布局文件id, load布局文件id) {
 
         # 设置数据
@@ -28,7 +28,7 @@ BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据
         protected void onLoad() {
         }
     };
-1.2. 设置adapter
+1. 设置adapter
 RecyclerView.setAdapter(adapter);
 ```
 
