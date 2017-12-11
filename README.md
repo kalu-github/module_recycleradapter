@@ -41,8 +41,34 @@ BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据
 RecyclerView.setAdapter(adapter);
 ```
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
+#### 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
+```
+# 创建adapter
+BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String, RecyclerHolder>(List数据集合) {
+
+        # 合并单元格
+        @Override
+        protected void onMerge() {
+         }
+         
+        # 添加分类型布局
+        @Override
+        protected void onMult() {       
+            addItemType(布局类型(int), item布局文件id);
+         }
+
+        # 设置数据
+        @Override
+        protected void onNext(RecyclerHolder holder, String model, int position) {
+        }
+    };
+    
+# 设置adapter
+RecyclerView.setAdapter(adapter);
+```
+
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif ) 
