@@ -128,6 +128,8 @@ RecyclerView.setAdapter(adapter);
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-07.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-03.gif )
 
+#### ***********************************************************************************************************************************
+
 # proguard-rules.pro
 ```
 -keep class lib.kalu.adapter.** {
@@ -139,6 +141,8 @@ RecyclerView.setAdapter(adapter);
      <init>(...);
 }
 ```
+
+#### ***********************************************************************************************************************************
 
 # Thanks  
 [JoanZapata / base-adapter-helper](https://github.com/JoanZapata/base-adapter-helper)
