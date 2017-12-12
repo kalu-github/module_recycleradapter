@@ -1,15 +1,20 @@
 [ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion)
 ```
-java版本：
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
-
-kotlin版本 - 还没有搞好：
-compile 'lib.kalu.adapter:recycleradapter_kotlin:<latest-version>'
 ```
 
  [戳我下载 ==>](https://pan.baidu.com/s/1jH5G8su)
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/20171205045053.png )
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
+
+#### BaseCommonAdapter: 基类, 添加头视图, 添加尾视图, 添加空视图
+#### BaseCommonMultAdapter: 分类型， 继承BaseCommonAdapter
+#### BaseCommonSwipeDragAdapter: 侧滑, 拖拽， 继承BaseCommonAdapter
+#### BaseCommonTabAdapter: 分组， 继承BaseCommonAdapter
+#### BaseLoadAdapter: 加载更多， 继承BaseCommonAdapter
+#### BaseLoadMultAdapter: 加载更多, 分类型， 继承BaseLoadAdapter
+#### BaseLoadSwipeDragAdapter: 加载更多, 侧滑, 拖拽， 继承BaseLoadAdapter
+#### BaseLoadTabAdapter：加载更多, 分组， 继承BaseLoadAdapter
 
 #### ***********************************************************************************************************************************
 
@@ -35,9 +40,10 @@ BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据
         }
 
         # 加载监听
-        @Override
-        protected void onLoad() {
-         }
+        # isOver，是否需要显示loading，之后自己判断逻辑部分, 服务器告诉没有数据了, 需要调用loadOverNotifyDataSetChanged(recycler)
+        @Override
+        protected void onLoad(RecyclerHolder holder, boolean isOver) {
+        }
     };
     
 # 设置adapter
@@ -49,7 +55,6 @@ RecyclerView.setAdapter(adapter);
 #### 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
-
 # 创建bean, 实现MultModel
 class NewMulitItem implements MultModel {
 
