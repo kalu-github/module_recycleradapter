@@ -292,7 +292,7 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
     public @interface AnimationType {
     }
 
-    public void openLoadAnimation(@AnimationType int animationType, int animTime, boolean isOpenAnimFirstOnly) {
+    public void setLoadAnimation(@AnimationType int animationType, int animTime, boolean isOpenAnimFirstOnly) {
         this.isOpenAnim = true;
         this.isOpenAnimFirstOnly = isOpenAnimFirstOnly;
         this.mAnimTime = animTime;

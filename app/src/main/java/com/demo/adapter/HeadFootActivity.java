@@ -53,7 +53,7 @@ public class HeadFootActivity extends AppCompatActivity {
 
     private void initAdapter() {
         headFootAdapter = new HeadFootAdapter(PAGE_SIZE);
-        headFootAdapter.openLoadAnimation(BaseAnimation.ALPHAIN, 500, true);
+        headFootAdapter.setLoadAnimation(BaseAnimation.ALPHAIN, 500, true);
         mRecyclerView.setAdapter(headFootAdapter);
     }
 }
