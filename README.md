@@ -144,11 +144,6 @@ RecyclerView.setAdapter(adapter);
 
 #
 
-# Thanks  
-[JoanZapata / base-adapter-helper](https://github.com/JoanZapata/base-adapter-helper)
-
-#
-
 # License
 ```
 Copyright 2016 张航
