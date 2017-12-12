@@ -17,7 +17,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
 #### ***********************************************************************************************************************************
 
-#### 一. 点击事件(RecyclerHolder.class, item、item-child)：
+# 一. 点击事件(RecyclerHolder.class, item、item-child)：
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
@@ -41,7 +41,7 @@ BaseCommonAdapter adapter = new BaseCommonAdapter<String, RecyclerHolder>(List�
 
 #### ***********************************************************************************************************************************
 
-#### 二. 加载更多(BaseLoadAdapter.class)：
+# 二. 加载更多(BaseLoadAdapter.class)：
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 ```
@@ -75,7 +75,7 @@ RecyclerView.setAdapter(adapter);
 
 #### ***********************************************************************************************************************************
 
-#### 三. 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
+# 三. 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
 # 创建bean, 实现MultModel
@@ -147,7 +147,7 @@ RecyclerView.setAdapter(adapter);
 # Thanks  
 [JoanZapata / base-adapter-helper](https://github.com/JoanZapata/base-adapter-helper)
 
-#### ***********************************************************************************************************************************
+#
 
 # License
 ```
