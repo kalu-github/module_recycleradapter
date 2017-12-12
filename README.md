@@ -15,7 +15,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 #### BaseLoadSwipeDragAdapter: 加载更多, 侧滑, 拖拽， 继承BaseLoadAdapter
 #### BaseLoadTabAdapter：加载更多, 分组， 继承BaseLoadAdapter
 
-#### ***********************************************************************************************************************************
+#
 
 # 一. 点击事件(RecyclerHolder.class, item、item-child)：
 
@@ -39,7 +39,7 @@ BaseCommonAdapter adapter = new BaseCommonAdapter<String, RecyclerHolder>(List�
     };
 ```
 
-#### ***********************************************************************************************************************************
+#
 
 # 二. 加载更多(BaseLoadAdapter.class)：
 
@@ -73,7 +73,7 @@ BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据
 RecyclerView.setAdapter(adapter);
 ```
 
-#### ***********************************************************************************************************************************
+#
 
 # 三. 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
@@ -118,7 +118,7 @@ BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String, RecyclerHolder
 RecyclerView.setAdapter(adapter);
 ```
 
-#### ***********************************************************************************************************************************
+#
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
@@ -128,7 +128,7 @@ RecyclerView.setAdapter(adapter);
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-07.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-03.gif )
 
-#### ***********************************************************************************************************************************
+#
 
 # proguard-rules.pro
 ```
@@ -142,7 +142,7 @@ RecyclerView.setAdapter(adapter);
 }
 ```
 
-#### ***********************************************************************************************************************************
+#
 
 # Thanks  
 [JoanZapata / base-adapter-helper](https://github.com/JoanZapata/base-adapter-helper)
