@@ -1,11 +1,10 @@
-[ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion)
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
+[ ![](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion)![](https://img.shields.io/badge/build-passing-green.svg)![](https://img.shields.io/badge/API%20-14+-green.svg)[ ![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E5%BC%A0%E8%88%AA-red.svg) ](http://www.jianshu.com/u/22a5d2ee8385)![](https://img.shields.io/badge/%E9%82%AE%E7%AE%B1-153437803@qq.com-red.svg)
 ```
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ```
 
  [戳我下载 ==>](https://pan.baidu.com/s/1nvAAvpf)
-
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
 
 #### BaseCommonAdapter: 基类, 添加头视图, 添加尾视图, 添加空视图
 #### BaseCommonMultAdapter: 分类型， 继承BaseCommonAdapter
@@ -16,9 +15,9 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 #### BaseLoadSwipeDragAdapter: 加载更多, 侧滑, 拖拽， 继承BaseLoadAdapter
 #### BaseLoadTabAdapter：加载更多, 分组， 继承BaseLoadAdapter
 
-#### ***********************************************************************************************************************************
+#
 
-#### 一. 点击事件(RecyclerHolder.class, item、item-child)：
+# 点击事件(RecyclerHolder.class, item、item-child)：
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
@@ -40,9 +39,9 @@ BaseCommonAdapter adapter = new BaseCommonAdapter<String, RecyclerHolder>(List�
     };
 ```
 
-#### ***********************************************************************************************************************************
+#
 
-#### 二. 加载更多(BaseLoadAdapter.class)：
+# 加载更多(BaseLoadAdapter.class)：
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 ```
@@ -74,9 +73,9 @@ BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据
 RecyclerView.setAdapter(adapter);
 ```
 
-#### ***********************************************************************************************************************************
+#
 
-#### 三. 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
+# 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
 # 创建bean, 实现MultModel
@@ -119,7 +118,7 @@ BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String, RecyclerHolder
 RecyclerView.setAdapter(adapter);
 ```
 
-#### ***********************************************************************************************************************************
+#
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
@@ -127,4 +126,41 @@ RecyclerView.setAdapter(adapter);
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-07.gif ) 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-03.gif ) 
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-03.gif )
+
+#
+
+# Proguard-rules
+```
+-keep class lib.kalu.adapter.** {
+*;
+}
+-keep public class * extends lib.kalu.adapter.BaseCommonAdapter
+-keep public class * extends lib.kalu.adapter.holder.RecyclerHolder
+-keepclassmembers  class **$** extends lib.kalu.adapter.holder.RecyclerHolder {
+     <init>(...);
+}
+```
+
+#
+
+# Thanks  
+[JoanZapata / base-adapter-helper](https://github.com/JoanZapata/base-adapter-helper)
+
+#
+
+# License
+```
+Copyright 2016 张航
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
