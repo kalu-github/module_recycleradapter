@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".model.tab.StickyActivity2" />
+        <activity android:name=".ClickActivity" />
         <activity android:name=".HeadFootActivity" />
         <activity android:name=".SectionActivity" />
         <activity android:name=".EmptyActivity" />

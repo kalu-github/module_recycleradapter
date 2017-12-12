@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private val mActivity: Array<Class<*>>? by lazy {
 
-        arrayOf<Class<*>>(LoadmoreActivity::class.java, HeadFootActivity::class.java,
+        arrayOf<Class<*>>(ClickActivity::class.java, LoadmoreActivity::class.java, HeadFootActivity::class.java,
                 MulitActivity::class.java, EmptyActivity::class.java,
                 FloatActivity::class.java,
                 StickyActivity2::class.java, StickyActivity1::class.java,
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val mTitle: Array<String>? by lazy {
-        arrayOf("加载更多", "头部尾部",
+        arrayOf("点击事件", "加载更多", "头部尾部",
                 "多种布局", "空布局",
                 "悬浮菜单",
                 "TabMore", "Tab",
