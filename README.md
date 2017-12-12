@@ -18,7 +18,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
 #### ***********************************************************************************************************************************
 
-#### 点击事件(BaseLoadAdapter.class)：
+#### item、item-child点击事件(BaseLoadAdapter.class)：
 
 ```
 华东科技和长江水道交口
