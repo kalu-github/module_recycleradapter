@@ -48,8 +48,8 @@ class LoadmoreActivity : AppCompatActivity() {
                             for (i in 0..2) {
                                 mArrayList?.add(i.toString())
                             }
-                            loadCompleteNotifyDataSetChanged(mRecyclerView)
-                            holder!!.setText(R.id.loading_text, "没有数据了")
+                            loadOverNotifyDataSetChanged(mRecyclerView)
+                            holder!!.setText(R.id.loading_text, "-- 我也是有底线的 --")
                             holder!!.setVisible(R.id.loading_cycle, View.GONE)
                         })
                     }).start()

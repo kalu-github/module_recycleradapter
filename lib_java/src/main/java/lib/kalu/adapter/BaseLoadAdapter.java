@@ -218,6 +218,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
      * 加载完成
      */
     public void loadCompleteNotifyDataSetChanged(RecyclerView recycler) {
+        isLoadOver = false;
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
