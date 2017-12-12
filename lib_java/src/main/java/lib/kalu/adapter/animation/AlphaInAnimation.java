@@ -19,6 +19,8 @@ public final class AlphaInAnimation implements BaseAnimation {
 
     @Override
     public Animator[] getAnimators(View view) {
-        return new Animator[]{ObjectAnimator.ofFloat(view, "alpha", mFrom, 1f)};
+
+        final ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", mFrom, 1f);
+        return new Animator[]{animator};
     }
 }
