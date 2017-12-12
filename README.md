@@ -130,7 +130,7 @@ RecyclerView.setAdapter(adapter);
 
 #
 
-# proguard-rules.pro
+# Proguard-rules
 ```
 -keep class lib.kalu.adapter.** {
 *;
