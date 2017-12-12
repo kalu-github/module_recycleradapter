@@ -3,7 +3,7 @@
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ```
 
- [戳我下载 ==>](https://pan.baidu.com/s/1o8cIuF4)
+ [戳我下载 ==>](https://pan.baidu.com/s/1nvAAvpf)
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
 
@@ -18,15 +18,31 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
 #### ***********************************************************************************************************************************
 
-#### item、item-child点击事件(BaseLoadAdapter.class)：
+#### 一. 点击事件(RecyclerHolder.class, item、item-child)：
+
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
 ```
-华东科技和长江水道交口
+BaseCommonAdapter adapter = new BaseCommonAdapter<String, RecyclerHolder>(List数据集合 , item布局文件id) {
+
+        # 设置数据
+        @Override
+        protected void onNext(RecyclerHolder holder, String model, int position) {
+        
+                holder!!.setOnClickListener(View.OnClickListener {
+                    Toast.makeText(applicationContext, "点击第 " + position + " 个item", Toast.LENGTH_SHORT).show()
+                }, R.id.click_text1)
+
+                holder!!.setOnClickListener(View.OnClickListener {
+                    Toast.makeText(applicationContext, "点击第 " + position + " 个item - child", Toast.LENGTH_SHORT).show()
+                }, R.id.click_text2)
+        }
+    };
 ```
 
 #### ***********************************************************************************************************************************
 
-#### 加载更多(BaseLoadAdapter.class)：
+#### 二. 加载更多(BaseLoadAdapter.class)：
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 ```
@@ -60,7 +76,7 @@ RecyclerView.setAdapter(adapter);
 
 #### ***********************************************************************************************************************************
 
-#### 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
+#### 三. 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
 # 创建bean, 实现MultModel
