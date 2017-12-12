@@ -15,7 +15,7 @@ import lib.kalu.adapter.BaseCommonAdapter;
  * description: 利用分割线实现悬浮, 配合BaseCommonAdapter使用
  * created by kalu on 2017/6/14 13:48
  */
-public abstract class TabDecoration extends RecyclerView.ItemDecoration {
+public  abstract class TabDecoration extends RecyclerView.ItemDecoration {
 
     private int tabHeight = 0;
 

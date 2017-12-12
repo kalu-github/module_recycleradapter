@@ -20,7 +20,11 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class RecyclerHolder extends RecyclerView.ViewHolder {
+/**
+ * description: 不可以被继承
+ * created by kalu on 2017/12/12 8:43
+ */
+public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public static final int HOLDER_ID_TAG = RecyclerHolder.class.hashCode();
 

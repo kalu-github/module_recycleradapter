@@ -17,7 +17,7 @@ import lib.kalu.adapter.manager.CrashLinearLayoutManager;
  * description: RecyclerView分隔线
  * created by kalu on 2017/6/1 18:11
  */
-public class SpaceDecoration extends RecyclerView.ItemDecoration {
+public final class SpaceDecoration extends RecyclerView.ItemDecoration {
 
     // 分隔线(高度, 宽度)
     private float mDividerSize;

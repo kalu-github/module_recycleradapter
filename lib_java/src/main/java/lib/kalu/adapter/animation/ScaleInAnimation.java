@@ -4,7 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.view.View;
 
-public class ScaleInAnimation implements BaseAnimation {
+public final class ScaleInAnimation implements BaseAnimation {
 
     private static final float DEFAULT_SCALE_FROM = .5f;
     private final float mFrom;

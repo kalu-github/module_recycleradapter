@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  * description: 顶部悬浮菜单 - 例如搜索菜单
  * created by kalu on 2017/6/14 13:48
  */
-public class FloatDecoration extends RecyclerView.ItemDecoration {
+public final class FloatDecoration extends RecyclerView.ItemDecoration {
 
     private Bitmap mBitmap;
     private int height;

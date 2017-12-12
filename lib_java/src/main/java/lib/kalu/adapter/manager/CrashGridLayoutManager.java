@@ -9,7 +9,7 @@ import android.util.AttributeSet;
  * description: fix-bug-IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter的解决方案
  * created by kalu on 2017/3/24 15:05
  */
-public class CrashGridLayoutManager extends GridLayoutManager {
+public final class CrashGridLayoutManager extends GridLayoutManager {
 
     private final String TAG = CrashGridLayoutManager.class.getSimpleName();
 
