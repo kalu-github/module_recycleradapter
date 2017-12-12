@@ -3,7 +3,7 @@
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ```
 
- [戳我下载 ==>](https://pan.baidu.com/s/1o8cIuF4)
+ [戳我下载 ==>](https://pan.baidu.com/s/1nvAAvpf)
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
 
