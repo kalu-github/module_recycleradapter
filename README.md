@@ -18,10 +18,26 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
 #### ***********************************************************************************************************************************
 
-#### item、item-child点击事件(BaseLoadAdapter.class)：
+#### 点击事件(RecyclerHolder.class, item、item-child)：
+
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
 ```
-华东科技和长江水道交口
+BaseCommonAdapter adapter = new BaseCommonAdapter<String, RecyclerHolder>(List数据集合 , item布局文件id) {
+
+        # 设置数据
+        @Override
+        protected void onNext(RecyclerHolder holder, String model, int position) {
+        
+                holder!!.setOnClickListener(View.OnClickListener {
+                    Toast.makeText(applicationContext, "点击第 " + position + " 个item", Toast.LENGTH_SHORT).show()
+                }, R.id.click_text1)
+
+                holder!!.setOnClickListener(View.OnClickListener {
+                    Toast.makeText(applicationContext, "点击第 " + position + " 个item - child", Toast.LENGTH_SHORT).show()
+                }, R.id.click_text2)
+        }
+    };
 ```
 
 #### ***********************************************************************************************************************************
