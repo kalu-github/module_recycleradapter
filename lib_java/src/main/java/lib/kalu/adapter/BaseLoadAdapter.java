@@ -22,6 +22,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
 
     // 加载数据数据完毕了
     private boolean isLoadOver;
+    private boolean isLoading;
 
     private @LayoutRes
     int loadResId = -1;
@@ -104,7 +105,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
                         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                             super.onScrollStateChanged(recyclerView, newState);
 
-                            if (newState != 0) return;
+                            if (isLoading || newState != 0) return;
 
                             // 没有真正滑动到底部, 但是最后一个item可见
                             if (temp.canScrollVertically(1)) {
@@ -116,6 +117,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
                                     if (itemCount != lastVisibleItemPositionReal) return;
 
                                     onLoad(holder, isLoadOver);
+                                    isLoading = true;
                                 }
                                 // 线性布局
                                 else if (manager instanceof LinearLayoutManager) {
@@ -125,6 +127,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
                                     if (itemCount != lastVisibleItemPositionReal) return;
 
                                     onLoad(holder, isLoadOver);
+                                    isLoading = true;
                                 }
                                 // 瀑布流布局
                                 else {
@@ -135,11 +138,13 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
                                     if (itemCount != lastVisibleItemPositionReal) return;
 
                                     onLoad(holder, isLoadOver);
+                                    isLoading = true;
                                 }
                             }
                             // 真正滑动到底部
                             else {
                                 onLoad(holder, isLoadOver);
+                                isLoading = true;
                             }
                         }
                     });
@@ -207,6 +212,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
      */
     public void loadOverNotifyDataSetChanged(RecyclerView recycler) {
         isLoadOver = true;
+        isLoading = false;
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
@@ -219,6 +225,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
      */
     public void loadCompleteNotifyDataSetChanged(RecyclerView recycler) {
         isLoadOver = false;
+        isLoading = false;
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
@@ -231,6 +238,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
      */
     public void loadResetNotifyDataSetChanged(RecyclerView recycler) {
         isLoadOver = false;
+        isLoading = false;
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
