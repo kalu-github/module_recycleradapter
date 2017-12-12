@@ -3,6 +3,8 @@ package com.demo.adapter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.view.View
+import android.widget.TextView
 import com.demo.adapter.R.id.loadmore_recycler
 import lib.kalu.adapter.BaseLoadAdapter
 import lib.kalu.adapter.decoration.SpaceDecoration
@@ -35,18 +37,23 @@ class LoadmoreActivity : AppCompatActivity() {
     private val mLoadAdapter: BaseLoadAdapter<String, RecyclerHolder> by lazy {
 
         object : BaseLoadAdapter<String, RecyclerHolder>(mArrayList, R.layout.activity_loadmore_item, R.layout.activity_loadmore_loading) {
-            override fun onLoad() {
+            override fun onLoad(holder: RecyclerHolder?, isOver: Boolean) {
+                if (isOver) {
 
-                Thread(Runnable {
+                } else {
+                    Thread(Runnable {
 
-                    Thread.sleep(2000)
-                    runOnUiThread(Runnable {
-                        for (i in 0..2) {
-                            mArrayList?.add(i.toString())
-                        }
-                        loadCompleteNotifyDataSetChanged(mRecyclerView)
-                    })
-                }).start()
+                        Thread.sleep(2000)
+                        runOnUiThread({
+                            for (i in 0..2) {
+                                mArrayList?.add(i.toString())
+                            }
+                            loadCompleteNotifyDataSetChanged(mRecyclerView)
+                            holder!!.setText(R.id.loading_text, "没有数据了")
+                            holder!!.setVisible(R.id.loading_cycle, View.GONE)
+                        })
+                    }).start()
+                }
             }
 
             override fun onNext(holder: RecyclerHolder, model: String, position: Int) {

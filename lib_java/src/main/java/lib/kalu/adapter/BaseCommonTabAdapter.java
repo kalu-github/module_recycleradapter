@@ -11,7 +11,7 @@ import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.model.TabModel;
 
 /**
- * description: 网格多个合并
+ * description: 分组
  * created by kalu on 2017/5/26 14:54
  */
 public abstract class BaseCommonTabAdapter<T extends TabModel, K extends RecyclerHolder> extends BaseCommonAdapter<T, K> {

@@ -34,7 +34,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib_java')
-    //implementation project(':lib_kotlin')
 
     //compile 'lib.recycler.adapter:recycleradapter:1.0'
     implementation 'com.android.support:appcompat-v7:26.+'
@@ -50,5 +49,4 @@ dependencies {
     implementation ('com.alibaba.android:vlayout:1.2.6@aar') {
         transitive = true
     }
-    compile project(path: ':lib_kotlin')
 }

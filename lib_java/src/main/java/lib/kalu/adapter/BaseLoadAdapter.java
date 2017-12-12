@@ -20,8 +20,6 @@ import lib.kalu.adapter.holder.RecyclerHolder;
  */
 public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseCommonAdapter<T, K> {
 
-    // 是否正在加载更多
-    // private boolean isLoading;
     // 加载数据数据完毕了
     private boolean isLoadOver;
 
@@ -86,63 +84,67 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
     @Override
     public K onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        // 设置滑动监听
-        if (parent instanceof RecyclerView && null == parent.getTag()) {
-
-            parent.setTag(true);
-            final int positions[] = new int[1];
-            final RecyclerView temp = (RecyclerView) parent;
-            final RecyclerView.LayoutManager manager = temp.getLayoutManager();
-
-            temp.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-
-                    if (newState != 0) return;
-
-                    // 没有真正滑动到底部, 但是最后一个item可见
-                    if (temp.canScrollVertically(1)) {
-                        // 网格布局
-                        if (manager instanceof GridLayoutManager) {
-                            GridLayoutManager temp = (GridLayoutManager) manager;
-                            final int itemCount = temp.getItemCount();
-                            final int lastVisibleItemPositionReal = temp.findLastVisibleItemPosition() + 1;
-                            if (itemCount != lastVisibleItemPositionReal) return;
-                            onLoad();
-                        }
-                        // 线性布局
-                        else if (manager instanceof LinearLayoutManager) {
-                            LinearLayoutManager temp = (LinearLayoutManager) manager;
-                            final int itemCount = temp.getItemCount();
-                            final int lastVisibleItemPositionReal = temp.findLastVisibleItemPosition() + 1;
-                            if (itemCount != lastVisibleItemPositionReal) return;
-                            onLoad();
-                        }
-                        // 瀑布流布局
-                        else {
-                            StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
-                            temp.findLastVisibleItemPositions(positions);
-                            final int itemCount = temp.getItemCount();
-                            final int lastVisibleItemPositionReal = positions[0] + 1;
-                            if (itemCount != lastVisibleItemPositionReal) return;
-                            onLoad();
-                        }
-                    }
-                    // 真正滑动到底部
-                    else {
-                        onLoad();
-                    }
-                }
-            });
-        }
-
-        K holder;
+        final K holder;
         switch (viewType) {
             case RecyclerHolder.LOAD_VIEW:
-                final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(loadResId, parent, false);
-                holder = createSimpleHolder(inflate);
+                final View load = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(loadResId, parent, false);
+                holder = createSimpleHolder(load);
+
+                // 设置滑动监听
+                if (parent instanceof RecyclerView && null == parent.getTag()) {
+
+                    parent.setTag(true);
+                    final int positions[] = new int[1];
+                    final RecyclerView temp = (RecyclerView) parent;
+                    final RecyclerView.LayoutManager manager = temp.getLayoutManager();
+
+                    temp.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                        @Override
+                        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+
+                            if (newState != 0) return;
+
+                            // 没有真正滑动到底部, 但是最后一个item可见
+                            if (temp.canScrollVertically(1)) {
+                                // 网格布局
+                                if (manager instanceof GridLayoutManager) {
+                                    GridLayoutManager temp = (GridLayoutManager) manager;
+                                    final int itemCount = temp.getItemCount();
+                                    final int lastVisibleItemPositionReal = temp.findLastVisibleItemPosition() + 1;
+                                    if (itemCount != lastVisibleItemPositionReal) return;
+
+                                    onLoad(holder, isLoadOver);
+                                }
+                                // 线性布局
+                                else if (manager instanceof LinearLayoutManager) {
+                                    LinearLayoutManager temp = (LinearLayoutManager) manager;
+                                    final int itemCount = temp.getItemCount();
+                                    final int lastVisibleItemPositionReal = temp.findLastVisibleItemPosition() + 1;
+                                    if (itemCount != lastVisibleItemPositionReal) return;
+
+                                    onLoad(holder, isLoadOver);
+                                }
+                                // 瀑布流布局
+                                else {
+                                    StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
+                                    temp.findLastVisibleItemPositions(positions);
+                                    final int itemCount = temp.getItemCount();
+                                    final int lastVisibleItemPositionReal = positions[0] + 1;
+                                    if (itemCount != lastVisibleItemPositionReal) return;
+
+                                    onLoad(holder, isLoadOver);
+                                }
+                            }
+                            // 真正滑动到底部
+                            else {
+                                onLoad(holder, isLoadOver);
+                            }
+                        }
+                    });
+                }
+
                 break;
             case RecyclerHolder.HEAD_VIEW:
                 holder = createSimpleHolder(mHeaderLayout);
@@ -216,7 +218,6 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
      * 加载完成
      */
     public void loadCompleteNotifyDataSetChanged(RecyclerView recycler) {
-//        isLoading = false;
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
@@ -228,7 +229,6 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
      * 重置加载更多标记
      */
     public void loadResetNotifyDataSetChanged(RecyclerView recycler) {
-//        isLoading = false;
         isLoadOver = false;
 
         if (null == recycler) return;
@@ -242,5 +242,5 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
     /**
      * 加载更多
      */
-    protected abstract void onLoad();
+    protected abstract void onLoad(K holder, boolean isOver);
 }
