@@ -1,4 +1,3 @@
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
 [ ![](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion) ![](https://img.shields.io/badge/Build-Passing-green.svg) ![](https://img.shields.io/badge/API%20-14+-green.svg) [ ![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E5%BC%A0%E8%88%AA-red.svg) ](http://www.jianshu.com/u/22a5d2ee8385) ![](https://img.shields.io/badge/%E9%82%AE%E7%AE%B1-153437803@qq.com-red.svg)
 ```
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
@@ -6,14 +5,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
  [戳我下载 ==>](https://pan.baidu.com/s/1nvAAvpf)
 
-#### BaseCommonAdapter: 基类, 添加头视图, 添加尾视图, 添加空视图
-#### BaseCommonMultAdapter: 分类型， 继承BaseCommonAdapter
-#### BaseCommonSwipeDragAdapter: 侧滑, 拖拽， 继承BaseCommonAdapter
-#### BaseCommonTabAdapter: 分组， 继承BaseCommonAdapter
-#### BaseLoadAdapter: 加载更多， 继承BaseCommonAdapter
-#### BaseLoadMultAdapter: 加载更多, 分类型， 继承BaseLoadAdapter
-#### BaseLoadSwipeDragAdapter: 加载更多, 侧滑, 拖拽， 继承BaseLoadAdapter
-#### BaseLoadTabAdapter：加载更多, 分组， 继承BaseLoadAdapter
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
 
 #
 
