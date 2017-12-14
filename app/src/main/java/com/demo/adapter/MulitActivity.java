@@ -23,7 +23,7 @@ public class MulitActivity extends AppCompatActivity {
 
     private final ArrayList<NewMulitItem> mArrayList = new ArrayList<>();
 
-    private final BaseCommonMultAdapter mBaseCommonMultAdapter = new BaseCommonMultAdapter<NewMulitItem, RecyclerHolder>(mArrayList) {
+    private final BaseCommonMultAdapter mBaseCommonMultAdapter = new BaseCommonMultAdapter<NewMulitItem>(mArrayList) {
 
         @Override
         public int onMerge(int position) {

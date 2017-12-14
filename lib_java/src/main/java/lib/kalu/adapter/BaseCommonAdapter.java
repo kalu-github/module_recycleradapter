@@ -47,7 +47,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * description: 没有加载更多
  * created by kalu on 2017/5/26 14:22
  */
-public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends RecyclerView.Adapter<K> {
+public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<RecyclerHolder> {
 
     protected static final String TAG = BaseCommonAdapter.class.getSimpleName();
 
@@ -101,23 +101,23 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
         return super.getItemViewType(position);
     }
 
-    protected K createModelHolder(ViewGroup parent, int viewType) {
+    protected RecyclerHolder createModelHolder(ViewGroup parent, int viewType) {
         final View itemView = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(mLayoutResId, parent, false);
         return createSimpleHolder(itemView);
     }
 
-    protected K createSimpleHolder(View view) {
+    protected RecyclerHolder createSimpleHolder(View view) {
         Class clazz = getClass();
         Class z = null;
         while (null == z && null != clazz) {
-            z = createKClass(clazz);
+            z = createClass(clazz);
             clazz = clazz.getSuperclass();
         }
-        K k = createKModel(z, view);
-        return null != k ? k : (K) new RecyclerHolder(view);
+        RecyclerHolder k = createHolder(z, view);
+        return null != k ? k : new RecyclerHolder(view);
     }
 
-    private Class createKClass(Class z) {
+    private Class createClass(Class z) {
         Type type = z.getGenericSuperclass();
         if (type instanceof ParameterizedType) {
             Type[] types = ((ParameterizedType) type).getActualTypeArguments();
@@ -133,17 +133,17 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
         return null;
     }
 
-    private K createKModel(Class z, View view) {
+    private RecyclerHolder createHolder(Class z, View view) {
         try {
             Constructor constructor;
             String buffer = Modifier.toString(z.getModifiers());
             String className = z.getName();
             if (className.contains("$") && !buffer.contains("static")) {
                 constructor = z.getDeclaredConstructor(getClass(), View.class);
-                return (K) constructor.newInstance(this, view);
+                return (RecyclerHolder) constructor.newInstance(this, view);
             } else {
                 constructor = z.getDeclaredConstructor(View.class);
-                return (K) constructor.newInstance(view);
+                return (RecyclerHolder) constructor.newInstance(view);
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -226,8 +226,8 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
     }
 
     @Override
-    public K onCreateViewHolder(ViewGroup parent, int viewType) {
-        K holder;
+    public RecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerHolder holder;
         switch (viewType) {
             case RecyclerHolder.NULL_VIEW:
                 holder = createSimpleHolder(mEmptyLayout);
@@ -245,7 +245,7 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
     }
 
     @Override
-    public void onViewAttachedToWindow(K holder) {
+    public void onViewAttachedToWindow(RecyclerHolder holder) {
         super.onViewAttachedToWindow(holder);
 
         int type = holder.getItemViewType();
@@ -273,7 +273,7 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
     }
 
     @Override
-    public void onBindViewHolder(K holder, int position) {
+    public void onBindViewHolder(RecyclerHolder holder, int position) {
         switch (holder.getItemViewType()) {
             case RecyclerHolder.HEAD_VIEW:
             case RecyclerHolder.NULL_VIEW:
@@ -698,5 +698,5 @@ public abstract class BaseCommonAdapter<T, K extends RecyclerHolder> extends Rec
 
     /**********************************       抽象方法API     **************************************/
 
-    protected abstract void onNext(K holder, T model, int position);
+    protected abstract void onNext(RecyclerHolder holder, T model, int position);
 }

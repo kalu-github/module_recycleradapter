@@ -7,7 +7,7 @@ import com.demo.adapter.entity.Status;
 import lib.kalu.adapter.BaseCommonAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
-public class EmptyAdapter extends BaseCommonAdapter<Status, RecyclerHolder> {
+public class EmptyAdapter extends BaseCommonAdapter<Status> {
 
     public EmptyAdapter(int dataSize) {
         super(DataServer.getSampleData(dataSize), R.layout.activity_empty_item);

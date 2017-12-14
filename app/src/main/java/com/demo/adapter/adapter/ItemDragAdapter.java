@@ -7,7 +7,7 @@ import java.util.List;
 import lib.kalu.adapter.BaseCommonSwipeDragAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
-public class ItemDragAdapter extends BaseCommonSwipeDragAdapter<String, RecyclerHolder> {
+public class ItemDragAdapter extends BaseCommonSwipeDragAdapter<String> {
     public ItemDragAdapter(List data) {
         super(data, R.layout.item_draggable_view);
     }

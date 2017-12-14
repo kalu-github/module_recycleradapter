@@ -52,9 +52,9 @@ class MainActivity : AppCompatActivity() {
         SpaceDecoration(10)
     }
 
-    private val mLoadAdapter: BaseCommonAdapter<String, RecyclerHolder> by lazy {
+    private val mLoadAdapter: BaseCommonAdapter<String> by lazy {
 
-        object : BaseCommonAdapter<String, RecyclerHolder>(mArrayList, R.layout.activity_main_item) {
+        object : BaseCommonAdapter<String>(mArrayList, R.layout.activity_main_item) {
 
             override fun onNext(holder: RecyclerHolder, model: String, position: Int) {
 

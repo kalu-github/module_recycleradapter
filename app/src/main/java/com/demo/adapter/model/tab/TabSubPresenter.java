@@ -25,7 +25,7 @@ import lib.kalu.adapter.holder.RecyclerHolder;
 
 public class TabSubPresenter implements TabSubContract.Presenter {
 
-    BaseCommonAdapter<City, RecyclerHolder> mAdapter;
+    BaseCommonAdapter<City> mAdapter;
     List<City> dataList = new ArrayList<>();
 
     @Override
@@ -74,7 +74,7 @@ public class TabSubPresenter implements TabSubContract.Presenter {
         };
 
         recycler.addItemDecoration(decoration);
-        mAdapter = new BaseCommonAdapter<City, RecyclerHolder>(dataList, R.layout.activity_sticky_1_item) {
+        mAdapter = new BaseCommonAdapter<City>(dataList, R.layout.activity_sticky_1_item) {
             @Override
             protected void onNext(RecyclerHolder holder, City result, int position) {
                 int i = position % 5 + 1;

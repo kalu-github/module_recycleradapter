@@ -21,7 +21,7 @@ import lib.kalu.adapter.listener.OnSwipeChangeListener;
  * description: 侧滑, 拖拽, 加载更多
  * created by kalu on 2017/5/26 14:52
  */
-public abstract class BaseLoadSwipeDragAdapter<T, K extends RecyclerHolder> extends BaseLoadAdapter<T, K> {
+public abstract class BaseLoadSwipeDragAdapter<T> extends BaseLoadAdapter<T> {
 
     private static final int NO_TOGGLE_VIEW = 0;
     protected int mToggleViewId = NO_TOGGLE_VIEW;
@@ -44,7 +44,7 @@ public abstract class BaseLoadSwipeDragAdapter<T, K extends RecyclerHolder> exte
     /*********************************************************/
 
     @Override
-    public void onBindViewHolder(K holder, int positions) {
+    public void onBindViewHolder(RecyclerHolder holder, int positions) {
         super.onBindViewHolder(holder, positions);
         int viewType = holder.getItemViewType();
 

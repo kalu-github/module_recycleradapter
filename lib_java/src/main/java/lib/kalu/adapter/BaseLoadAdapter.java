@@ -18,7 +18,7 @@ import lib.kalu.adapter.holder.RecyclerHolder;
  * description: 加载更多
  * created by kalu on 2017/5/26 14:37
  */
-public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseCommonAdapter<T, K> {
+public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
     // 加载数据数据完毕了
     private boolean isLoadOver;
@@ -83,9 +83,9 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
     }
 
     @Override
-    public K onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        final K holder;
+        final RecyclerHolder holder;
         switch (viewType) {
             case RecyclerHolder.LOAD_VIEW:
                 final View load = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(loadResId, parent, false);
@@ -167,7 +167,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
     }
 
     @Override
-    public void onViewAttachedToWindow(K holder) {
+    public void onViewAttachedToWindow(RecyclerHolder holder) {
         super.onViewAttachedToWindow(holder);
 
         int type = holder.getItemViewType();
@@ -181,7 +181,7 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
     }
 
     @Override
-    public void onBindViewHolder(K holder, int position) {
+    public void onBindViewHolder(RecyclerHolder holder, int position) {
 
         switch (holder.getItemViewType()) {
             case RecyclerHolder.HEAD_VIEW:
@@ -251,5 +251,5 @@ public abstract class BaseLoadAdapter<T, K extends RecyclerHolder> extends BaseC
     /**
      * 加载更多
      */
-    protected abstract void onLoad(K holder, boolean isOver);
+    protected abstract void onLoad(RecyclerHolder holder, boolean isOver);
 }

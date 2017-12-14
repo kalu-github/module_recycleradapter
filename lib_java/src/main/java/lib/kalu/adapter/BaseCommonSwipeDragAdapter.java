@@ -20,7 +20,7 @@ import lib.kalu.adapter.listener.OnSwipeChangeListener;
  * description: 侧滑, 拖拽
  * created by kalu on 2017/5/26 14:52
  */
-public abstract class BaseCommonSwipeDragAdapter<T, K extends RecyclerHolder> extends BaseCommonAdapter<T, K> {
+public abstract class BaseCommonSwipeDragAdapter<T> extends BaseCommonAdapter<T> {
 
     private static final int NO_TOGGLE_VIEW = 0;
     protected int mToggleViewId = NO_TOGGLE_VIEW;
@@ -43,7 +43,7 @@ public abstract class BaseCommonSwipeDragAdapter<T, K extends RecyclerHolder> ex
     /*********************************************************/
 
     @Override
-    public void onBindViewHolder(K holder, int positions) {
+    public void onBindViewHolder(RecyclerHolder holder, int positions) {
         super.onBindViewHolder(holder, positions);
         int viewType = holder.getItemViewType();
 

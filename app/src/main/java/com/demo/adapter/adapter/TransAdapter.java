@@ -13,7 +13,7 @@ import lib.kalu.adapter.BaseCommonMultAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.model.MultModel;
 
-public class TransAdapter extends BaseCommonMultAdapter<MultModel, RecyclerHolder> {
+public class TransAdapter extends BaseCommonMultAdapter<MultModel> {
 
     private static final String TAG = TransAdapter.class.getSimpleName();
 

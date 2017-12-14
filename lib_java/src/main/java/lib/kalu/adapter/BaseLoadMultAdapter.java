@@ -15,7 +15,7 @@ import lib.kalu.adapter.model.MultModel;
  * description: 分类型, 加载更多
  * created by kalu on 2017/5/26 15:02
  */
-public abstract class BaseLoadMultAdapter<T extends MultModel, K extends RecyclerHolder> extends BaseLoadAdapter<T, K> {
+public abstract class BaseLoadMultAdapter<T extends MultModel> extends BaseLoadAdapter<T> {
 
     private final SparseArray<Integer> mResIdList = new SparseArray<>();
 
@@ -31,7 +31,7 @@ public abstract class BaseLoadMultAdapter<T extends MultModel, K extends Recycle
     }
 
     @Override
-    protected K createModelHolder(ViewGroup parent, int viewType) {
+    protected RecyclerHolder createModelHolder(ViewGroup parent, int viewType) {
         final int layoutId = getLayoutId(viewType);
         final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(layoutId, parent, false);
         return createSimpleHolder(inflate);

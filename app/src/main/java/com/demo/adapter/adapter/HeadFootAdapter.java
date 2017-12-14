@@ -7,7 +7,7 @@ import com.demo.adapter.entity.Status;
 import lib.kalu.adapter.BaseCommonAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
-public class HeadFootAdapter extends BaseCommonAdapter<Status, RecyclerHolder> {
+public class HeadFootAdapter extends BaseCommonAdapter<Status> {
 
     public HeadFootAdapter(int dataSize) {
         super(DataServer.getSampleData(dataSize), R.layout.activity_headfoot_item);

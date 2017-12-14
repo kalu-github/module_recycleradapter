@@ -34,9 +34,9 @@ class LoadmoreActivity : AppCompatActivity() {
         SpaceDecoration(10)
     }
 
-    private val mLoadAdapter: BaseLoadAdapter<String, RecyclerHolder> by lazy {
+    private val mLoadAdapter: BaseLoadAdapter<String> by lazy {
 
-        object : BaseLoadAdapter<String, RecyclerHolder>(mArrayList, R.layout.activity_loadmore_item, R.layout.activity_loadmore_loading) {
+        object : BaseLoadAdapter<String>(mArrayList, R.layout.activity_loadmore_item, R.layout.activity_loadmore_loading) {
             override fun onLoad(holder: RecyclerHolder?, isOver: Boolean) {
                 if (isOver) {
 

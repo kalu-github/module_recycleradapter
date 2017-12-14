@@ -16,7 +16,7 @@ import lib.kalu.adapter.model.TabModel;
  * description: 分组, 加载更多
  * created by kalu on 2017/5/26 14:54
  */
-public abstract class BaseLoadTabAdapter<T extends TabModel, K extends RecyclerHolder> extends BaseLoadAdapter<T, K> {
+public abstract class BaseLoadTabAdapter<T extends TabModel> extends BaseLoadAdapter<T> {
 
     private @LayoutRes
     int sectionResId;
@@ -32,7 +32,7 @@ public abstract class BaseLoadTabAdapter<T extends TabModel, K extends RecyclerH
     }
 
     @Override
-    protected K createModelHolder(ViewGroup parent, int viewType) {
+    protected RecyclerHolder createModelHolder(ViewGroup parent, int viewType) {
         if (viewType == RecyclerHolder.SECTION_VIEW) {
             final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(sectionResId, parent, false);
             return createSimpleHolder(inflate);
@@ -51,7 +51,7 @@ public abstract class BaseLoadTabAdapter<T extends TabModel, K extends RecyclerH
     }
 
     @Override
-    public void onBindViewHolder(K holder, int position) {
+    public void onBindViewHolder(RecyclerHolder holder, int position) {
         switch (holder.getItemViewType()) {
             case RecyclerHolder.SECTION_VIEW:
                 setModelStyle(holder, false);

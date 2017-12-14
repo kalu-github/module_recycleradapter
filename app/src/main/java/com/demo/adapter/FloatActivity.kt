@@ -36,9 +36,9 @@ class FloatActivity : AppCompatActivity() {
         SpaceDecoration(10)
     }
 
-    private val mLoadAdapter: BaseCommonAdapter<String, RecyclerHolder>? by lazy {
+    private val mLoadAdapter: BaseCommonAdapter<String>? by lazy {
 
-        object : BaseCommonAdapter<String, RecyclerHolder>(mArrayList, R.layout.activity_float_item) {
+        object : BaseCommonAdapter<String>(mArrayList, R.layout.activity_float_item) {
 
             override fun onNext(holder: RecyclerHolder, model: String, position: Int) {
                 holder.setText(R.id.sticky_text, "第 ==> " + position.toString() + " <==个孩子")

@@ -7,7 +7,7 @@ import java.util.List;
 import lib.kalu.adapter.BaseCommonTabAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
-public class LoadTabAdapter extends BaseCommonTabAdapter<MyTab, RecyclerHolder> {
+public class LoadTabAdapter extends BaseCommonTabAdapter<MyTab> {
 
     public LoadTabAdapter(int layoutResId, int sectionResId, List data) {
         super(data, layoutResId, sectionResId);
