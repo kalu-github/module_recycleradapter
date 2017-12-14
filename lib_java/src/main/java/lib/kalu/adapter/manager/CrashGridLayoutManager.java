@@ -33,4 +33,20 @@ public final class CrashGridLayoutManager extends GridLayoutManager {
          //   LogUtil.e(TAG, e.getMessage(), e);
         }
     }
+
+    /**********************************************************************************************/
+
+    private boolean isScrollEnabled = true;
+
+    public void setScrollEnabled(boolean flag) {
+        this.isScrollEnabled = flag;
+    }
+
+    @Override
+    public boolean canScrollVertically() {
+        //Similarly you can customize "canScrollHorizontally()" for managing horizontal scroll
+        return isScrollEnabled && super.canScrollVertically();
+    }
+
+    /**********************************************************************************************/
 }
