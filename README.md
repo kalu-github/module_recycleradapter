@@ -136,10 +136,6 @@ RecyclerView.setAdapter(adapter);
 *;
 }
 -keep public class * extends lib.kalu.adapter.BaseCommonAdapter
--keep public class * extends lib.kalu.adapter.holder.RecyclerHolder
--keepclassmembers  class **$** extends lib.kalu.adapter.holder.RecyclerHolder {
-     <init>(...);
-}
 ```
 
 #
