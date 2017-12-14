@@ -1,7 +1,6 @@
 package com.demo.adapter.data;
 
-import com.demo.adapter.entity.MultipleItem;
-import com.demo.adapter.entity.MyTab;
+import com.demo.adapter.entity.MySection;
 import com.demo.adapter.entity.Status;
 import com.demo.adapter.entity.Video;
 
@@ -27,26 +26,26 @@ public class DataServer {
         return list;
     }
 
-    public static List<MyTab> getSampleData() {
-        List<MyTab> list = new ArrayList<>();
-        list.add(new MyTab(true, "TAB_1", true));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(true, "TAB_2", false));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(true, "TAB_3", false));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(true, "TAB_4", false));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(true, "TAB_5", false));
-        list.add(new MyTab(new Video("", "")));
-        list.add(new MyTab(new Video("", "")));
+    public static List<MySection> getSampleData() {
+        List<MySection> list = new ArrayList<>();
+        list.add(new MySection(true, "TAB_1", true));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(true, "TAB_2", false));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(true, "TAB_3", false));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(true, "TAB_4", false));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(true, "TAB_5", false));
+        list.add(new MySection(new Video("", "")));
+        list.add(new MySection(new Video("", "")));
         return list;
     }
 }

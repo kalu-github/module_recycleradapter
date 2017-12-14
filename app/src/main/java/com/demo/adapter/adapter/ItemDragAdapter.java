@@ -1,5 +1,9 @@
 package com.demo.adapter.adapter;
 
+import android.graphics.Canvas;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
+
 import com.demo.adapter.R;
 
 import java.util.List;
@@ -27,5 +31,37 @@ public class ItemDragAdapter extends BaseCommonSwipeDragAdapter<String> {
                 break;
         }
         helper.setText(R.id.tv, item);
+    }
+//
+    @Override
+    protected void onDragStart(RecyclerView.ViewHolder holder, int position) {
+
+    }
+
+    @Override
+    protected void onDragMove(RecyclerView.ViewHolder holder, RecyclerView.ViewHolder target, int fromPosition, int toPosition) {
+
+    }
+
+    @Override
+    protected void onDragEnd(RecyclerView.ViewHolder holder, int position) {
+
+    }
+
+    @Override
+    protected void onSwipeRemove(RecyclerView.ViewHolder holder, int position) {
+    }
+
+    @Override
+    protected void onSwipeEnd(RecyclerView.ViewHolder holder, boolean isRemove, int position) {
+    }
+
+    @Override
+    protected void onSwipeStart(RecyclerView.ViewHolder holder, int position) {
+    }
+
+    @Override
+    protected void onSwipeMove(RecyclerView.ViewHolder holder, Canvas canvas, float moveX, float moveY, boolean isCurrentlyActive, boolean isSwipeLeft) {
+        canvas.drawColor(ContextCompat.getColor(holder.itemView.getContext().getApplicationContext(), R.color.color_light_blue));
     }
 }

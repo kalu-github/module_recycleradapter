@@ -1,16 +1,16 @@
 package com.demo.adapter.entity;
 
-import lib.kalu.adapter.model.TabModel;
+import lib.kalu.adapter.model.SectionModel;
 
-public class MyTab extends TabModel<Video> {
+public class MySection extends SectionModel<Video> {
     private boolean isMore;
 
-    public MyTab(boolean isHeader, String header, boolean isMroe) {
+    public MySection(boolean isHeader, String header, boolean isMroe) {
         super(isHeader, header);
         this.isMore = isMroe;
     }
 
-    public MyTab(Video t) {
+    public MySection(Video t) {
         super(t);
     }
 

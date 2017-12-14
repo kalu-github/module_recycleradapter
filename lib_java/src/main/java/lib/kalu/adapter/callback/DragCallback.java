@@ -3,7 +3,9 @@ package lib.kalu.adapter.callback;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import lib.kalu.adapter.BaseLoadSwipeDragAdapter;
+import lib.kalu.adapter.BaseCommonAdapter;
+import lib.kalu.adapter.BaseCommonDragAdapter;
+import lib.kalu.adapter.BaseLoadDragAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE;
@@ -16,7 +18,7 @@ public class DragCallback extends ItemTouchHelper.Callback {
 
     public static final int DRAG_ID_TAG = DragCallback.class.hashCode();
 
-    private BaseLoadSwipeDragAdapter mAdapter;
+    private BaseCommonAdapter mAdapter;
 
     // 拖拽方向
     private int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
@@ -30,7 +32,7 @@ public class DragCallback extends ItemTouchHelper.Callback {
         this.dragFlags = dragFlags;
     }
 
-    public DragCallback(BaseLoadSwipeDragAdapter adapter) {
+    public DragCallback(BaseCommonAdapter adapter) {
         mAdapter = adapter;
     }
 
@@ -41,29 +43,51 @@ public class DragCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return mAdapter.isItemSwipeEnable();
+        return false;
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
     }
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-        if (actionState == ItemTouchHelper.ACTION_STATE_DRAG
-                && !isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onItemDragStart(viewHolder);
+        super.onSelectedChanged(viewHolder, actionState);
+
+        if (null == mAdapter) return;
+
+        if (null == viewHolder || actionState != ItemTouchHelper.ACTION_STATE_DRAG || isViewCreateByAdapter(viewHolder))
+            return;
+
+        if (mAdapter instanceof BaseCommonDragAdapter) {
+            BaseCommonDragAdapter temp = (BaseCommonDragAdapter) mAdapter;
+            temp.onItemDragStart(viewHolder);
+            viewHolder.itemView.setTag(DRAG_ID_TAG, true);
+        }else if (mAdapter instanceof BaseLoadDragAdapter) {
+            BaseLoadDragAdapter temp = (BaseLoadDragAdapter) mAdapter;
+            temp.onItemDragStart(viewHolder);
             viewHolder.itemView.setTag(DRAG_ID_TAG, true);
         }
-        super.onSelectedChanged(viewHolder, actionState);
     }
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
-        if (isViewCreateByAdapter(viewHolder)) {
-            return;
-        }
 
-        if (viewHolder.itemView.getTag(DRAG_ID_TAG) != null
-                && (Boolean) viewHolder.itemView.getTag(DRAG_ID_TAG)) {
-            mAdapter.onItemDragEnd(viewHolder);
+        if (null == mAdapter) return;
+
+        if (null == viewHolder || isViewCreateByAdapter(viewHolder)) return;
+
+        if (null == viewHolder.itemView.getTag(DRAG_ID_TAG) ||
+                !(Boolean) viewHolder.itemView.getTag(DRAG_ID_TAG)) return;
+
+        if (mAdapter instanceof BaseCommonDragAdapter) {
+            BaseCommonDragAdapter temp = (BaseCommonDragAdapter) mAdapter;
+            temp.onItemDragEnd(viewHolder);
+            viewHolder.itemView.setTag(DRAG_ID_TAG, false);
+        }else if (mAdapter instanceof BaseLoadDragAdapter) {
+            BaseLoadDragAdapter temp = (BaseLoadDragAdapter) mAdapter;
+            temp.onItemDragEnd(viewHolder);
             viewHolder.itemView.setTag(DRAG_ID_TAG, false);
         }
     }
@@ -77,23 +101,21 @@ public class DragCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
-        if (source.getItemViewType() != target.getItemViewType()) {
-            return false;
-        } else {
-            return true;
-        }
+        return source.getItemViewType() == target.getItemViewType();
     }
 
     @Override
     public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder source, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
         super.onMoved(recyclerView, source, fromPos, target, toPos, x, y);
-        mAdapter.onItemDragMove(source, target);
-    }
 
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        if (!isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onSwipeRemove(viewHolder);
+        if (null == mAdapter) return;
+
+        if (mAdapter instanceof BaseCommonDragAdapter) {
+            BaseCommonDragAdapter temp = (BaseCommonDragAdapter) mAdapter;
+            temp.onItemDragMove(source, target);
+        }else if (mAdapter instanceof BaseLoadDragAdapter) {
+            BaseLoadDragAdapter temp = (BaseLoadDragAdapter) mAdapter;
+            temp.onItemDragMove(source, target);
         }
     }
 

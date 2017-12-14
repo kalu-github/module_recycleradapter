@@ -14,8 +14,6 @@ import java.util.Collections;
 import java.util.List;
 
 import lib.kalu.adapter.holder.RecyclerHolder;
-import lib.kalu.adapter.listener.OnDragChangeListener;
-import lib.kalu.adapter.listener.OnSwipeChangeListener;
 
 /**
  * description: 侧滑, 拖拽, 加载更多
@@ -28,8 +26,6 @@ public abstract class BaseLoadSwipeDragAdapter<T> extends BaseLoadAdapter<T> {
     protected ItemTouchHelper mItemTouchHelper;
     protected boolean itemDragEnabled = false;
     protected boolean itemSwipeEnabled = false;
-    protected OnDragChangeListener mOnItemDragListener;
-    protected OnSwipeChangeListener mOnItemSwipeListener;
     protected boolean mDragOnLongPress = true;
 
     protected View.OnTouchListener mOnToggleViewTouchListener;
@@ -135,18 +131,13 @@ public abstract class BaseLoadSwipeDragAdapter<T> extends BaseLoadAdapter<T> {
         return itemSwipeEnabled;
     }
 
-    public void setOnItemDragListener(OnDragChangeListener onItemDragListener) {
-        mOnItemDragListener = onItemDragListener;
-    }
-
     public int getViewHolderPosition(RecyclerView.ViewHolder viewHolder) {
         return viewHolder.getAdapterPosition() - getHeadCount();
     }
 
     public void onItemDragStart(RecyclerView.ViewHolder viewHolder) {
-        if (mOnItemDragListener != null && itemDragEnabled) {
-            mOnItemDragListener.onDragStart(viewHolder, getViewHolderPosition(viewHolder));
-        }
+        if (!itemDragEnabled) return;
+        onDragStart(viewHolder, getViewHolderPosition(viewHolder));
     }
 
     public void onItemDragMove(RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
@@ -164,49 +155,54 @@ public abstract class BaseLoadSwipeDragAdapter<T> extends BaseLoadAdapter<T> {
         }
         notifyItemMoved(source.getAdapterPosition(), target.getAdapterPosition());
 
-        if (mOnItemDragListener != null && itemDragEnabled) {
-            mOnItemDragListener.onDragMove(source, target, from, to);
-        }
+        if (!itemDragEnabled) return;
+        onDragMove(source, target, from, to);
     }
 
     public void onItemDragEnd(RecyclerView.ViewHolder viewHolder) {
-        if (mOnItemDragListener != null && itemDragEnabled) {
-            mOnItemDragListener.onDragEnd(viewHolder, getViewHolderPosition(viewHolder));
-        }
-    }
-
-    public void setOnItemSwipeListener(OnSwipeChangeListener listener) {
-        mOnItemSwipeListener = listener;
+        if (!itemDragEnabled) return;
+        onDragEnd(viewHolder, getViewHolderPosition(viewHolder));
     }
 
     public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder) {
-        if (mOnItemSwipeListener != null && itemSwipeEnabled) {
-            mOnItemSwipeListener.onSwipeStart(viewHolder, getViewHolderPosition(viewHolder));
-        }
+        if (!itemSwipeEnabled) return;
+        onSwipeStart(viewHolder, getViewHolderPosition(viewHolder));
     }
 
     public void onItemSwipeEnd(RecyclerView.ViewHolder viewHolder) {
-        if (mOnItemSwipeListener != null && itemSwipeEnabled) {
+        if (!itemSwipeEnabled) return;
 
-            int position = getViewHolderPosition(viewHolder);
-            mOnItemSwipeListener.onSwipeEnd(viewHolder, position == -1, position);
-        }
+        int position = getViewHolderPosition(viewHolder);
+        onSwipeEnd(viewHolder, position == -1, position);
     }
 
     public void onSwipeRemove(RecyclerView.ViewHolder viewHolder) {
-        if (mOnItemSwipeListener != null && itemSwipeEnabled) {
-            mOnItemSwipeListener.onSwipeRemove(viewHolder, getViewHolderPosition(viewHolder));
-        }
-
         int pos = getViewHolderPosition(viewHolder);
-
         getData().remove(pos);
         notifyItemRemoved(viewHolder.getAdapterPosition());
+
+        if (!itemSwipeEnabled) return;
+        onSwipeRemove(viewHolder, getViewHolderPosition(viewHolder));
     }
 
     public void onItemSwiping(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
-        if (mOnItemSwipeListener != null && itemSwipeEnabled) {
-            mOnItemSwipeListener.onSwipeMove(canvas, viewHolder, dX, dY, isCurrentlyActive, dX > 0);
-        }
+        if (!itemSwipeEnabled) return;
+        onSwipeMove(viewHolder, canvas,dX, dY, isCurrentlyActive, dX > 0);
     }
+
+    /*********************************************************************************************/
+
+    protected abstract void onDragStart(RecyclerView.ViewHolder viewHolder, int position);
+
+    protected abstract void onDragMove(RecyclerView.ViewHolder source, RecyclerView.ViewHolder target, int fromPosition, int toPosition);
+
+    protected abstract void onDragEnd(RecyclerView.ViewHolder viewHolder, int position);
+
+    protected abstract void onSwipeRemove(RecyclerView.ViewHolder holder, int position);
+
+    protected abstract void onSwipeEnd(RecyclerView.ViewHolder holder, boolean isRemove, int position);
+
+    protected abstract void onSwipeStart(RecyclerView.ViewHolder holder, int position);
+
+    protected abstract void onSwipeMove(RecyclerView.ViewHolder holder,Canvas canvas,  float moveX, float moveY, boolean isCurrentlyActive, boolean isSwipeLeft);
 }

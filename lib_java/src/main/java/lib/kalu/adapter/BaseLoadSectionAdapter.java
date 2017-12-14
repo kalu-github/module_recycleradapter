@@ -10,18 +10,18 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import lib.kalu.adapter.holder.RecyclerHolder;
-import lib.kalu.adapter.model.TabModel;
+import lib.kalu.adapter.model.SectionModel;
 
 /**
  * description: 分组, 加载更多
  * created by kalu on 2017/5/26 14:54
  */
-public abstract class BaseLoadTabAdapter<T extends TabModel> extends BaseLoadAdapter<T> {
+public abstract class BaseLoadSectionAdapter<T extends SectionModel> extends BaseLoadAdapter<T> {
 
     private @LayoutRes
     int sectionResId;
 
-    public BaseLoadTabAdapter(@Nullable List<T> data, @LayoutRes int itemResId, @LayoutRes int loadResId, int sectionResId) {
+    public BaseLoadSectionAdapter(@Nullable List<T> data, @LayoutRes int itemResId, @LayoutRes int loadResId, int sectionResId) {
         super(data, itemResId, loadResId);
         this.sectionResId = sectionResId;
     }

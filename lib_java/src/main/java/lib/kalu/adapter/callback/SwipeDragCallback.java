@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
+import lib.kalu.adapter.BaseCommonAdapter;
 import lib.kalu.adapter.BaseCommonSwipeDragAdapter;
+import lib.kalu.adapter.BaseLoadSwipeDragAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
 /**
@@ -14,7 +16,7 @@ import lib.kalu.adapter.holder.RecyclerHolder;
  */
 public class SwipeDragCallback extends ItemTouchHelper.Callback {
 
-    BaseCommonSwipeDragAdapter mAdapter;
+    private BaseCommonAdapter mAdapter;
 
     float mMoveThreshold = 0.1f;
     float mSwipeThreshold = 0.7f;
@@ -24,7 +26,7 @@ public class SwipeDragCallback extends ItemTouchHelper.Callback {
     // ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
     int mSwipeMoveFlags = ItemTouchHelper.END;
 
-    public SwipeDragCallback(BaseCommonSwipeDragAdapter adapter) {
+    public SwipeDragCallback(BaseCommonAdapter adapter) {
         mAdapter = adapter;
     }
 
@@ -35,39 +37,86 @@ public class SwipeDragCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return mAdapter.isItemSwipeEnable();
+        if (null == mAdapter) return false;
+
+        if (mAdapter instanceof BaseCommonSwipeDragAdapter) {
+            BaseCommonSwipeDragAdapter temp = (BaseCommonSwipeDragAdapter) mAdapter;
+            return temp.isItemSwipeEnable();
+        } else if (mAdapter instanceof BaseLoadSwipeDragAdapter) {
+            BaseLoadSwipeDragAdapter temp = (BaseLoadSwipeDragAdapter) mAdapter;
+            return temp.isItemSwipeEnable();
+        } else {
+            return false;
+        }
     }
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+        super.onSelectedChanged(viewHolder, actionState);
+
+        if (null == mAdapter || null == viewHolder) return;
+
+        // 拖拽
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG
                 && !isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onItemDragStart(viewHolder);
-            viewHolder.itemView.setTag(DragCallback.DRAG_ID_TAG, true);
-        } else if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE
-                && !isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onItemSwipeStart(viewHolder);
-            viewHolder.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, true);
+
+            if (mAdapter instanceof BaseCommonSwipeDragAdapter) {
+                BaseCommonSwipeDragAdapter temp = (BaseCommonSwipeDragAdapter) mAdapter;
+                temp.onItemDragStart(viewHolder);
+                viewHolder.itemView.setTag(DragCallback.DRAG_ID_TAG, true);
+            } else if (mAdapter instanceof BaseLoadSwipeDragAdapter) {
+                BaseLoadSwipeDragAdapter temp = (BaseLoadSwipeDragAdapter) mAdapter;
+                temp.onItemDragStart(viewHolder);
+                viewHolder.itemView.setTag(DragCallback.DRAG_ID_TAG, true);
+            }
         }
-        super.onSelectedChanged(viewHolder, actionState);
+        // 侧滑
+        else if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE
+                && !isViewCreateByAdapter(viewHolder)) {
+
+            if (mAdapter instanceof BaseCommonSwipeDragAdapter) {
+                BaseCommonSwipeDragAdapter temp = (BaseCommonSwipeDragAdapter) mAdapter;
+                temp.onItemSwipeStart(viewHolder);
+                viewHolder.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, true);
+            } else if (mAdapter instanceof BaseLoadSwipeDragAdapter) {
+                BaseLoadSwipeDragAdapter temp = (BaseLoadSwipeDragAdapter) mAdapter;
+                temp.onItemSwipeStart(viewHolder);
+                viewHolder.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, true);
+            }
+        }
     }
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
-        if (isViewCreateByAdapter(viewHolder)) {
-            return;
-        }
+
+        if (null == mAdapter || null == viewHolder) return;
+        if (isViewCreateByAdapter(viewHolder)) return;
 
         if (viewHolder.itemView.getTag(DragCallback.DRAG_ID_TAG) != null
                 && (Boolean) viewHolder.itemView.getTag(DragCallback.DRAG_ID_TAG)) {
-            mAdapter.onItemDragEnd(viewHolder);
-            viewHolder.itemView.setTag(DragCallback.DRAG_ID_TAG, false);
+            if (mAdapter instanceof BaseCommonSwipeDragAdapter) {
+                BaseCommonSwipeDragAdapter temp = (BaseCommonSwipeDragAdapter) mAdapter;
+                temp.onItemDragEnd(viewHolder);
+                viewHolder.itemView.setTag(DragCallback.DRAG_ID_TAG, false);
+            } else if (mAdapter instanceof BaseLoadSwipeDragAdapter) {
+                BaseLoadSwipeDragAdapter temp = (BaseLoadSwipeDragAdapter) mAdapter;
+                temp.onItemDragEnd(viewHolder);
+                viewHolder.itemView.setTag(DragCallback.DRAG_ID_TAG, false);
+            }
         }
         if (viewHolder.itemView.getTag(SwipeCallback.SWIPE_ID_TAG) != null
                 && (Boolean) viewHolder.itemView.getTag(SwipeCallback.SWIPE_ID_TAG)) {
-            mAdapter.onItemSwipeEnd(viewHolder);
-            viewHolder.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, false);
+
+            if (mAdapter instanceof BaseCommonSwipeDragAdapter) {
+                BaseCommonSwipeDragAdapter temp = (BaseCommonSwipeDragAdapter) mAdapter;
+                temp.onItemSwipeEnd(viewHolder);
+                viewHolder.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, false);
+            } else if (mAdapter instanceof BaseLoadSwipeDragAdapter) {
+                BaseLoadSwipeDragAdapter temp = (BaseLoadSwipeDragAdapter) mAdapter;
+                temp.onItemSwipeEnd(viewHolder);
+                viewHolder.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, false);
+            }
         }
     }
 
@@ -82,23 +131,35 @@ public class SwipeDragCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
-        if (source.getItemViewType() != target.getItemViewType()) {
-            return false;
-        } else {
-            return true;
-        }
+        return source.getItemViewType() == target.getItemViewType();
     }
 
     @Override
     public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder source, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
         super.onMoved(recyclerView, source, fromPos, target, toPos, x, y);
-        mAdapter.onItemDragMove(source, target);
+
+        if (null == mAdapter) return;
+
+        if (mAdapter instanceof BaseCommonSwipeDragAdapter) {
+            BaseCommonSwipeDragAdapter temp = (BaseCommonSwipeDragAdapter) mAdapter;
+            temp.onItemDragMove(source, target);
+        } else if (mAdapter instanceof BaseLoadSwipeDragAdapter) {
+            BaseLoadSwipeDragAdapter temp = (BaseLoadSwipeDragAdapter) mAdapter;
+            temp.onItemDragMove(source, target);
+        }
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        if (!isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onSwipeRemove(viewHolder);
+
+        if (null == mAdapter || null == viewHolder || isViewCreateByAdapter(viewHolder)) return;
+
+        if (mAdapter instanceof BaseCommonSwipeDragAdapter) {
+            BaseCommonSwipeDragAdapter temp = (BaseCommonSwipeDragAdapter) mAdapter;
+            temp.onSwipeRemove(viewHolder);
+        } else if (mAdapter instanceof BaseLoadSwipeDragAdapter) {
+            BaseLoadSwipeDragAdapter temp = (BaseLoadSwipeDragAdapter) mAdapter;
+            temp.onSwipeRemove(viewHolder);
         }
     }
 
@@ -148,7 +209,15 @@ public class SwipeDragCallback extends ItemTouchHelper.Callback {
                 c.translate(itemView.getRight() + dX, itemView.getTop());
             }
 
-            mAdapter.onItemSwiping(c, viewHolder, dX, dY, isCurrentlyActive);
+            if (null != mAdapter || null != viewHolder) {
+                if (mAdapter instanceof BaseCommonSwipeDragAdapter) {
+                    BaseCommonSwipeDragAdapter temp = (BaseCommonSwipeDragAdapter) mAdapter;
+                    temp.onItemSwiping(c, viewHolder, dX, dY, isCurrentlyActive);
+                } else if (mAdapter instanceof BaseLoadSwipeDragAdapter) {
+                    BaseLoadSwipeDragAdapter temp = (BaseLoadSwipeDragAdapter) mAdapter;
+                    temp.onItemSwiping(c, viewHolder, dX, dY, isCurrentlyActive);
+                }
+            }
             c.restore();
 
         }

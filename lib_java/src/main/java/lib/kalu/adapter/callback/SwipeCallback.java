@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import lib.kalu.adapter.BaseLoadSwipeDragAdapter;
+import lib.kalu.adapter.BaseCommonAdapter;
+import lib.kalu.adapter.BaseCommonSwipeAdapter;
+import lib.kalu.adapter.BaseLoadSwipeAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE;
@@ -18,7 +20,7 @@ public class SwipeCallback extends ItemTouchHelper.Callback {
 
     public static final int SWIPE_ID_TAG = SwipeCallback.class.hashCode();
 
-    private BaseLoadSwipeDragAdapter mAdapter;
+    private BaseCommonAdapter mAdapter;
 
     private int moveFlags = ItemTouchHelper.START;
 
@@ -31,7 +33,7 @@ public class SwipeCallback extends ItemTouchHelper.Callback {
         this.moveFlags = moveFlags;
     }
 
-    public SwipeCallback(BaseLoadSwipeDragAdapter adapter) {
+    public SwipeCallback(BaseCommonSwipeAdapter adapter) {
         mAdapter = adapter;
     }
 
@@ -42,31 +44,57 @@ public class SwipeCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return mAdapter.isItemSwipeEnable();
+
+        if (null == mAdapter) return false;
+
+        if (mAdapter instanceof BaseCommonSwipeAdapter) {
+            BaseCommonSwipeAdapter temp = (BaseCommonSwipeAdapter) mAdapter;
+            return temp.isItemSwipeEnable();
+        } else if (mAdapter instanceof BaseLoadSwipeAdapter) {
+            BaseLoadSwipeAdapter temp = (BaseLoadSwipeAdapter) mAdapter;
+            return temp.isItemSwipeEnable();
+        } else {
+            return false;
+        }
     }
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE
-                && !isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onItemSwipeStart(viewHolder);
+        super.onSelectedChanged(viewHolder, actionState);
+
+        if (null == mAdapter || null == viewHolder) return;
+        if (actionState != ItemTouchHelper.ACTION_STATE_SWIPE || isViewCreateByAdapter(viewHolder))
+            return;
+
+        if (mAdapter instanceof BaseCommonSwipeAdapter) {
+            BaseCommonSwipeAdapter temp = (BaseCommonSwipeAdapter) mAdapter;
+            temp.onItemSwipeStart(viewHolder);
+            viewHolder.itemView.setTag(SWIPE_ID_TAG, true);
+        } else if (mAdapter instanceof BaseLoadSwipeAdapter) {
+            BaseLoadSwipeAdapter temp = (BaseLoadSwipeAdapter) mAdapter;
+            temp.onItemSwipeStart(viewHolder);
             viewHolder.itemView.setTag(SWIPE_ID_TAG, true);
         }
-        super.onSelectedChanged(viewHolder, actionState);
     }
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
-        if (isViewCreateByAdapter(viewHolder)) {
-            return;
-        }
 
-//        if (viewHolder.itemView.getTag(SWIPE_ID_TAG) != null
-//                && (Boolean) viewHolder.itemView.getTag(SWIPE_ID_TAG)) {
-//            mAdapter.onSwipeRemove(viewHolder);
-//            viewHolder.itemView.setTag(SWIPE_ID_TAG, false);
-//        }
+        if (null == mAdapter || null == viewHolder) return;
+        if (isViewCreateByAdapter(viewHolder)) return;
+        if (null == viewHolder.itemView.getTag(SwipeCallback.SWIPE_ID_TAG) ||
+                !(Boolean) viewHolder.itemView.getTag(SwipeCallback.SWIPE_ID_TAG)) return;
+
+        if (mAdapter instanceof BaseCommonSwipeAdapter) {
+            BaseCommonSwipeAdapter temp = (BaseCommonSwipeAdapter) mAdapter;
+            temp.onItemSwipeEnd(viewHolder);
+            viewHolder.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, false);
+        } else if (mAdapter instanceof BaseLoadSwipeAdapter) {
+            BaseLoadSwipeAdapter temp = (BaseLoadSwipeAdapter) mAdapter;
+            temp.onItemSwipeEnd(viewHolder);
+            viewHolder.itemView.setTag(SwipeCallback.SWIPE_ID_TAG, false);
+        }
     }
 
     @Override
@@ -79,20 +107,21 @@ public class SwipeCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
 
-        boolean result = source.getItemViewType() != target.getItemViewType();
-        return !result;
-    }
-
-    @Override
-    public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder source, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
-        super.onMoved(recyclerView, source, fromPos, target, toPos, x, y);
-        mAdapter.onItemDragMove(source, target);
+        return source.getItemViewType() == target.getItemViewType();
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        if (!isViewCreateByAdapter(viewHolder)) {
-            mAdapter.onItemSwipeEnd(viewHolder);
+
+        if (null == mAdapter || null == viewHolder) return;
+        if (isViewCreateByAdapter(viewHolder)) return;
+
+        if (mAdapter instanceof BaseCommonSwipeAdapter) {
+            BaseCommonSwipeAdapter temp = (BaseCommonSwipeAdapter) mAdapter;
+            temp.onSwipeRemove(viewHolder);
+        } else if (mAdapter instanceof BaseLoadSwipeAdapter) {
+            BaseLoadSwipeAdapter temp = (BaseLoadSwipeAdapter) mAdapter;
+            temp.onSwipeRemove(viewHolder);
         }
     }
 
@@ -116,7 +145,15 @@ public class SwipeCallback extends ItemTouchHelper.Callback {
                 c.translate(itemView.getRight() + dX, itemView.getTop());
             }
 
-            mAdapter.onItemSwiping(c, viewHolder, dX, dY, isCurrentlyActive);
+            if (null != mAdapter && null != viewHolder) {
+                if (mAdapter instanceof BaseCommonSwipeAdapter) {
+                    BaseCommonSwipeAdapter temp = (BaseCommonSwipeAdapter) mAdapter;
+                    temp.onItemSwiping(c, viewHolder, dX, dY, isCurrentlyActive);
+                } else if (mAdapter instanceof BaseLoadSwipeAdapter) {
+                    BaseLoadSwipeAdapter temp = (BaseLoadSwipeAdapter) mAdapter;
+                    temp.onItemSwiping(c, viewHolder, dX, dY, isCurrentlyActive);
+                }
+            }
             c.restore();
         }
     }

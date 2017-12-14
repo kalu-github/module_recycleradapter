@@ -5,15 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.demo.adapter.adapter.LoadTabAdapter;
+import com.demo.adapter.adapter.LoadSectionAdapter;
 import com.demo.adapter.data.DataServer;
-import com.demo.adapter.entity.MyTab;
+import com.demo.adapter.entity.MySection;
 
 import java.util.List;
 
 public class SectionActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private List<MyTab> mData;
+    private List<MySection> mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class SectionActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_list);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mData = DataServer.getSampleData();
-        LoadTabAdapter sectionAdapter = new LoadTabAdapter(R.layout.activity_section_item, R.layout.activity_section_head, mData);
+        LoadSectionAdapter sectionAdapter = new LoadSectionAdapter(R.layout.activity_section_item, R.layout.activity_section_head, mData);
         mRecyclerView.setAdapter(sectionAdapter);
     }
 }

@@ -10,7 +10,6 @@ import lib.kalu.adapter.BaseCommonAdapter
 import lib.kalu.adapter.decoration.SpaceDecoration
 import lib.kalu.adapter.holder.RecyclerHolder
 import lib.kalu.adapter.manager.CrashGridLayoutManager
-import lib.kalu.adapter.manager.CrashLinearLayoutManager
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
