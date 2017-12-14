@@ -247,7 +247,6 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public RecyclerHolder setChecked(int viewId, boolean checked) {
         View view = getView(viewId);
-        // View unable cast to Checkable
         if (view instanceof CompoundButton) {
             ((CompoundButton) view).setChecked(checked);
         } else if (view instanceof CheckedTextView) {
