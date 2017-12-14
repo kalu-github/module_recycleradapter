@@ -22,7 +22,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
 ```
-BaseCommonAdapter adapter = new BaseCommonAdapter<String, RecyclerHolder>(List数据集合 , item布局文件id) {
+BaseCommonAdapter adapter = new BaseCommonAdapter<String>(List数据集合 , item布局文件id) {
 
         # 设置数据
         @Override
@@ -55,7 +55,7 @@ loadCompleteNotifyDataSetChanged(RecyclerView recycler);
 loadResetNotifyDataSetChanged(RecyclerView recycler);
 
 # 创建adapter
-BaseLoadAdapter adapter = new BaseLoadAdapter<String, RecyclerHolder>(List数据集合 , item布局文件id, load布局文件id) {
+BaseLoadAdapter adapter = new BaseLoadAdapter<String>(List数据集合 , item布局文件id, load布局文件id) {
 
         # 设置数据
         @Override
@@ -95,7 +95,7 @@ class NewMulitItem implements MultModel {
 }
 
 # 创建adapter
-BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String, RecyclerHolder>(List数据集合) {
+BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String>(List数据集合) {
 
         # 合并单元格
         @Override
