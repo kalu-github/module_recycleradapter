@@ -22,7 +22,7 @@ public class SectionActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_list);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mData = DataServer.getSampleData();
-        LoadSectionAdapter sectionAdapter = new LoadSectionAdapter(R.layout.activity_section_item, R.layout.activity_section_head, mData);
+        LoadSectionAdapter sectionAdapter = new LoadSectionAdapter(mData, R.layout.activity_section_item, R.layout.activity_section_head);
         mRecyclerView.setAdapter(sectionAdapter);
     }
 }

@@ -8,12 +8,12 @@ import java.io.Serializable;
  */
 public abstract class SectionModel<T> implements Serializable {
 
-    private boolean isTab = false;
+    private boolean isSection = false;
     private String tabName = "";
     private T t;
 
-    public SectionModel(boolean isTab, String tabName) {
-        this.isTab = isTab;
+    public SectionModel(boolean isSection, String tabName) {
+        this.isSection = isSection;
         this.tabName = tabName;
         this.t = null;
     }
@@ -22,12 +22,12 @@ public abstract class SectionModel<T> implements Serializable {
         this.t = t;
     }
 
-    public boolean isTab() {
-        return isTab;
+    public boolean isSection() {
+        return isSection;
     }
 
-    public void setTab(boolean tab) {
-        isTab = tab;
+    public void setSection(boolean tab) {
+        isSection = tab;
     }
 
     public String getTabName() {

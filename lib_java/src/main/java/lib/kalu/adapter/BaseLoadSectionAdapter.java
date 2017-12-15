@@ -28,7 +28,7 @@ public abstract class BaseLoadSectionAdapter<T extends SectionModel> extends Bas
 
     @Override
     protected int getItemModelType(int position) {
-        return getData().get(position).isTab() ? RecyclerHolder.SECTION_VIEW : 0;
+        return getData().get(position).isSection() ? RecyclerHolder.SECTION_VIEW : 0;
     }
 
     @Override

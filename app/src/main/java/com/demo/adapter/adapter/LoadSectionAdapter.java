@@ -9,17 +9,17 @@ import lib.kalu.adapter.holder.RecyclerHolder;
 
 public class LoadSectionAdapter extends BaseCommonSectionAdapter<MySection> {
 
-    public LoadSectionAdapter(int layoutResId, int sectionResId, List data) {
+    public LoadSectionAdapter(List data, int layoutResId, int sectionResId) {
         super(data, layoutResId, sectionResId);
     }
 
     @Override
     protected void onNext(RecyclerHolder helper, MySection item, int position) {
-       // helper.setText(R.id.tv, item.getTabName());
+        // helper.setText(R.id.tv, item.getTabName());
     }
 
     @Override
-    protected void onSection(int position) {
+    protected void onSection(RecyclerHolder holder, int position) {
 
     }
 }
