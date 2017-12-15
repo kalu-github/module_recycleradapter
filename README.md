@@ -9,7 +9,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
 #
 
-# 点击事件(RecyclerHolder.class, item、item-child)：
+# 1.点击事件(RecyclerHolder.class, item、item-child)：
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
@@ -33,7 +33,7 @@ BaseCommonAdapter adapter = new BaseCommonAdapter<String>(List数据集合 , ite
 
 #
 
-# 加载更多(BaseLoadAdapter.class)：
+# 2.加载更多(BaseLoadAdapter.class)：
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 ```
@@ -67,7 +67,7 @@ RecyclerView.setAdapter(adapter);
 
 #
 
-# 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
+# 3.分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
 # 创建bean, 实现MultModel
@@ -111,7 +111,7 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 添加头添加尾（BaseCommonAdapter.class）：
+# 4.添加头添加尾（BaseCommonAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ```
 # 添加头
@@ -125,7 +125,7 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 空，加载，错误布局（BaseCommonAdapter.class）：
+# 5.空，加载，错误布局（BaseCommonAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif ) 
 ```
 #  空布局
@@ -145,7 +145,7 @@ RecyclerView.setAdapter(adapter);
 
 #
 
-# Proguard-rules
+# Proguard-Rules
 ```
 -keep class lib.kalu.adapter.** {
 *;
