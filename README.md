@@ -9,7 +9,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
 #
 
-# 点击事件(RecyclerHolder.class, item、item-child)：
+# 1.点击事件
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
@@ -33,7 +33,7 @@ BaseCommonAdapter adapter = new BaseCommonAdapter<String>(List数据集合 , ite
 
 #
 
-# 加载更多(BaseLoadAdapter.class)：
+# 2.加载更多
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 ```
@@ -67,7 +67,8 @@ RecyclerView.setAdapter(adapter);
 
 #
 
-# 分类型布局(BaseCommonMultAdapter.class || BaseLoadMultAdapter.class)：
+# 3.分类型布局
+
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
 # 创建bean, 实现MultModel
@@ -111,7 +112,8 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 添加头添加尾（BaseCommonAdapter.class）：
+# 4.添加头添加尾
+
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ```
 # 添加头
@@ -125,7 +127,8 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 空，加载，错误布局（BaseCommonAdapter.class）：
+# 5.空，加载，错误布局
+
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif ) 
 ```
 #  空布局
@@ -137,15 +140,148 @@ RecyclerView.setAdapter(adapter);
 
 #
 
+# 6.分组
+
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif ) 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif ) 
+```
+# 创建bean, 实现SectionModel
+class MySection extends SectionModel<Video> {
+    private boolean isMore;
+
+    public MySection(boolean isHeader, String header, boolean isMroe) {
+        super(isHeader, header);
+        this.isMore = isMroe;
+    }
+
+    public MySection(Video t) {
+        super(t);
+    }
+
+    public boolean isMore() {
+        return isMore;
+    }
+
+    public void setMore(boolean mroe) {
+        isMore = mroe;
+    }
+}
+
+# 创建adapter
+BaseCommonSectionAdapter adapter = new BaseCommonSectionAdapter<MySection>(List数据集合, item布局id, section布局id) {
+
+        # 分组
+        @Override
+        protected void onSection(RecyclerHolder holder, int position) {
+        }
+         
+        # 设置数据
+        @Override
+        protected void onNext(RecyclerHolder holder, MySection model, int position) {
+        }
+    };
+    
+# 设置adapter
+RecyclerView.setAdapter(adapter);
+```
+
+#
+
+# 7.多级菜单
+
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif )
+```
+# 创建bean, 实现MultModel, 继承TransModel
+# 一级菜单
+class Level0Item extends TransModel<Level1Item> implements MultModel {
+    public String title;
+    public String subTitle;
+
+    public Level0Item(String title, String subTitle) {
+        this.subTitle = subTitle;
+        this.title = title;
+    }
+
+    @Override
+    public int getItemType() {
+        return TransAdapter.TYPE_LEVEL_0;
+    }
+
+    @Override
+    public int getLevel() {
+        return 0;
+    }
+}
+# 二级菜单
+class Level1Item extends TransModel<Person> implements MultModel {
+    public String title;
+    public String subTitle;
+
+    public Level1Item(String title, String subTitle) {
+        this.subTitle = subTitle;
+        this.title = title;
+    }
+
+    @Override
+    public int getItemType() {
+        return TransAdapter.TYPE_LEVEL_1;
+    }
+
+    @Override
+    public int getLevel() {
+        return 1;
+    }
+}
+# 三级菜单
+class Person implements MultModel {
+    public Person(String name, int age) {
+        this.age = age;
+        this.name = name;
+    }
+
+    public String name;
+    public int age;
+
+    @Override
+    public int getItemType() {
+        return TransAdapter.TYPE_PERSON;
+    }
+}
+
+# 创建adapter
+BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<MySection>(List数据集合) {
+
+         # 添加分类型布局
+        @Override
+        protected void onMult() {       
+            addItemType(一级菜单布局类型(int), 一级菜单item布局文件id);
+            addItemType(二级菜单布局类型(int), 二级菜单item布局文件id);
+            addItemType(三级菜单布局类型(int), 三级菜单item布局文件id);
+        }
+         
+        # 设置数据
+        @Override
+        protected void onNext(RecyclerHolder holder, MySection model, int position) {
+            switch (holder.getItemViewType()) {
+              case: 一级菜单布局类型(int):
+                  break;
+              case: 二级菜单布局类型(int):
+                  break;
+              case: 三级菜单布局类型(int):
+                  break;
+            ｝
+        }
+    };
+    
+# 设置adapter
+RecyclerView.setAdapter(adapter);
+```
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif )
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-07.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-03.gif )
 
 #
 
-# Proguard-rules
+# Proguard-Rules
 ```
 -keep class lib.kalu.adapter.** {
 *;
