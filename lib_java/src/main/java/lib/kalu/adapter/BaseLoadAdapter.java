@@ -54,30 +54,28 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
     @Override
     public int getItemViewType(int position) {
-        if (getNullCount() == 1) {
-            switch (position) {
-                case 0:
-                    return (getHeadCount() != 0) ? RecyclerHolder.HEAD_VIEW : RecyclerHolder.NULL_VIEW;
-                case 1:
-                    return (getHeadCount() != 0) ? RecyclerHolder.NULL_VIEW : RecyclerHolder.FOOT_VIEW;
-                case 2:
-                    return RecyclerHolder.FOOT_VIEW;
-                default:
-                    return RecyclerHolder.NULL_VIEW;
-            }
+
+        // 没有数据
+        if (null == getData() || getData().size() == 0) {
+            return RecyclerHolder.NULL_VIEW;
         }
-        int numHeaders = getHeadCount();
-        if (position < numHeaders) {
-            return RecyclerHolder.HEAD_VIEW;
-        } else {
-            int adjPosition = position - numHeaders;
-            int adapterCount = getData().size();
-            if (adjPosition < adapterCount) {
-                return getItemModelType(adjPosition);
+        // 有数据
+        else{
+            int numHead = getHeadCount();
+            if (position < numHead) {
+                return RecyclerHolder.HEAD_VIEW;
             } else {
-                adjPosition = adjPosition - adapterCount;
-                int numFooters = getFootCount();
-                return adjPosition < numFooters ? RecyclerHolder.FOOT_VIEW : RecyclerHolder.LOAD_VIEW;
+
+                // 需要传递的索引位置
+                int realPosition = position - numHead;
+                int numModel = getData().size();
+                if (realPosition < numModel) {
+                    return getItemModelType(realPosition);
+                } else {
+                    realPosition = realPosition - numModel;
+                    int numFoot = getFootCount();
+                    return realPosition < numFoot ? RecyclerHolder.FOOT_VIEW : RecyclerHolder.LOAD_VIEW;
+                }
             }
         }
     }

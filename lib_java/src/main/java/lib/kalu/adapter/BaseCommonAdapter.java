@@ -196,31 +196,21 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemViewType(int position) {
-        if (getNullCount() == 1) {
-            boolean header = getHeadCount() != 0;
-            switch (position) {
-                case 0:
-                    return header ? RecyclerHolder.HEAD_VIEW : RecyclerHolder.NULL_VIEW;
-                case 1:
-                    return header ? RecyclerHolder.NULL_VIEW : RecyclerHolder.FOOT_VIEW;
-                case 2:
-                    return RecyclerHolder.FOOT_VIEW;
-                default:
-                    return RecyclerHolder.NULL_VIEW;
-            }
+
+        // 没有数据
+        if (null == mModelList || mModelList.size() == 0) {
+            return RecyclerHolder.NULL_VIEW;
         }
-        int numHeaders = getHeadCount();
-        if (position < numHeaders) {
-            return RecyclerHolder.HEAD_VIEW;
-        } else {
-            int adjPosition = position - numHeaders;
-            int adapterCount = mModelList.size();
-            if (adjPosition < adapterCount) {
-                return getItemModelType(adjPosition);
+        // 有数据
+        else {
+            int numHead = getHeadCount();
+            if (position < numHead) {
+                return RecyclerHolder.HEAD_VIEW;
             } else {
-                adjPosition = adjPosition - adapterCount;
-                int numFooters = getFootCount();
-                return adjPosition < numFooters ? RecyclerHolder.FOOT_VIEW : RecyclerHolder.LOAD_VIEW;
+                // 需要传递的索引位置
+                int realPosition = position - numHead;
+                int numModel = mModelList.size();
+                return realPosition < numModel ? getItemModelType(realPosition) : RecyclerHolder.FOOT_VIEW;
             }
         }
     }
@@ -248,9 +238,9 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     public void onViewAttachedToWindow(RecyclerHolder holder) {
         super.onViewAttachedToWindow(holder);
 
-        int type = holder.getItemViewType();
-        boolean isModel = isModelType(type);
-        setModelStyle(holder, isModel);
+        if (null == holder) return;
+        final int viewType = holder.getItemViewType();
+        setModelStyle(holder, viewType != RecyclerHolder.NULL_VIEW);
     }
 
     @Override
