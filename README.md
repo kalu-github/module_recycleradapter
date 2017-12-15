@@ -183,7 +183,7 @@ RecyclerView.setAdapter(adapter);
 #
 
 # 6.多级菜单（BaseCommonMultAdapter.class || BaseLoadMultAdapter.class）：
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif )
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif )
 ```
 # 创建bean, 实现MultModel, 继承
 # 一级菜单
@@ -270,6 +270,7 @@ BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<MySection>(List数据�
 # 设置adapter
 RecyclerView.setAdapter(adapter);
 ```
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif )
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-07.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-03.gif )
 
