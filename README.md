@@ -180,8 +180,96 @@ BaseCommonSectionAdapter adapter = new BaseCommonSectionAdapter<MySection>(List�
 RecyclerView.setAdapter(adapter);
 ```
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif ) 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif ) 
+#
+
+# 6.多级菜单（BaseCommonMultAdapter.class || BaseLoadMultAdapter.class）：
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif )
+```
+# 创建bean, 实现MultModel, 继承
+# 一级菜单
+class Level0Item extends TransModel<Level1Item> implements MultModel {
+    public String title;
+    public String subTitle;
+
+    public Level0Item(String title, String subTitle) {
+        this.subTitle = subTitle;
+        this.title = title;
+    }
+
+    @Override
+    public int getItemType() {
+        return TransAdapter.TYPE_LEVEL_0;
+    }
+
+    @Override
+    public int getLevel() {
+        return 0;
+    }
+}
+# 二级菜单
+class Level1Item extends TransModel<Person> implements MultModel {
+    public String title;
+    public String subTitle;
+
+    public Level1Item(String title, String subTitle) {
+        this.subTitle = subTitle;
+        this.title = title;
+    }
+
+    @Override
+    public int getItemType() {
+        return TransAdapter.TYPE_LEVEL_1;
+    }
+
+    @Override
+    public int getLevel() {
+        return 1;
+    }
+}
+# 三级菜单
+class Person implements MultModel {
+    public Person(String name, int age) {
+        this.age = age;
+        this.name = name;
+    }
+
+    public String name;
+    public int age;
+
+    @Override
+    public int getItemType() {
+        return TransAdapter.TYPE_PERSON;
+    }
+}
+
+# 创建adapter
+BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<MySection>(List数据集合) {
+
+         # 添加分类型布局
+        @Override
+        protected void onMult() {       
+            addItemType(一级菜单布局类型(int), 一级菜单item布局文件id);
+            addItemType(二级菜单布局类型(int), 二级菜单item布局文件id);
+            addItemType(三级菜单布局类型(int), 三级菜单item布局文件id);
+        }
+         
+        # 设置数据
+        @Override
+        protected void onNext(RecyclerHolder holder, MySection model, int position) {
+            switch (holder.getItemViewType()) {
+              case: 一级菜单布局类型(int):
+                  break;
+              case: 二级菜单布局类型(int):
+                  break;
+              case: 三级菜单布局类型(int):
+                  break;
+            ｝
+        }
+    };
+    
+# 设置adapter
+RecyclerView.setAdapter(adapter);
+```
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-07.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-03.gif )
 
