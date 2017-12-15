@@ -137,7 +137,16 @@ RecyclerView.setAdapter(adapter);
 
 #
 
+# 6.分组（BaseCommonSectionAdapter.class || BaseLoadSectionAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
+```
+#  空布局
+BaseCommonMultAdapter.setNullView(nullView);
+    
+# 设置adapter
+RecyclerView.setAdapter(adapter);
+```
+
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-07.gif ) 
