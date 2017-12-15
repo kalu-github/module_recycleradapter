@@ -185,7 +185,7 @@ RecyclerView.setAdapter(adapter);
 # 7.多级菜单（BaseCommonMultAdapter.class || BaseLoadMultAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif )
 ```
-# 创建bean, 实现MultModel, 继承
+# 创建bean, 实现MultModel, 继承TransModel
 # 一级菜单
 class Level0Item extends TransModel<Level1Item> implements MultModel {
     public String title;
