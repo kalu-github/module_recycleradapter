@@ -111,9 +111,20 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 加载更多(BaseLoadAdapter.class)：
-
+# 添加头添加尾：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
+```
+# 添加头
+BaseCommonMultAdapter.addHeadView(headView)
+
+# 添加尾
+BaseCommonMultAdapter.addFootView(footView)
+    
+# 设置adapter
+RecyclerView.setAdapter(adapter);
+```
+#
+
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif ) 
