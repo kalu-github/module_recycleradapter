@@ -125,7 +125,7 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 空布局：
+# 空布局, 正在加载布局， 错误布局：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif ) 
 ```
 #  空布局
@@ -133,6 +133,7 @@ BaseCommonMultAdapter.setNullView(nullView);
     
 # 设置adapter
 RecyclerView.setAdapter(adapter);
+```
 
 #
 
