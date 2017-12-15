@@ -109,8 +109,9 @@ BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String>(List数据集�
 # 设置adapter
 RecyclerView.setAdapter(adapter);
 ```
-
 #
+
+# 加载更多(BaseLoadAdapter.class)：
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
