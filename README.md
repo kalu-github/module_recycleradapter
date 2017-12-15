@@ -125,7 +125,7 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 空，加载， 错误布局（BaseCommonAdapter.class）：
+# 空，加载，错误布局（BaseCommonAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif ) 
 ```
 #  空布局
