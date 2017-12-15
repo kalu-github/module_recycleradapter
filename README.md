@@ -182,7 +182,7 @@ RecyclerView.setAdapter(adapter);
 
 #
 
-# 6.多级菜单（BaseCommonMultAdapter.class || BaseLoadMultAdapter.class）：
+# 7.多级菜单（BaseCommonMultAdapter.class || BaseLoadMultAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif )
 ```
 # 创建bean, 实现MultModel, 继承
