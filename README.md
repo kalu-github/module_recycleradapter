@@ -10,7 +10,6 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 #
 
 # 1.点击事件
-## RecyclerHolder.class, item、item-child
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
@@ -35,7 +34,6 @@ BaseCommonAdapter adapter = new BaseCommonAdapter<String>(List数据集合 , ite
 #
 
 # 2.加载更多
-# BaseLoadAdapter.class
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
 ```
@@ -70,7 +68,6 @@ RecyclerView.setAdapter(adapter);
 #
 
 # 3.分类型布局
-# BaseCommonMultAdapter.class || BaseLoadMultAdapter.class
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
 ```
@@ -116,7 +113,6 @@ RecyclerView.setAdapter(adapter);
 #
 
 # 4.添加头添加尾
-# BaseCommonAdapter.class
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ```
@@ -132,7 +128,6 @@ RecyclerView.setAdapter(adapter);
 #
 
 # 5.空，加载，错误布局
-# BaseCommonAdapter.class
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif ) 
 ```
@@ -146,7 +141,6 @@ RecyclerView.setAdapter(adapter);
 #
 
 # 6.分组
-# BaseCommonSectionAdapter.class || BaseLoadSectionAdapter.class
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
 ```
@@ -193,7 +187,6 @@ RecyclerView.setAdapter(adapter);
 #
 
 # 7.多级菜单
-# BaseCommonMultAdapter.class || BaseLoadMultAdapter.class
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif )
 ```
