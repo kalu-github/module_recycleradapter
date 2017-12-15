@@ -140,8 +140,41 @@ RecyclerView.setAdapter(adapter);
 # 6.分组（BaseCommonSectionAdapter.class || BaseLoadSectionAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
 ```
-#  空布局
-BaseCommonMultAdapter.setNullView(nullView);
+# 创建bean, 实现SectionModel
+class MySection extends SectionModel<Video> {
+    private boolean isMore;
+
+    public MySection(boolean isHeader, String header, boolean isMroe) {
+        super(isHeader, header);
+        this.isMore = isMroe;
+    }
+
+    public MySection(Video t) {
+        super(t);
+    }
+
+    public boolean isMore() {
+        return isMore;
+    }
+
+    public void setMore(boolean mroe) {
+        isMore = mroe;
+    }
+}
+
+# 创建adapter
+BaseCommonSectionAdapter adapter = new BaseCommonSectionAdapter<MySection>(List数据集合, item布局id, section布局id) {
+
+        # 分组
+        @Override
+        protected void onSection(RecyclerHolder holder, int position) {
+        }
+         
+        # 设置数据
+        @Override
+        protected void onNext(RecyclerHolder holder, MySection model, int position) {
+        }
+    };
     
 # 设置adapter
 RecyclerView.setAdapter(adapter);
