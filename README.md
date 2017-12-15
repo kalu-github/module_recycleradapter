@@ -10,7 +10,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 #
 
 # 1.点击事件
-# RecyclerHolder.class, item、item-child
+## RecyclerHolder.class, item、item-child
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
