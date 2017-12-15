@@ -111,7 +111,7 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 添加头添加尾：
+# 添加头添加尾（BaseCommonAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
 ```
 # 添加头
@@ -125,7 +125,7 @@ RecyclerView.setAdapter(adapter);
 ```
 #
 
-# 空布局, 正在加载布局， 错误布局：
+# 空布局, 正在加载布局， 错误布局（BaseCommonAdapter.class）：
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif ) 
 ```
 #  空布局
