@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 
 /**
  * description: fix-bug-IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter的解决方案
@@ -11,7 +12,7 @@ import android.util.AttributeSet;
  */
 public final class CrashStaggeredGridLayoutManager extends StaggeredGridLayoutManager {
 
-    private final String TAG = CrashStaggeredGridLayoutManager.class.getSimpleName();
+    private boolean isScrollEnabled = true;
 
     public CrashStaggeredGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -26,13 +27,9 @@ public final class CrashStaggeredGridLayoutManager extends StaggeredGridLayoutMa
         try {
             super.onLayoutChildren(recycler, state);
         } catch (Exception e) {
-         //   LogUtil.e(TAG, e.getMessage(), e);
+               Log.e("", e.getMessage(), e);
         }
     }
-
-    /**********************************************************************************************/
-
-    private boolean isScrollEnabled = true;
 
     public void setScrollEnabled(boolean flag) {
         this.isScrollEnabled = flag;

@@ -12,7 +12,7 @@ public class NewMulitItem implements MultModel {
     }
 
     @Override
-    public int getItemType() {
+    public int getMultType() {
         return itemType;
     }
 }

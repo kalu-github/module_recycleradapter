@@ -6,6 +6,7 @@ package lib.kalu.adapter.model;
  */
 public interface MultModel {
 
+    int TYPE_0 = 0;
     int TYPE_1 = 1;
     int TYPE_2 = 2;
     int TYPE_3 = 3;
@@ -15,5 +16,5 @@ public interface MultModel {
     int TYPE_7 = 7;
     int TYPE_8 = 8;
 
-    int getItemType();
+    int getMultType();
 }

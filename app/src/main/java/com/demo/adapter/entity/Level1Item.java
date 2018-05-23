@@ -15,7 +15,7 @@ public class Level1Item extends TransModel<Person> implements MultModel {
     }
 
     @Override
-    public int getItemType() {
+    public int getMultType() {
         return TransAdapter.TYPE_LEVEL_1;
     }
 

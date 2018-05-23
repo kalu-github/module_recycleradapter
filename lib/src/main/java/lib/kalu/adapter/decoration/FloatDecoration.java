@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,8 +17,12 @@ public final class FloatDecoration extends RecyclerView.ItemDecoration {
     private int height;
     private View tab;
 
-    public FloatDecoration(View tab) {
+    public FloatDecoration(View inflate) {
+        //根据position获取View
+        this.tab = inflate;
+    }
 
+    public void setDecoration(View tab) {
         //根据position获取View
         this.tab = tab;
 
@@ -33,14 +36,14 @@ public final class FloatDecoration extends RecyclerView.ItemDecoration {
         tab.measure(widthMeasureSpec, heightMeasureSpec);
 
         height = tab.getMeasuredHeight();
-        Log.e("kalu", "tab = " + height);
+       // Log.e("kalu", "tab = " + height);
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         if (parent.getChildAdapterPosition(view) == 0) {
-            Log.e("kalu", "预留50");
+         //   Log.e("kalu", "预留50");
             outRect.top = height;
         }
     }
@@ -54,14 +57,6 @@ public final class FloatDecoration extends RecyclerView.ItemDecoration {
             final ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(parent.getWidth(), height);
             tab.setLayoutParams(layoutParams);
             tab.setDrawingCacheEnabled(false);
-
-//            if (tab instanceof ViewGroup) {
-//                ViewGroup group = (ViewGroup) tab;
-//                for (int i = 0; i < group.getChildCount(); i++) {
-//                    final View child = group.getChildAt(i);
-//                    child.measure(widthMeasureSpec, heightMeasureSpec);
-//                }
-//            }
 
             // 2.绘制TAB布局
             final int right = parent.getWidth() - parent.getPaddingRight();

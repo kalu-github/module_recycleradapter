@@ -30,7 +30,7 @@ class LoadmoreActivity : AppCompatActivity() {
     }
 
     private val mSpaceDecoration: SpaceDecoration? by lazy {
-        SpaceDecoration(10)
+        SpaceDecoration(10f)
     }
 
     private val mLoadAdapter: BaseLoadAdapter<String> by lazy {

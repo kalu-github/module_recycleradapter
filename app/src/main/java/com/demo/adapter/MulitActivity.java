@@ -46,6 +46,8 @@ public class MulitActivity extends AppCompatActivity {
             }
         }
 
+
+
         @Override
         protected void onNext(RecyclerHolder holder, NewMulitItem model, int position) {
             holder.setText(R.id.position, position + " <=> " + holder.getItemViewType());
@@ -53,11 +55,11 @@ public class MulitActivity extends AppCompatActivity {
 
         @Override
         protected void onMult() {
-            addItemType(1, R.layout.activity_mulit_type1);
-            addItemType(2, R.layout.activity_mulit_type2);
-            addItemType(3, R.layout.activity_mulit_type3);
-            addItemType(4, R.layout.activity_mulit_type4);
-            addItemType(5, R.layout.activity_mulit_type5);
+            addMult(1, R.layout.activity_mulit_type1);
+            addMult(2, R.layout.activity_mulit_type2);
+            addMult(3, R.layout.activity_mulit_type3);
+            addMult(4, R.layout.activity_mulit_type4);
+            addMult(5, R.layout.activity_mulit_type5);
         }
     };
 

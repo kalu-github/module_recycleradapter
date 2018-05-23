@@ -24,6 +24,10 @@ public class SwipeCallback extends ItemTouchHelper.Callback {
 
     private int moveFlags = ItemTouchHelper.START;
 
+    public SwipeCallback(BaseCommonSwipeAdapter adapter) {
+        mAdapter = adapter;
+    }
+
     /**
      * 1.右侧滑动(ItemTouchHelper.START)
      * 2.左侧滑动(ItemTouchHelper.END)
@@ -31,10 +35,6 @@ public class SwipeCallback extends ItemTouchHelper.Callback {
      */
     public void setMoveFlags(int moveFlags) {
         this.moveFlags = moveFlags;
-    }
-
-    public SwipeCallback(BaseCommonSwipeAdapter adapter) {
-        mAdapter = adapter;
     }
 
     @Override

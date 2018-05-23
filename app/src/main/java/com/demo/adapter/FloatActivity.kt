@@ -33,7 +33,7 @@ class FloatActivity : AppCompatActivity() {
     }
 
     private val mSpaceDecoration: SpaceDecoration? by lazy {
-        SpaceDecoration(10)
+        SpaceDecoration(10f)
     }
 
     private val mLoadAdapter: BaseCommonAdapter<String>? by lazy {
@@ -55,12 +55,7 @@ class FloatActivity : AppCompatActivity() {
         }
 
         val inflate = LayoutInflater.from(applicationContext).inflate(R.layout.activity_float_menu, null)
-        inflate.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-
-                Toast.makeText(applicationContext, "点击", Toast.LENGTH_LONG).show();
-            }
-        })
+        inflate.setOnClickListener { Toast.makeText(applicationContext, "点击", Toast.LENGTH_LONG).show(); }
 
         val floatDecoration = FloatDecoration(inflate)
 

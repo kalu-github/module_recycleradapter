@@ -27,7 +27,7 @@ public abstract class BaseCommonMultAdapter<T extends MultModel> extends BaseCom
     @Override
     protected int getItemModelType(int position) {
         Object item = getData().get(position);
-        return item instanceof MultModel ? ((MultModel) item).getItemType() : MultModel.TYPE_1;
+        return item instanceof MultModel ? ((MultModel) item).getMultType() : MultModel.TYPE_1;
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class BaseCommonMultAdapter<T extends MultModel> extends BaseCom
         return mResIdList.get(viewType);
     }
 
-    protected void addItemType(int type, @LayoutRes int layoutResId) {
+    protected void addMult(int type, @LayoutRes int layoutResId) {
         mResIdList.put(type, layoutResId);
     }
 

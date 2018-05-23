@@ -16,12 +16,12 @@ public class Level0Item extends TransModel<Level1Item> implements MultModel {
     }
 
     @Override
-    public int getItemType() {
-        return TransAdapter.TYPE_LEVEL_0;
+    public int getLevel() {
+        return 0;
     }
 
     @Override
-    public int getLevel() {
-        return 0;
+    public int getMultType() {
+        return TransAdapter.TYPE_LEVEL_0;
     }
 }

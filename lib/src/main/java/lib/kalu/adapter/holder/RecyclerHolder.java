@@ -1,5 +1,6 @@
 package lib.kalu.adapter.holder;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -15,6 +17,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -94,6 +97,29 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public RecyclerHolder setOnFocusChangeListener(View.OnFocusChangeListener listener, int... viewId) {
+        if (null == viewId) return this;
+
+        for (int id : viewId) {
+            View view = getView(id);
+            view.setOnFocusChangeListener(listener);
+        }
+        return this;
+    }
+
+    public RecyclerHolder setOnFocusChangeListener(int id, View.OnFocusChangeListener listener) {
+        View view = getView(id);
+        view.setOnFocusChangeListener(listener);
+        return this;
+    }
+
+    public RecyclerHolder setOnTextChangedListener(int id, TextWatcher listener) {
+
+        EditText view = getView(id);
+        view.addTextChangedListener(listener);
+        return this;
+    }
+
     /**********************************************************************************************/
 
     public <T extends View> T getView(int viewId) {
@@ -102,60 +128,70 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public RecyclerHolder setText(int viewId, CharSequence value) {
         TextView view = getView(viewId);
+        if (null == view) return this;
         view.setText(value);
         return this;
     }
 
     public RecyclerHolder setText(int viewId, @StringRes int strId) {
         TextView view = getView(viewId);
+        if (null == view) return this;
         view.setText(strId);
         return this;
     }
 
     public RecyclerHolder setImageResource(int viewId, @DrawableRes int imageResId) {
         ImageView view = getView(viewId);
+        if (null == view) return this;
         view.setImageResource(imageResId);
         return this;
     }
 
-    public RecyclerHolder setBackgroundColor(int viewId, int color) {
+    public RecyclerHolder setBackgroundColor(Context context, int viewId, int color) {
         View view = getView(viewId);
-        view.setBackgroundColor(color);
+        if (null == view) return this;
+        view.setBackgroundColor(context.getResources().getColor(color));
         return this;
     }
 
     public RecyclerHolder setBackgroundRes(int viewId, @DrawableRes int backgroundRes) {
         View view = getView(viewId);
+        if (null == view) return this;
         view.setBackgroundResource(backgroundRes);
         return this;
     }
 
-    public RecyclerHolder setTextColor(int viewId, int textColor) {
+    public RecyclerHolder setTextColor(Context context, int viewId, int color) {
         TextView view = getView(viewId);
-        view.setTextColor(textColor);
+        if (null == view) return this;
+        view.setTextColor(context.getResources().getColor(color));
         return this;
     }
 
     public RecyclerHolder setTextScaleX(int viewId, float size) {
         TextView view = getView(viewId);
+        if (null == view) return this;
         view.setTextScaleX(size);
         return this;
     }
 
-    public RecyclerHolder seBackgroundColor(int viewId, int bgColor) {
+    public RecyclerHolder seBackgroundColor(Context context, int viewId, int color) {
         View view = getView(viewId);
-        view.setBackgroundColor(bgColor);
+        if (null == view) return this;
+        view.setBackgroundColor(context.getResources().getColor(color));
         return this;
     }
 
     public RecyclerHolder setImageDrawable(int viewId, Drawable drawable) {
         ImageView view = getView(viewId);
+        if (null == view) return this;
         view.setImageDrawable(drawable);
         return this;
     }
 
     public RecyclerHolder setImageBitmap(int viewId, Bitmap bitmap) {
         ImageView view = getView(viewId);
+        if (null == view) return this;
         view.setImageBitmap(bitmap);
         return this;
     }
@@ -175,18 +211,21 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public RecyclerHolder setVisible(int viewId, int visibility) {
         View view = getView(viewId);
+        if (null == view) return this;
         view.setVisibility(visibility);
         return this;
     }
 
     public RecyclerHolder linkify(int viewId) {
         TextView view = getView(viewId);
+        if (null == view) return this;
         Linkify.addLinks(view, Linkify.ALL);
         return this;
     }
 
     public RecyclerHolder setTypeface(int viewId, Typeface typeface) {
         TextView view = getView(viewId);
+        if (null == view) return this;
         view.setTypeface(typeface);
         view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
         return this;
@@ -195,6 +234,7 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
     public RecyclerHolder setTypeface(Typeface typeface, int... viewIds) {
         for (int viewId : viewIds) {
             TextView view = getView(viewId);
+            if (null == view) continue;
             view.setTypeface(typeface);
             view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
         }
@@ -203,31 +243,29 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public RecyclerHolder setProgress(int viewId, int progress) {
         ProgressBar view = getView(viewId);
+        if (null == view) return this;
         view.setProgress(progress);
         return this;
     }
 
     public RecyclerHolder setProgress(int viewId, int progress, int max) {
         ProgressBar view = getView(viewId);
+        if (null == view) return this;
         view.setMax(max);
         view.setProgress(progress);
         return this;
     }
 
-    public RecyclerHolder setMax(int viewId, int max) {
-        ProgressBar view = getView(viewId);
-        view.setMax(max);
-        return this;
-    }
-
     public RecyclerHolder setRating(int viewId, float rating) {
         RatingBar view = getView(viewId);
+        if (null == view) return this;
         view.setRating(rating);
         return this;
     }
 
     public RecyclerHolder setRating(int viewId, float rating, int max) {
         RatingBar view = getView(viewId);
+        if (null == view) return this;
         view.setMax(max);
         view.setRating(rating);
         return this;
@@ -235,23 +273,40 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public RecyclerHolder setTag(int viewId, Object tag) {
         View view = getView(viewId);
+        if (null == view) return this;
         view.setTag(tag);
         return this;
     }
 
     public RecyclerHolder setTag(int viewId, int key, Object tag) {
         View view = getView(viewId);
+        if (null == view) return this;
         view.setTag(key, tag);
         return this;
     }
 
     public RecyclerHolder setChecked(int viewId, boolean checked) {
         View view = getView(viewId);
+        if (null == view) return this;
         if (view instanceof CompoundButton) {
             ((CompoundButton) view).setChecked(checked);
         } else if (view instanceof CheckedTextView) {
             ((CheckedTextView) view).setChecked(checked);
         }
         return this;
+    }
+
+    public String getEditStr(int id) {
+        EditText edit = getView(id);
+        if (null == edit) return "";
+        return edit.getText().toString();
+    }
+
+    public void setInputEnable(int viewId, boolean enable) {
+        final EditText edit = getView(viewId);
+        if (null == edit) return;
+        edit.setCursorVisible(enable);
+        edit.setFocusable(enable);
+        edit.setFocusableInTouchMode(enable);
     }
 }

@@ -26,7 +26,7 @@ class ClickActivity : AppCompatActivity() {
     }
 
     private val mSpaceDecoration: SpaceDecoration? by lazy {
-        SpaceDecoration(10)
+        SpaceDecoration(10f)
     }
 
     private val mLoadAdapter: BaseCommonAdapter<String> by lazy {

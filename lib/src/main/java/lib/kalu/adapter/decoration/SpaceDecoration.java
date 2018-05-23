@@ -36,7 +36,7 @@ public final class SpaceDecoration extends RecyclerView.ItemDecoration {
         this(1);
     }
 
-    public SpaceDecoration(int dividerSize) {
+    public SpaceDecoration(float dividerSize) {
         this(dividerSize, 1);
     }
 
@@ -44,7 +44,7 @@ public final class SpaceDecoration extends RecyclerView.ItemDecoration {
         this(drawable, 1);
     }
 
-    public SpaceDecoration(int dividerSize, int dividerColor) {
+    public SpaceDecoration(float dividerSize, int dividerColor) {
         mDividerSize = dividerSize;
         mDividerDrawableV = new ColorDrawable(dividerColor);
         mDividerDrawableH = mDividerDrawableV;

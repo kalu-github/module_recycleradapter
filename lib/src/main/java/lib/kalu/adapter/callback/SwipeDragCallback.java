@@ -16,15 +16,12 @@ import lib.kalu.adapter.holder.RecyclerHolder;
  */
 public class SwipeDragCallback extends ItemTouchHelper.Callback {
 
-    private BaseCommonAdapter mAdapter;
-
     float mMoveThreshold = 0.1f;
     float mSwipeThreshold = 0.7f;
-
     int mDragMoveFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-
     // ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
     int mSwipeMoveFlags = ItemTouchHelper.END;
+    private BaseCommonAdapter mAdapter;
 
     public SwipeDragCallback(BaseCommonAdapter adapter) {
         mAdapter = adapter;

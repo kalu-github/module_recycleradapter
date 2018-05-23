@@ -27,7 +27,7 @@ public abstract class BaseLoadMultAdapter<T extends MultModel> extends BaseLoadA
     @Override
     protected int getItemModelType(int position) {
         Object item = getData().get(position);
-        return item instanceof MultModel ? ((MultModel) item).getItemType() : MultModel.TYPE_1;
+        return item instanceof MultModel ? ((MultModel) item).getMultType() : MultModel.TYPE_1;
     }
 
     @Override

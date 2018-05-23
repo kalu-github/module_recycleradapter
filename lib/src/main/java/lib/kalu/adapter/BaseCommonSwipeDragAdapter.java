@@ -185,7 +185,7 @@ public abstract class BaseCommonSwipeDragAdapter<T> extends BaseCommonAdapter<T>
 
     public void onItemSwiping(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
         if (!itemSwipeEnabled) return;
-        onSwipeMove(viewHolder, canvas,dX, dY, isCurrentlyActive, dX > 0);
+        onSwipeMove(viewHolder, canvas, dX, dY, isCurrentlyActive, dX > 0);
     }
 
     /*********************************************************************************************/
@@ -202,5 +202,5 @@ public abstract class BaseCommonSwipeDragAdapter<T> extends BaseCommonAdapter<T>
 
     protected abstract void onSwipeStart(RecyclerView.ViewHolder holder, int position);
 
-    protected abstract void onSwipeMove(RecyclerView.ViewHolder holder,Canvas canvas,  float moveX, float moveY, boolean isCurrentlyActive, boolean isSwipeLeft);
+    protected abstract void onSwipeMove(RecyclerView.ViewHolder holder, Canvas canvas, float moveX, float moveY, boolean isCurrentlyActive, boolean isSwipeLeft);
 }

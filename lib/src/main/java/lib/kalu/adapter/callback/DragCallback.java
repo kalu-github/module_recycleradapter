@@ -23,6 +23,10 @@ public class DragCallback extends ItemTouchHelper.Callback {
     // 拖拽方向
     private int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
 
+    public DragCallback(BaseCommonAdapter adapter) {
+        mAdapter = adapter;
+    }
+
     /**
      * 1.左右(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
      * 2.上下(ItemTouchHelper.UP | ItemTouchHelper.DOWN)
@@ -30,10 +34,6 @@ public class DragCallback extends ItemTouchHelper.Callback {
      */
     public void setDragFlags(int dragFlags) {
         this.dragFlags = dragFlags;
-    }
-
-    public DragCallback(BaseCommonAdapter adapter) {
-        mAdapter = adapter;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DragCallback extends ItemTouchHelper.Callback {
             BaseCommonDragAdapter temp = (BaseCommonDragAdapter) mAdapter;
             temp.onItemDragStart(viewHolder);
             viewHolder.itemView.setTag(DRAG_ID_TAG, true);
-        }else if (mAdapter instanceof BaseLoadDragAdapter) {
+        } else if (mAdapter instanceof BaseLoadDragAdapter) {
             BaseLoadDragAdapter temp = (BaseLoadDragAdapter) mAdapter;
             temp.onItemDragStart(viewHolder);
             viewHolder.itemView.setTag(DRAG_ID_TAG, true);
@@ -85,7 +85,7 @@ public class DragCallback extends ItemTouchHelper.Callback {
             BaseCommonDragAdapter temp = (BaseCommonDragAdapter) mAdapter;
             temp.onItemDragEnd(viewHolder);
             viewHolder.itemView.setTag(DRAG_ID_TAG, false);
-        }else if (mAdapter instanceof BaseLoadDragAdapter) {
+        } else if (mAdapter instanceof BaseLoadDragAdapter) {
             BaseLoadDragAdapter temp = (BaseLoadDragAdapter) mAdapter;
             temp.onItemDragEnd(viewHolder);
             viewHolder.itemView.setTag(DRAG_ID_TAG, false);
@@ -113,7 +113,7 @@ public class DragCallback extends ItemTouchHelper.Callback {
         if (mAdapter instanceof BaseCommonDragAdapter) {
             BaseCommonDragAdapter temp = (BaseCommonDragAdapter) mAdapter;
             temp.onItemDragMove(source, target);
-        }else if (mAdapter instanceof BaseLoadDragAdapter) {
+        } else if (mAdapter instanceof BaseLoadDragAdapter) {
             BaseLoadDragAdapter temp = (BaseLoadDragAdapter) mAdapter;
             temp.onItemDragMove(source, target);
         }

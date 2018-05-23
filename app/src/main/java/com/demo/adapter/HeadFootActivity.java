@@ -27,23 +27,23 @@ public class HeadFootActivity extends AppCompatActivity {
         initAdapter();
 
         View headerView = getLayoutInflater().inflate(R.layout.activity_headfoot_head, (ViewGroup) mRecyclerView.getParent(), false);
-        headFootAdapter.addHeadView(headerView);
+        headFootAdapter.addHead(headerView);
         headerView.findViewById(R.id.head_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 View headerView = getLayoutInflater().inflate(R.layout.activity_headfoot_head, (ViewGroup) mRecyclerView.getParent(), false);
-                headFootAdapter.addHeadView(headerView);
+                headFootAdapter.addHead(headerView);
             }
         });
 
 
         View footerView = getLayoutInflater().inflate(R.layout.activity_headfoot_foot, (ViewGroup) mRecyclerView.getParent(), false);
-        headFootAdapter.addFootView(footerView, 0);
+        headFootAdapter.addFoot(footerView, 0);
         footerView.findViewById(R.id.foot_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 View footerView = getLayoutInflater().inflate(R.layout.activity_headfoot_foot, (ViewGroup) mRecyclerView.getParent(), false);
-                headFootAdapter.addFootView(footerView, 0);
+                headFootAdapter.addFoot(footerView, 0);
             }
         });
 

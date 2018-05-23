@@ -109,7 +109,7 @@ public class StickyActivity1 extends AppCompatActivity {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(getApplicationContext(), 250));
         textView.setLayoutParams(layoutParams);
 
-        mAdapter.addHeadView(textView);
+        mAdapter.addHead(textView);
 
         mRv.setAdapter(mAdapter);
     }

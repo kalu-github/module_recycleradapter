@@ -14,7 +14,7 @@ public class Person implements MultModel {
     public int age;
 
     @Override
-    public int getItemType() {
+    public int getMultType() {
         return TransAdapter.TYPE_PERSON;
     }
 }

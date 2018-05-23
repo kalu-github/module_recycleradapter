@@ -9,6 +9,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -50,25 +51,21 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<RecyclerHolder> {
 
     protected static final String TAG = BaseCommonAdapter.class.getSimpleName();
-
+    private final Interpolator mInterpolator = new LinearInterpolator();
+    protected int mLastPosition = -1;
+    // 布局ID
+    protected int mLayoutResId;
+    protected LinearLayout mHeaderLayout, mFooterLayout;
+    protected FrameLayout mEmptyLayout;
     // 是否仅仅第一次加载显示动画
     private boolean isOpenAnimFirstOnly = true;
     // 显示动画
     private boolean isOpenAnim = false;
     // 动画显示时间
     private int mAnimTime = 300;
-
-    protected int mLastPosition = -1;
-
     private BaseAnimation mSelectAnimation = new AlphaInAnimation();
-    // 布局ID
-    protected int mLayoutResId;
     // 数据集合
     private List<T> mModelList;
-    private final Interpolator mInterpolator = new LinearInterpolator();
-
-    protected LinearLayout mHeaderLayout, mFooterLayout;
-    protected FrameLayout mEmptyLayout;
 
     /***********************************     构造器API       **************************************/
 
@@ -231,7 +228,62 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             default:
                 holder = createModelHolder(parent, viewType);
         }
+
+        // 设置滑动监听
+        if (parent instanceof RecyclerView && null == parent.getTag()) {
+
+            parent.setTag(true);
+            final RecyclerView temp = (RecyclerView) parent;
+            final RecyclerView.LayoutManager manager = temp.getLayoutManager();
+
+            final int[] rangeY = {0};
+
+            temp.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    rangeY[0] -= dy;
+
+                    if (manager instanceof GridLayoutManager) {
+                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
+                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
+                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition);
+                    } else if (manager instanceof LinearLayoutManager) {
+                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
+                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
+                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition);
+                    } else {
+//                        StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
+//                        final int positions[] = new int[1];
+//                        temp.findFirstVisibleItemPositions(positions);
+                    }
+                }
+
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+            });
+        }
+
         return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerHolder holder, int position) {
+        switch (holder.getItemViewType()) {
+            case RecyclerHolder.HEAD_VIEW:
+            case RecyclerHolder.NULL_VIEW:
+            case RecyclerHolder.FOOT_VIEW:
+                break;
+            default:
+                final int headCount = getHeadCount();
+                int realPosition = holder.getLayoutPosition() - headCount;
+                onNext(holder, mModelList.get(realPosition), realPosition);
+                break;
+        }
     }
 
     @Override
@@ -262,27 +314,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         });
     }
 
-    @Override
-    public void onBindViewHolder(RecyclerHolder holder, int position) {
-        switch (holder.getItemViewType()) {
-            case RecyclerHolder.HEAD_VIEW:
-            case RecyclerHolder.NULL_VIEW:
-            case RecyclerHolder.FOOT_VIEW:
-                break;
-            default:
-                onNext(holder, mModelList.get(holder.getLayoutPosition() - getHeadCount()), position);
-                break;
-        }
-    }
-
-    /***********************************       动画API       **************************************/
-
-    @IntDef({BaseAnimation.ALPHAIN, BaseAnimation.SCALEIN, BaseAnimation.SLIDEIN_BOTTOM, BaseAnimation.SLIDEIN_LEFT, BaseAnimation.SLIDEIN_RIGHT})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface AnimationType {
-    }
-
-    public void setLoadAnimation(@AnimationType int animationType, int animTime, boolean isOpenAnimFirstOnly) {
+    public final void setLoadAnimation(@AnimationType int animationType, int animTime, boolean isOpenAnimFirstOnly) {
         this.isOpenAnim = true;
         this.isOpenAnimFirstOnly = isOpenAnimFirstOnly;
         this.mAnimTime = animTime;
@@ -427,19 +459,19 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         return (mHeaderLayout == null || mHeaderLayout.getChildCount() == 0) ? 0 : 1;
     }
 
-    public LinearLayout getHeadLayout() {
+    public LinearLayout getHead() {
         return mHeaderLayout;
     }
 
-    public void addHeadView(View header) {
-        addHeadView(header, -1);
+    public void addHead(View header) {
+        addHead(header, -1);
     }
 
-    public void addHeadView(View header, int index) {
-        addHeadView(header, index, LinearLayout.VERTICAL);
+    public void addHead(View header, int index) {
+        addHead(header, index, LinearLayout.VERTICAL);
     }
 
-    public void addHeadView(View header, int index, int orientation) {
+    public void addHead(View header, int index, int orientation) {
         if (mHeaderLayout == null) {
             mHeaderLayout = new LinearLayout(header.getContext());
             if (orientation == LinearLayout.VERTICAL) {
@@ -463,24 +495,24 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public void changeHeadView(View header) {
-        changeHeadView(header, 0, LinearLayout.VERTICAL);
+    public void changeHead(View header) {
+        changeHead(header, 0, LinearLayout.VERTICAL);
     }
 
-    public void changeHeadView(View header, int index) {
-        changeHeadView(header, index, LinearLayout.VERTICAL);
+    public void changeHead(View header, int index) {
+        changeHead(header, index, LinearLayout.VERTICAL);
     }
 
-    public void changeHeadView(View header, int index, int orientation) {
+    public void changeHead(View header, int index, int orientation) {
         if (mHeaderLayout == null || mHeaderLayout.getChildCount() <= index) {
-            addHeadView(header, index, orientation);
+            addHead(header, index, orientation);
         } else {
             mHeaderLayout.removeViewAt(index);
             mHeaderLayout.addView(header, index);
         }
     }
 
-    public void removeHeadView(View header) {
+    public void removeHead(View header) {
         if (getHeadCount() == 0) return;
 
         mHeaderLayout.removeView(header);
@@ -492,7 +524,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public void removeAllHeadView() {
+    public void removeAllHead() {
         if (getHeadCount() == 0) return;
 
         mHeaderLayout.removeAllViews();
@@ -520,19 +552,19 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         return (mFooterLayout == null || mFooterLayout.getChildCount() == 0) ? 0 : 1;
     }
 
-    public LinearLayout getFootLayout() {
+    public LinearLayout getFoot() {
         return mFooterLayout;
     }
 
-    public void addFootView(View footer) {
-        addFootView(footer, -1, LinearLayout.VERTICAL);
+    public void addFoot(View footer) {
+        addFoot(footer, -1, LinearLayout.VERTICAL);
     }
 
-    public void addFootView(View footer, int index) {
-        addFootView(footer, index, LinearLayout.VERTICAL);
+    public void addFoot(View footer, int index) {
+        addFoot(footer, index, LinearLayout.VERTICAL);
     }
 
-    public void addFootView(View footer, int index, int orientation) {
+    public void addFoot(View footer, int index, int orientation) {
         if (mFooterLayout == null) {
             mFooterLayout = new LinearLayout(footer.getContext());
             if (orientation == LinearLayout.VERTICAL) {
@@ -556,24 +588,24 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public void changeFootView(View header) {
-        changeFootView(header, 0, LinearLayout.VERTICAL);
+    public void changeFoot(View header) {
+        changeFoot(header, 0, LinearLayout.VERTICAL);
     }
 
-    public void changeFootView(View header, int index) {
-        changeFootView(header, index, LinearLayout.VERTICAL);
+    public void changeFoot(View header, int index) {
+        changeFoot(header, index, LinearLayout.VERTICAL);
     }
 
-    public void changeFootView(View header, int index, int orientation) {
+    public void changeFoot(View header, int index, int orientation) {
         if (mFooterLayout == null || mFooterLayout.getChildCount() <= index) {
-            addFootView(header, index, orientation);
+            addFoot(header, index, orientation);
         } else {
             mFooterLayout.removeViewAt(index);
             mFooterLayout.addView(header, index);
         }
     }
 
-    public void removeFootView(View footer) {
+    public void removeFoot(View footer) {
         if (getFootCount() == 0) return;
 
         mFooterLayout.removeView(footer);
@@ -585,7 +617,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public void removeAllFootView() {
+    public void removeAllFoot() {
         if (getFootCount() == 0) return;
 
         mFooterLayout.removeAllViews();
@@ -608,6 +640,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     public void setNullView(Context context, int layoutResId) {
         View view = LayoutInflater.from(context).inflate(layoutResId, null, false);
         setNullView(view);
+    }
+
+    public View getNullView() {
+        return mEmptyLayout;
     }
 
     public void setNullView(View emptyView) {
@@ -634,10 +670,6 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             }
             notifyItemInserted(position);
         }
-    }
-
-    public View getNullView() {
-        return mEmptyLayout;
     }
 
     public void removeNullView() {
@@ -689,4 +721,21 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     /**********************************       抽象方法API     **************************************/
 
     protected abstract void onNext(RecyclerHolder holder, T model, int position);
+
+    /**
+     * @param recycler
+     * @param itemHeight   第一个显示的孩子高度
+     * @param rollHeight   滑动距离
+     * @param rollState    滑动状态
+     * @param fistPosition 第一个显示的孩子索引位置
+     */
+    protected void onRoll(RecyclerView recycler, int itemHeight, int rollHeight, int rollState, int fistPosition) {
+    }
+
+    /***********************************       动画API       **************************************/
+
+    @IntDef({BaseAnimation.ALPHAIN, BaseAnimation.SCALEIN, BaseAnimation.SLIDEIN_BOTTOM, BaseAnimation.SLIDEIN_LEFT, BaseAnimation.SLIDEIN_RIGHT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AnimationType {
+    }
 }
