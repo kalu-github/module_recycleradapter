@@ -1,6 +1,5 @@
 package lib.kalu.adapter.holder;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -9,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.view.View;
@@ -147,13 +147,6 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    public RecyclerHolder setBackgroundColor(Context context, int viewId, int color) {
-        View view = getView(viewId);
-        if (null == view) return this;
-        view.setBackgroundColor(context.getResources().getColor(color));
-        return this;
-    }
-
     public RecyclerHolder setBackgroundRes(int viewId, @DrawableRes int backgroundRes) {
         View view = getView(viewId);
         if (null == view) return this;
@@ -161,24 +154,10 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    public RecyclerHolder setTextColor(Context context, int viewId, int color) {
-        TextView view = getView(viewId);
-        if (null == view) return this;
-        view.setTextColor(context.getResources().getColor(color));
-        return this;
-    }
-
     public RecyclerHolder setTextScaleX(int viewId, float size) {
         TextView view = getView(viewId);
         if (null == view) return this;
         view.setTextScaleX(size);
-        return this;
-    }
-
-    public RecyclerHolder seBackgroundColor(Context context, int viewId, int color) {
-        View view = getView(viewId);
-        if (null == view) return this;
-        view.setBackgroundColor(context.getResources().getColor(color));
         return this;
     }
 
@@ -294,19 +273,5 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
             ((CheckedTextView) view).setChecked(checked);
         }
         return this;
-    }
-
-    public String getEditStr(int id) {
-        EditText edit = getView(id);
-        if (null == edit) return "";
-        return edit.getText().toString();
-    }
-
-    public void setInputEnable(int viewId, boolean enable) {
-        final EditText edit = getView(viewId);
-        if (null == edit) return;
-        edit.setCursorVisible(enable);
-        edit.setFocusable(enable);
-        edit.setFocusableInTouchMode(enable);
     }
 }

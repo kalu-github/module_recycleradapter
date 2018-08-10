@@ -54,7 +54,7 @@ class FloatActivity : AppCompatActivity() {
             mArrayList?.add(i.toString())
         }
 
-        val inflate = LayoutInflater.from(applicationContext).inflate(R.layout.activity_float_menu, null)
+        val inflate:View = LayoutInflater.from(applicationContext).inflate(R.layout.activity_float_menu, null)
         inflate.setOnClickListener { Toast.makeText(applicationContext, "点击", Toast.LENGTH_LONG).show(); }
 
         val floatDecoration = FloatDecoration(inflate)

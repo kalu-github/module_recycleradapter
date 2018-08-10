@@ -17,10 +17,6 @@ public final class FloatDecoration extends RecyclerView.ItemDecoration {
     private int height;
     private View tab;
 
-    public FloatDecoration(View inflate) {
-        //根据position获取View
-        this.tab = inflate;
-    }
 
     public void setDecoration(View tab) {
         //根据position获取View

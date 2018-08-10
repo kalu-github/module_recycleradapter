@@ -65,7 +65,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     private int mAnimTime = 300;
     private BaseAnimation mSelectAnimation = new AlphaInAnimation();
     // 数据集合
-    private List<T> mModelList;
+    List<T> mModelList;
 
     /***********************************     构造器API       **************************************/
 
@@ -104,6 +104,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     protected RecyclerHolder createSimpleHolder(View view) {
+
+        if (null == view)
+            return null;
+
         Class clazz = getClass();
         Class z = null;
         while (null == z && null != clazz) {
@@ -243,27 +247,64 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-
                     rangeY[0] -= dy;
 
-                    if (manager instanceof GridLayoutManager) {
-                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
-                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
-                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition);
-                    } else if (manager instanceof LinearLayoutManager) {
-                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
-                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
-                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition);
-                    } else {
-//                        StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
-//                        final int positions[] = new int[1];
-//                        temp.findFirstVisibleItemPositions(positions);
-                    }
+//                    if (manager instanceof GridLayoutManager) {
+//                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
+//                        final int lastPosition = ((GridLayoutManager) manager).findLastVisibleItemPosition();
+//                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
+//                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition, lastPosition);
+//                    } else if (manager instanceof LinearLayoutManager) {
+//                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
+//                        final int lastPosition = ((LinearLayoutManager) manager).findLastVisibleItemPosition();
+//                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
+//                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition, lastPosition);
+//                    } else {
+//                        final StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
+//                        int[] firstPosition = null;
+//                        firstPosition = temp.findFirstVisibleItemPositions(firstPosition);
+//                        final int firstItemHeight = manager.findViewByPosition(firstPosition[0]).getHeight();
+//                        int[] lastPosition = null;
+//                        lastPosition =  temp.findLastVisibleItemPositions(lastPosition);
+//                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition[0], lastPosition[0]);
+//                    }
                 }
 
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
+
+                    if (manager instanceof GridLayoutManager) {
+                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
+                        final int lastPosition = ((GridLayoutManager) manager).findLastVisibleItemPosition();
+
+                        final View child = manager.findViewByPosition(firstPosition);
+                        if (null != child) {
+                            final int firstItemHeight = child.getHeight();
+                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition, lastPosition);
+                        }
+                    } else if (manager instanceof LinearLayoutManager) {
+                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
+                        final int lastPosition = ((LinearLayoutManager) manager).findLastVisibleItemPosition();
+
+                        final View child = manager.findViewByPosition(firstPosition);
+                        if (null != child) {
+                            final int firstItemHeight = child.getHeight();
+                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition, lastPosition);
+                        }
+                    } else {
+//                        final StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
+//                        int[] firstPosition = null;
+//                        firstPosition = temp.findFirstVisibleItemPositions(firstPosition);
+//
+//                        final View child = manager.findViewByPosition(firstPosition[0]);
+//                        if(null != child){
+//                            final int firstItemHeight = child.getHeight();
+//                            int[] lastPosition = null;
+//                            lastPosition =  temp.findLastVisibleItemPositions(lastPosition);
+//                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition[0], lastPosition[0]);
+//                        }
+                    }
                 }
             });
         }
@@ -646,30 +687,31 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         return mEmptyLayout;
     }
 
+
+    // TODO: 2018/8/10
     public void setNullView(View emptyView) {
-        boolean insert = false;
-        if (mEmptyLayout == null) {
+
+        if (null == mEmptyLayout) {
             mEmptyLayout = new FrameLayout(emptyView.getContext());
-            final LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            final ViewGroup.LayoutParams lp = emptyView.getLayoutParams();
-            if (lp != null) {
-                layoutParams.width = lp.width;
-                layoutParams.height = lp.height;
-            }
-            mEmptyLayout.setLayoutParams(layoutParams);
-            insert = true;
         }
+        if (null == mEmptyLayout.getLayoutParams()) {
+            mEmptyLayout.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        }
+        final ViewGroup.LayoutParams mEmptyParams = mEmptyLayout.getLayoutParams();
+        mEmptyParams.width = LayoutParams.MATCH_PARENT;
+        mEmptyParams.height = LayoutParams.MATCH_PARENT;
         mEmptyLayout.removeAllViews();
         mEmptyLayout.addView(emptyView);
 
-        if (!insert) return;
-        if (getNullCount() == 1) {
-            int position = 0;
-            if (getHeadCount() != 0) {
-                position++;
-            }
-            notifyItemInserted(position);
+        final int nullCount = getNullCount();
+        if (nullCount != 1)
+            return;
+
+        int position = 0;
+        if (getHeadCount() != 0) {
+            position++;
         }
+        notifyItemInserted(position);
     }
 
     public void removeNullView() {
@@ -681,7 +723,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     /***********************************       数据API      **************************************/
 
-    public void clearAddData(@Nullable List<T> data) {
+    public void clearInsertData(@Nullable List<T> data) {
 
         mModelList.clear();
         mLastPosition = -1;
@@ -724,12 +766,13 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     /**
      * @param recycler
-     * @param itemHeight   第一个显示的孩子高度
-     * @param rollHeight   滑动距离
-     * @param rollState    滑动状态
-     * @param fistPosition 第一个显示的孩子索引位置
+     * @param itemHeight          第一个显示的孩子高度
+     * @param rollHeight          滑动距离
+     * @param rollState           滑动状态
+     * @param fistVisablePosition 第一个显示的孩子索引位置
+     * @param lastVisablePosition 最后一个显示的孩子索引位置
      */
-    protected void onRoll(RecyclerView recycler, int itemHeight, int rollHeight, int rollState, int fistPosition) {
+    protected void onRoll(RecyclerView recycler, int itemHeight, int rollHeight, int rollState, int fistVisablePosition, int lastVisablePosition) {
     }
 
     /***********************************       动画API       **************************************/

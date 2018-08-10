@@ -10,7 +10,7 @@ import android.util.Log;
  * description: fix-bug-IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter的解决方案
  * created by kalu on 2017/3/24 15:05
  */
-public final class CrashLinearLayoutManager extends LinearLayoutManager {
+public class CrashLinearLayoutManager extends LinearLayoutManager {
 
     private boolean isScrollEnabled = true;
 
@@ -31,7 +31,7 @@ public final class CrashLinearLayoutManager extends LinearLayoutManager {
         try {
             super.onLayoutChildren(recycler, state);
         } catch (Exception e) {
-             Log.e("", e.getMessage(), e);
+            Log.e("CrashManager", e.getMessage(), e);
         }
     }
 

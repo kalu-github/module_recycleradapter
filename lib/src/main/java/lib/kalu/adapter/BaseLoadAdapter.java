@@ -9,7 +9,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
 
 import lib.kalu.adapter.holder.RecyclerHolder;
@@ -49,7 +48,13 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
     @Override
     public int getItemCount() {
-        return getData().size() + getNullCount() + getHeadCount() + getFootCount() + 1;
+
+        final List<T> list = getData();
+        if (null == list || list.size() == 0) {
+            return list.size() + getNullCount() + getHeadCount() + getFootCount();
+        } else {
+            return list.size() + getNullCount() + getHeadCount() + getFootCount() + 1;
+        }
     }
 
     @Override
@@ -115,29 +120,11 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 //                        break;
 //                    }
 
-            final int[] rangeY = {0};
-
             temp.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-
-                    rangeY[0] -= dy;
-
-                    if (manager instanceof GridLayoutManager) {
-                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
-                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
-                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition);
-                    } else if (manager instanceof LinearLayoutManager) {
-                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
-                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
-                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition);
-                    } else {
-//                        StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
-//                        final int positions[] = new int[1];
-//                        temp.findFirstVisibleItemPositions(positions);
-                    }
                 }
 
                 @Override
@@ -225,7 +212,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     }
 
     @Override
-    public void clearAddData(@Nullable List<T> data) {
+    public void clearInsertData(@Nullable List<T> data) {
         getData().clear();
         mLastPosition = -1;
         if (null != data) {

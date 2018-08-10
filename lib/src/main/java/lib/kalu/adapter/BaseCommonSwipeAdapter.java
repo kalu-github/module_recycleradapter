@@ -5,7 +5,6 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-
 import java.util.List;
 
 import lib.kalu.adapter.holder.RecyclerHolder;

@@ -6,11 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.List;
-
 import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.model.SectionModel;
+import java.util.List;
 
 /**
  * description: 分组, 加载更多

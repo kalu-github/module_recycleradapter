@@ -42,19 +42,4 @@ public abstract class BaseCommonSectionAdapter<T extends SectionModel> extends B
     protected boolean isModelType(int type) {
         return super.isModelType(type) && (type != RecyclerHolder.SECTION_VIEW);
     }
-
-    @Override
-    public void onBindViewHolder(RecyclerHolder holder, int position) {
-        switch (holder.getItemViewType()) {
-            case RecyclerHolder.SECTION_VIEW:
-                setModelStyle(holder, false);
-                onSection(holder, position);
-                break;
-            default:
-                super.onBindViewHolder(holder, position);
-                break;
-        }
-    }
-
-    protected abstract void onSection(RecyclerHolder holder, int position);
 }
