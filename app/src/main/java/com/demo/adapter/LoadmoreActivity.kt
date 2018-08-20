@@ -36,7 +36,7 @@ class LoadmoreActivity : AppCompatActivity() {
     private val mLoadAdapter: BaseLoadAdapter<String> by lazy {
 
         object : BaseLoadAdapter<String>(mArrayList, R.layout.activity_loadmore_item, R.layout.activity_loadmore_loading) {
-            override fun onLoad(holder: RecyclerHolder?, isOver: Boolean) {
+            override fun onLoad(holder: RecyclerHolder?, isOver: Boolean, isRefresh: Boolean) {
                 if (isOver) {
 
                 } else {
@@ -47,7 +47,7 @@ class LoadmoreActivity : AppCompatActivity() {
                             for (i in 0..2) {
                                 mArrayList?.add(i.toString())
                             }
-                            loadOverNotifyDataSetChanged(mRecyclerView)
+                            loadOverDataSetChanged(mRecyclerView)
                             holder!!.setText(R.id.loading_text, "-- 我也是有底线的 --")
                             holder!!.setVisible(R.id.loading_cycle, View.GONE)
                         })

@@ -2,13 +2,14 @@ package lib.kalu.adapter;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import java.util.List;
 
 import lib.kalu.adapter.holder.RecyclerHolder;
@@ -21,7 +22,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
     // 加载数据数据完毕了
     private boolean isLoadOver;
-    private boolean isLoading;
+    private boolean isListener;
 
     private @LayoutRes
     int loadResId = -1;
@@ -91,8 +92,8 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         final RecyclerHolder holder;
         switch (viewType) {
             case RecyclerHolder.LOAD_VIEW:
-                final View load = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(loadResId, parent, false);
-                holder = createSimpleHolder(load);
+                final View view = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(loadResId, parent, false);
+                holder = createSimpleHolder(view);
                 break;
             case RecyclerHolder.HEAD_VIEW:
                 holder = createSimpleHolder(mHeaderLayout);
@@ -107,76 +108,6 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
                 holder = createModelHolder(parent, viewType);
         }
 
-        // 设置滑动监听
-        if (parent instanceof RecyclerView && null == parent.getTag()) {
-
-            parent.setTag(true);
-            final RecyclerView temp = (RecyclerView) parent;
-            final RecyclerView.LayoutManager manager = temp.getLayoutManager();
-//
-//                    if (!temp.canScrollVertically(-1)) {
-//                        isLoadOver = true;
-//                        onLoad(holder, isLoadOver);
-//                        break;
-//                    }
-
-            temp.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                }
-
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-
-                    if (isLoading || newState != 0) return;
-
-                    // 没有真正滑动到底部, 但是最后一个item可见
-                    if (temp.canScrollVertically(1)) {
-                        // 网格布局
-                        if (manager instanceof GridLayoutManager) {
-                            GridLayoutManager temp = (GridLayoutManager) manager;
-                            final int itemCount = temp.getItemCount();
-                            final int lastVisibleItemPositionReal = temp.findLastVisibleItemPosition() + 1;
-                            if (itemCount != lastVisibleItemPositionReal) return;
-
-                            onLoad(holder, isLoadOver);
-                            isLoading = true;
-                        }
-                        // 线性布局
-                        else if (manager instanceof LinearLayoutManager) {
-                            LinearLayoutManager temp = (LinearLayoutManager) manager;
-                            final int itemCount = temp.getItemCount();
-                            final int lastVisibleItemPositionReal = temp.findLastVisibleItemPosition() + 1;
-                            if (itemCount != lastVisibleItemPositionReal) return;
-
-                            onLoad(holder, isLoadOver);
-                            isLoading = true;
-                        }
-                        // 瀑布流布局
-                        else {
-                            StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
-                            final int positions[] = new int[1];
-                            temp.findLastVisibleItemPositions(positions);
-                            final int itemCount = temp.getItemCount();
-                            final int lastVisibleItemPositionReal = positions[0] + 1;
-                            if (itemCount != lastVisibleItemPositionReal) return;
-
-                            onLoad(holder, isLoadOver);
-                            isLoading = true;
-                        }
-                    }
-                    // 真正滑动到底部
-                    else {
-                        onLoad(holder, isLoadOver);
-                        isLoading = true;
-                    }
-                }
-            });
-        }
-
         return holder;
     }
 
@@ -187,7 +118,10 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
             case RecyclerHolder.HEAD_VIEW:
             case RecyclerHolder.NULL_VIEW:
             case RecyclerHolder.FOOT_VIEW:
+                break;
             case RecyclerHolder.LOAD_VIEW:
+                onLoad(holder, isLoadOver, false);
+                Log.e("onBindViewHolder", "onLoad ==> isLoadOver = " + isLoadOver);
                 break;
             default:
                 final int headCount = getHeadCount();
@@ -221,27 +155,50 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         notifyDataSetChanged();
     }
 
+    private final void mustLoad(RecyclerView recycler, RecyclerView.LayoutManager manager, boolean isRefresh) {
+
+        if (null == recycler)
+            return;
+
+        if (null == manager)
+            return;
+
+        final RecyclerView.Adapter adapter = recycler.getAdapter();
+        if (null == adapter || adapter.getItemCount() == 0)
+            return;
+
+        final int itemViewType = adapter.getItemViewType(adapter.getItemCount() - 1);
+        if (itemViewType != RecyclerHolder.LOAD_VIEW)
+            return;
+
+        final View view = manager.findViewByPosition(adapter.getItemCount() - 1);
+        if (null == view)
+            return;
+
+        final RecyclerView.ViewHolder childViewHolder = recycler.getChildViewHolder(view);
+        if (null == childViewHolder || !(childViewHolder instanceof RecyclerHolder))
+            return;
+
+        onLoad((RecyclerHolder) childViewHolder, isLoadOver, isRefresh);
+    }
+
     /***********************************       方法API       **************************************/
 
     /**
      * 加载结束
      */
-    public void loadOverNotifyDataSetChanged(RecyclerView recycler) {
+    public void loadOverDataSetChanged(RecyclerView recycler) {
         isLoadOver = true;
-        isLoading = false;
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
         if (null == manager) return;
         notifyItemRangeChanged(manager.getItemCount(), getItemCount());
+        mustLoad(recycler, manager, false);
     }
 
-    /**
-     * 加载完成
-     */
-    public void loadCompleteNotifyDataSetChanged(RecyclerView recycler) {
+    public void loadSuccDataSetChanged(RecyclerView recycler) {
         isLoadOver = false;
-        isLoading = false;
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
@@ -252,14 +209,77 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     /**
      * 重置加载更多标记
      */
-    public void loadResetNotifyDataSetChanged(RecyclerView recycler) {
+    public void loadResetDataSetChanged(RecyclerView recycler) {
         isLoadOver = false;
-        isLoading = false;
 
-        if (null == recycler) return;
+        if (null == recycler)
+            return;
+
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
-        if (null == manager) return;
+        if (null == manager)
+            return;
+
         notifyItemRangeChanged(manager.getItemCount(), getItemCount());
+        mustLoad(recycler, manager, true);
+    }
+
+    public void setLoadingText(RecyclerView recycler, String str, int viewId) {
+
+        if (null == recycler)
+            return;
+
+        if (TextUtils.isEmpty(str))
+            return;
+
+        final RecyclerView.LayoutManager layoutManager = recycler.getLayoutManager();
+        if (null == layoutManager)
+            return;
+
+        final RecyclerView.Adapter adapter = recycler.getAdapter();
+        if (null == adapter || adapter.getItemCount() == 0)
+            return;
+
+        final int itemViewType = adapter.getItemViewType(adapter.getItemCount() - 1);
+        if (itemViewType != RecyclerHolder.LOAD_VIEW)
+            return;
+
+        final View view = layoutManager.findViewByPosition(adapter.getItemCount() - 1);
+        if (null == view)
+            return;
+
+        final View text = view.findViewById(viewId);
+        if (null == text || !(text instanceof TextView))
+            return;
+
+        ((TextView) text).setText(str);
+    }
+
+    public void setLoadingVisable(RecyclerView recycler, int visibility, int viewId) {
+
+        if (null == recycler)
+            return;
+
+        final RecyclerView.LayoutManager layoutManager = recycler.getLayoutManager();
+        if (null == layoutManager)
+            return;
+
+        final RecyclerView.Adapter adapter = recycler.getAdapter();
+        if (null == adapter || adapter.getItemCount() == 0)
+            return;
+
+        final int itemViewType = adapter.getItemViewType(adapter.getItemCount() - 1);
+        if (itemViewType != RecyclerHolder.LOAD_VIEW)
+            return;
+
+        final View view = layoutManager.findViewByPosition(adapter.getItemCount() - 1);
+        if (null == view)
+            return;
+
+        final View bar = view.findViewById(viewId);
+        if (null == bar)
+            return;
+
+        bar.setVisibility(visibility);
     }
 
     /**********************************       抽象方法API     **************************************/
@@ -267,5 +287,5 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     /**
      * 加载更多
      */
-    protected abstract void onLoad(RecyclerHolder holder, boolean isOver);
+    protected abstract void onLoad(RecyclerHolder holder, boolean isOver, boolean isRefresh);
 }
