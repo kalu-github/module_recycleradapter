@@ -4,7 +4,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +120,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
                 break;
             case RecyclerHolder.LOAD_VIEW:
                 onLoad(holder, isLoadOver, false);
-                Log.e("onBindViewHolder", "onLoad ==> isLoadOver = " + isLoadOver);
+               // Log.e("onBindViewHolder", "onLoad ==> isLoadOver = " + isLoadOver);
                 break;
             default:
                 final int headCount = getHeadCount();
@@ -155,7 +154,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         notifyDataSetChanged();
     }
 
-    private final void mustLoad(RecyclerView recycler, RecyclerView.LayoutManager manager, boolean isRefresh) {
+    private final void forceLoad(RecyclerView recycler, RecyclerView.LayoutManager manager, boolean isRefresh) {
 
         if (null == recycler)
             return;
@@ -193,8 +192,8 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
         if (null == manager) return;
-        notifyItemRangeChanged(manager.getItemCount(), getItemCount());
-        mustLoad(recycler, manager, false);
+        notifyDataSetChanged();
+        forceLoad(recycler, manager, false);
     }
 
     public void loadSuccDataSetChanged(RecyclerView recycler) {
@@ -203,7 +202,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
         if (null == manager) return;
-        notifyItemRangeChanged(manager.getItemCount(), getItemCount());
+        notifyDataSetChanged();
     }
 
     /**
@@ -219,8 +218,8 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         if (null == manager)
             return;
 
-        notifyItemRangeChanged(manager.getItemCount(), getItemCount());
-        mustLoad(recycler, manager, true);
+        notifyDataSetChanged();
+        forceLoad(recycler, manager, true);
     }
 
     public void setLoadingText(RecyclerView recycler, String str, int viewId) {
