@@ -1,14 +1,14 @@
 package lib.kalu.adapter;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,30 +20,36 @@ import lib.kalu.adapter.holder.RecyclerHolder;
  */
 public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
-    // 加载数据数据完毕了
-    private boolean isLoadOver;
-    private boolean isListener;
+    private boolean isOver = false;
 
-    private @LayoutRes
-    int loadResId = -1;
+    private final Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
 
-    /***********************************     构造器API       **************************************/
+            if (null == msg || null == msg.obj || !(msg.obj instanceof RecyclerView))
+                return true;
 
-    /**
-     * 分类型, 不对外暴露API
-     */
-    BaseLoadAdapter(@Nullable List<T> data, @LayoutRes int loadResId) {
-        super(data);
-        this.loadResId = loadResId;
-    }
-
-    /**
-     * 普通, 对外暴露API
-     */
-    public BaseLoadAdapter(@Nullable List<T> data, @LayoutRes int itemResId, @LayoutRes int loadResId) {
-        super(data, itemResId);
-        this.loadResId = loadResId;
-    }
+            final RecyclerView recycler = (RecyclerView) msg.obj;
+            switch (msg.what) {
+                case 1:
+                    loadOverDataSetChanged(recycler);
+                    msg.obj = null;
+                    msg.recycle();
+                    break;
+                case 2:
+                    loadSuccDataSetChanged(recycler);
+                    msg.obj = null;
+                    msg.recycle();
+                    break;
+                case 3:
+                    loadResetDataSetChanged(recycler);
+                    msg.obj = null;
+                    msg.recycle();
+                    break;
+            }
+            return true;
+        }
+    });
 
     /***********************************       重写API       **************************************/
 
@@ -92,7 +98,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         final RecyclerHolder holder;
         switch (viewType) {
             case RecyclerHolder.LOAD_VIEW:
-                final View view = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(loadResId, parent, false);
+                final View view = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(initLoadResId(), parent, false);
                 holder = createSimpleHolder(view);
                 break;
             case RecyclerHolder.HEAD_VIEW:
@@ -120,8 +126,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
             case RecyclerHolder.FOOT_VIEW:
                 break;
             case RecyclerHolder.LOAD_VIEW:
-                onLoad(holder, isLoadOver, false);
-                Log.e("onBindViewHolder", "onLoad ==> isLoadOver = " + isLoadOver);
+                onLoad(holder, isOver);
                 break;
             default:
                 final int headCount = getHeadCount();
@@ -155,7 +160,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         notifyDataSetChanged();
     }
 
-    private final void mustLoad(RecyclerView recycler, RecyclerView.LayoutManager manager, boolean isRefresh) {
+    private final void forceLoad(RecyclerView recycler, RecyclerView.LayoutManager manager, boolean isOver) {
 
         if (null == recycler)
             return;
@@ -179,7 +184,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         if (null == childViewHolder || !(childViewHolder instanceof RecyclerHolder))
             return;
 
-        onLoad((RecyclerHolder) childViewHolder, isLoadOver, isRefresh);
+        onLoad((RecyclerHolder) childViewHolder, isOver);
     }
 
     /***********************************       方法API       **************************************/
@@ -187,30 +192,49 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     /**
      * 加载结束
      */
-    public void loadOverDataSetChanged(RecyclerView recycler) {
-        isLoadOver = true;
+    public final void loadOverDataSetChanged(final RecyclerView recycler) {
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
         if (null == manager) return;
-        notifyItemRangeChanged(manager.getItemCount(), getItemCount());
-        mustLoad(recycler, manager, false);
+
+        isOver = true;
+        if (recycler.getScrollState() == RecyclerView.SCROLL_STATE_IDLE || (recycler.isComputingLayout() == false)) {
+            notifyDataSetChanged();
+            forceLoad(recycler, manager, true);
+            // Log.e("kalu", "loadOverDataSetChanged ==> 静止状态");
+        } else {
+            final Message obtain = Message.obtain();
+            obtain.what = 1;
+            obtain.obj = recycler;
+            mHandler.sendMessageDelayed(obtain, 2000);
+            // Log.e("kalu", "loadOverDataSetChanged ==> 滑动状态, 延迟2s刷新");
+        }
     }
 
-    public void loadSuccDataSetChanged(RecyclerView recycler) {
-        isLoadOver = false;
+    public final void loadSuccDataSetChanged(final RecyclerView recycler) {
 
         if (null == recycler) return;
         final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
         if (null == manager) return;
-        notifyItemRangeChanged(manager.getItemCount(), getItemCount());
+
+        isOver = false;
+        if (recycler.getScrollState() == RecyclerView.SCROLL_STATE_IDLE || (recycler.isComputingLayout() == false)) {
+            notifyDataSetChanged();
+            // Log.e("kalu", "loadSuccDataSetChanged ==> 静止状态");
+        } else {
+            final Message obtain = Message.obtain();
+            obtain.what = 2;
+            obtain.obj = recycler;
+            mHandler.sendMessageDelayed(obtain, 2000);
+            // Log.e("kalu", "loadSuccDataSetChanged ==> 滑动状态, 延迟2s刷新");
+        }
     }
 
     /**
      * 重置加载更多标记
      */
-    public void loadResetDataSetChanged(RecyclerView recycler) {
-        isLoadOver = false;
+    public final void loadResetDataSetChanged(final RecyclerView recycler) {
 
         if (null == recycler)
             return;
@@ -219,73 +243,24 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         if (null == manager)
             return;
 
-        notifyItemRangeChanged(manager.getItemCount(), getItemCount());
-        mustLoad(recycler, manager, true);
-    }
-
-    public void setLoadingText(RecyclerView recycler, String str, int viewId) {
-
-        if (null == recycler)
-            return;
-
-        if (TextUtils.isEmpty(str))
-            return;
-
-        final RecyclerView.LayoutManager layoutManager = recycler.getLayoutManager();
-        if (null == layoutManager)
-            return;
-
-        final RecyclerView.Adapter adapter = recycler.getAdapter();
-        if (null == adapter || adapter.getItemCount() == 0)
-            return;
-
-        final int itemViewType = adapter.getItemViewType(adapter.getItemCount() - 1);
-        if (itemViewType != RecyclerHolder.LOAD_VIEW)
-            return;
-
-        final View view = layoutManager.findViewByPosition(adapter.getItemCount() - 1);
-        if (null == view)
-            return;
-
-        final View text = view.findViewById(viewId);
-        if (null == text || !(text instanceof TextView))
-            return;
-
-        ((TextView) text).setText(str);
-    }
-
-    public void setLoadingVisable(RecyclerView recycler, int visibility, int viewId) {
-
-        if (null == recycler)
-            return;
-
-        final RecyclerView.LayoutManager layoutManager = recycler.getLayoutManager();
-        if (null == layoutManager)
-            return;
-
-        final RecyclerView.Adapter adapter = recycler.getAdapter();
-        if (null == adapter || adapter.getItemCount() == 0)
-            return;
-
-        final int itemViewType = adapter.getItemViewType(adapter.getItemCount() - 1);
-        if (itemViewType != RecyclerHolder.LOAD_VIEW)
-            return;
-
-        final View view = layoutManager.findViewByPosition(adapter.getItemCount() - 1);
-        if (null == view)
-            return;
-
-        final View bar = view.findViewById(viewId);
-        if (null == bar)
-            return;
-
-        bar.setVisibility(visibility);
+        isOver = false;
+        if (recycler.getScrollState() == RecyclerView.SCROLL_STATE_IDLE || (recycler.isComputingLayout() == false)) {
+            notifyDataSetChanged();
+            forceLoad(recycler, manager, false);
+            // Log.e("kalu", "loadResetDataSetChanged ==> 静止状态");
+        } else {
+            final Message obtain = Message.obtain();
+            obtain.what = 3;
+            obtain.obj = recycler;
+            mHandler.sendMessageDelayed(obtain, 2000);
+            // Log.e("kalu", "loadResetDataSetChanged ==> 滑动状态, 延迟2s刷新");
+        }
     }
 
     /**********************************       抽象方法API     **************************************/
 
-    /**
-     * 加载更多
-     */
-    protected abstract void onLoad(RecyclerHolder holder, boolean isOver, boolean isRefresh);
+    protected abstract @LayoutRes
+    int initLoadResId();
+
+    protected abstract void onLoad(RecyclerHolder holder, boolean isOver);
 }

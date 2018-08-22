@@ -29,12 +29,6 @@ public abstract class BaseCommonDragAdapter<T> extends BaseCommonAdapter<T> {
 
     /*********************************************************/
 
-    public BaseCommonDragAdapter(List<T> data, @LayoutRes int layoutResId) {
-        super(data, layoutResId);
-    }
-
-    /*********************************************************/
-
     @Override
     public void onBindViewHolder(RecyclerHolder holder, int positions) {
         super.onBindViewHolder(holder, positions);

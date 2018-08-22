@@ -29,12 +29,6 @@ public abstract class BaseLoadDragAdapter<T> extends BaseLoadAdapter<T> {
 
     /*********************************************************/
 
-    public BaseLoadDragAdapter(List<T> data, @LayoutRes int layoutResId) {
-        super(data, layoutResId);
-    }
-
-    /*********************************************************/
-
     @Override
     public void onBindViewHolder(RecyclerHolder holder, int positions) {
         super.onBindViewHolder(holder, positions);

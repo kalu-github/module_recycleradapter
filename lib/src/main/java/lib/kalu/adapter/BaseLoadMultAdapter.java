@@ -18,8 +18,7 @@ public abstract class BaseLoadMultAdapter<T extends MultModel> extends BaseLoadA
 
     private final SparseArray<Integer> mResIdList = new SparseArray<>();
 
-    public BaseLoadMultAdapter(List<T> data, @LayoutRes int loadResId) {
-        super(data, loadResId);
+    public BaseLoadMultAdapter() {
         onMult();
     }
 
