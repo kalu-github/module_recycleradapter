@@ -472,11 +472,11 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     /***********************************       头部API       **************************************/
 
-    private int getHeadPosition() {
+    private final int getHeadPosition() {
         return getHeadCount() == 1 ? -1 : 0;
     }
 
-    public int getHeadCount() {
+    public final int getHeadCount() {
         return (mHeaderLayout == null || mHeaderLayout.getChildCount() == 0) ? 0 : 1;
     }
 
@@ -508,12 +508,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             index = childCount;
         }
         mHeaderLayout.addView(header, index);
-        if (mHeaderLayout.getChildCount() == 1) {
-            int position = getHeadPosition();
-            if (position != -1) {
-                notifyItemInserted(position);
-            }
-        }
+        notifyDataSetChanged();
     }
 
     public void changeHead(View header) {
@@ -601,12 +596,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             index = childCount;
         }
         mFooterLayout.addView(footer, index);
-        if (mFooterLayout.getChildCount() == 1) {
-            int position = getFootPosition();
-            if (position != -1) {
-                notifyItemInserted(position);
-            }
-        }
+        notifyDataSetChanged();
     }
 
     public void changeFoot(View header) {

@@ -58,6 +58,10 @@ public final class MainActivity extends AppCompatActivity {
                                 intent.setClass(getApplicationContext(), SectionActivity.class);
                                 startActivity(intent);
                                 break;
+                            case 3:
+                                intent.setClass(getApplicationContext(), HeadFootActivity.class);
+                                startActivity(intent);
+                                break;
                         }
                     }
                 });

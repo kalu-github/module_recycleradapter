@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".LoadActivity" />
         <activity android:name=".ClickActivity" />
-        <activity android:name=".SectionActivity"></activity>
+        <activity android:name=".SectionActivity" />
+        <activity android:name=".HeadFootActivity"></activity>
     </application>
 
 </manifest>
