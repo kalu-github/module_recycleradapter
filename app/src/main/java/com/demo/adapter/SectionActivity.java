@@ -47,7 +47,7 @@ public final class SectionActivity extends AppCompatActivity {
 
             @Override
             protected void onSection(RecyclerHolder holder, SectionModel model, int position) {
-                Log.e("kalu", "onSection ==> position = " + position);
+                Log.e("kalu44", "onSection ==> position = " + position);
                 holder.setText(R.id.section_text, model.getSection());
             }
 
