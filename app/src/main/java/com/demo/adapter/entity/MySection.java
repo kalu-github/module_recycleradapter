@@ -22,11 +22,11 @@ public class MySection implements SectionModel {
 
     @Override
     public boolean isSection() {
-        return false;
+        return isMore;
     }
 
     @Override
     public String getSection() {
-        return null;
+        return "哈哈";
     }
 }
