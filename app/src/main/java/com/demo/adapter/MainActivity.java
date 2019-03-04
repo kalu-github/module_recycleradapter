@@ -1,73 +1,60 @@
 package com.demo.adapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.demo.adapter.model.tab.StickyActivity2;
 
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import lib.kalu.adapter.BaseCommonAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
+import lib.kalu.adapter.manager.CrashGridLayoutManager;
 
-public final class MainActivity extends AppCompatActivity {
-
-    private final List<String> mDatas = Arrays.asList("点击事件", "下拉刷新, 上拉加载", "分组", "头部尾部", "多种布局", "空布局", "悬浮菜单", "TabMore", "Tab", "侧滑拖动", "分组折叠");
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final RecyclerView recycler = findViewById(R.id.main_recycler);
+        final List<String> list = Arrays.asList("点击事件", "加载更多", "头部尾部", "多种布局", "空布局", "悬浮菜单", "TabMore", "Tab", "分组", "侧滑拖动", "分组折叠");
+        final List<Class<? extends AppCompatActivity>> clazzs = Arrays.asList(ClickActivity.class, LoadmoreActivity.class, HeadFootActivity.class, MulitActivity.class, EmptyActivity.class, FloatActivity.class, StickyActivity2.class, StickyActivity1.class, SectionActivity.class, DragSwipeActivity.class, TransActivity.class);
 
-        final BaseCommonAdapter<String> adapter = new BaseCommonAdapter<String>() {
+        BaseCommonAdapter<String> adapter = new BaseCommonAdapter<String>() {
+
             @Override
-            protected int initItemResId() {
-                return R.layout.layout_item_simple;
+            protected int onView() {
+                return R.layout.activity_main_item;
             }
 
+            @NonNull
             @Override
             protected List<String> onData() {
-                return mDatas;
+                return list;
             }
 
             @Override
             protected void onNext(RecyclerHolder holder, String model, final int position) {
 
-                holder.setText(R.id.simple_text, model);
-
-                holder.setOnClickListener(R.id.simple_text, new View.OnClickListener() {
+                holder.setText(R.id.main_text, model);
+                holder.getView(R.id.main_text).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        final Intent intent = new Intent();
-                        switch (position) {
-                            case 0:
-                                intent.setClass(getApplicationContext(), ClickActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 1:
-                                intent.setClass(getApplicationContext(), LoadActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 2:
-                                intent.setClass(getApplicationContext(), SectionActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 3:
-                                intent.setClass(getApplicationContext(), HeadFootActivity.class);
-                                startActivity(intent);
-                                break;
-                        }
+                        startActivity(new Intent(getApplicationContext(), clazzs.get(position)));
                     }
                 });
             }
         };
-        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recycler.setAdapter(adapter);
+
+        RecyclerView view = findViewById(R.id.list);
+        view.setLayoutManager(new CrashGridLayoutManager(getApplicationContext(), 2));
+        view.setAdapter(adapter);
     }
 }

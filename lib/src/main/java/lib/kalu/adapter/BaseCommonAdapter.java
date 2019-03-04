@@ -2,17 +2,6 @@ package lib.kalu.adapter;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.support.annotation.IdRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.LayoutParams;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +20,15 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import lib.kalu.adapter.animation.AlphaInAnimation;
 import lib.kalu.adapter.animation.BaseAnimation;
 import lib.kalu.adapter.animation.ScaleInAnimation;
@@ -43,7 +41,6 @@ import lib.kalu.adapter.model.TransModel;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-
 /**
  * description: 没有加载更多
  * created by kalu on 2017/5/26 14:22
@@ -51,19 +48,17 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<RecyclerHolder> {
 
     protected static final String TAG = BaseCommonAdapter.class.getSimpleName();
+    private final Interpolator mInterpolator = new LinearInterpolator();
     protected int mLastPosition = -1;
-
+    // 布局ID
     protected LinearLayout mHeaderLayout, mFooterLayout;
     protected FrameLayout mEmptyLayout;
     // 是否仅仅第一次加载显示动画
     private boolean isOpenAnimFirstOnly = true;
     // 显示动画
     private boolean isOpenAnim = false;
-    // 动画时间
+    // 动画显示时间
     private int mAnimTime = 300;
-    // 差值器
-    private final Interpolator mInterpolator = new LinearInterpolator();
-    // 默认动画
     private BaseAnimation mSelectAnimation = new AlphaInAnimation();
 
     /***********************************       方法API       **************************************/
@@ -81,11 +76,11 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     protected RecyclerHolder createModelHolder(ViewGroup parent, int viewType) {
-        final View itemView = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(initItemResId(), parent, false);
-        return createSimpleHolder(itemView);
+        final View itemView = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(onView(), parent, false);
+        return createSimpleHolder(parent, itemView);
     }
 
-    protected RecyclerHolder createSimpleHolder(View view) {
+    protected RecyclerHolder createSimpleHolder(ViewGroup parent, View view) {
 
         if (null == view)
             return null;
@@ -96,8 +91,8 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             z = createClass(clazz);
             clazz = clazz.getSuperclass();
         }
-        RecyclerHolder k = createHolder(z, view);
-        return null != k ? k : new RecyclerHolder(view);
+        RecyclerHolder k = createHolder(z, parent, view);
+        return null != k ? k : new RecyclerHolder(parent, view);
     }
 
     private Class createClass(Class z) {
@@ -116,17 +111,17 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         return null;
     }
 
-    private RecyclerHolder createHolder(Class z, View view) {
+    private final RecyclerHolder createHolder(Class z, @NonNull ViewGroup parent, @NonNull View view) {
         try {
             Constructor constructor;
             String buffer = Modifier.toString(z.getModifiers());
             String className = z.getName();
             if (className.contains("$") && !buffer.contains("static")) {
-                constructor = z.getDeclaredConstructor(getClass(), View.class);
-                return (RecyclerHolder) constructor.newInstance(this, view);
+                constructor = z.getDeclaredConstructor(getClass(), ViewGroup.class, View.class);
+                return (RecyclerHolder) constructor.newInstance(this, parent, view);
             } else {
-                constructor = z.getDeclaredConstructor(View.class);
-                return (RecyclerHolder) constructor.newInstance(view);
+                constructor = z.getDeclaredConstructor(ViewGroup.class, View.class);
+                return (RecyclerHolder) constructor.newInstance(parent, view);
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -181,7 +176,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     public int getItemViewType(int position) {
 
         // 没有数据
-        if (null == onData() || onData().isEmpty()) {
+        if (null == onData() || onData().size() == 0) {
             return RecyclerHolder.NULL_VIEW;
         }
         // 有数据
@@ -203,109 +198,129 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         RecyclerHolder holder;
         switch (viewType) {
             case RecyclerHolder.NULL_VIEW:
-                holder = createSimpleHolder(mEmptyLayout);
+                holder = createSimpleHolder(parent, mEmptyLayout);
                 break;
             case RecyclerHolder.HEAD_VIEW:
-                holder = createSimpleHolder(mHeaderLayout);
+                holder = createSimpleHolder(parent, mHeaderLayout);
                 break;
             case RecyclerHolder.FOOT_VIEW:
-                holder = createSimpleHolder(mFooterLayout);
+                holder = createSimpleHolder(parent, mFooterLayout);
                 break;
             default:
                 holder = createModelHolder(parent, viewType);
         }
 
-        // 设置滑动监听
-        if (parent instanceof RecyclerView && null == parent.getTag()) {
-
-            parent.setTag(true);
-            final RecyclerView temp = (RecyclerView) parent;
-            final RecyclerView.LayoutManager manager = temp.getLayoutManager();
-
-            final int[] rangeY = {0};
-
-            temp.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    rangeY[0] -= dy;
-
+//        // 设置滑动监听
+//        if (parent instanceof RecyclerView && null == parent.getTag()) {
+//
+//            parent.setTag(true);
+//            final RecyclerView temp = (RecyclerView) parent;
+//            final RecyclerView.LayoutManager manager = temp.getLayoutManager();
+//
+//            final int[] rangeY = {0};
+//
+//            temp.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//
+//                @Override
+//                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                    super.onScrolled(recyclerView, dx, dy);
+//                    rangeY[0] -= dy;
+//
+////                    if (manager instanceof GridLayoutManager) {
+////                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
+////                        final int lastPosition = ((GridLayoutManager) manager).findLastVisibleItemPosition();
+////                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
+////                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition, lastPosition);
+////                    } else if (manager instanceof LinearLayoutManager) {
+////                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
+////                        final int lastPosition = ((LinearLayoutManager) manager).findLastVisibleItemPosition();
+////                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
+////                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition, lastPosition);
+////                    } else {
+////                        final StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
+////                        int[] firstPosition = null;
+////                        firstPosition = temp.findFirstVisibleItemPositions(firstPosition);
+////                        final int firstItemHeight = manager.findViewByPosition(firstPosition[0]).getHeight();
+////                        int[] lastPosition = null;
+////                        lastPosition =  temp.findLastVisibleItemPositions(lastPosition);
+////                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition[0], lastPosition[0]);
+////                    }
+//                }
+//
+//                @Override
+//                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                    super.onScrollStateChanged(recyclerView, newState);
+//
 //                    if (manager instanceof GridLayoutManager) {
 //                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
 //                        final int lastPosition = ((GridLayoutManager) manager).findLastVisibleItemPosition();
-//                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
-//                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition, lastPosition);
+//
+//                        final View child = manager.findViewByPosition(firstPosition);
+//                        if (null != child) {
+//                            final int firstItemHeight = child.getHeight();
+//                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition, lastPosition);
+//                        }
 //                    } else if (manager instanceof LinearLayoutManager) {
 //                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
 //                        final int lastPosition = ((LinearLayoutManager) manager).findLastVisibleItemPosition();
-//                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
-//                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition, lastPosition);
-//                    } else {
-//                        final StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
-//                        int[] firstPosition = null;
-//                        firstPosition = temp.findFirstVisibleItemPositions(firstPosition);
-//                        final int firstItemHeight = manager.findViewByPosition(firstPosition[0]).getHeight();
-//                        int[] lastPosition = null;
-//                        lastPosition =  temp.findLastVisibleItemPositions(lastPosition);
-//                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition[0], lastPosition[0]);
-//                    }
-                }
-
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-
-                    if (manager instanceof GridLayoutManager) {
-                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
-                        final int lastPosition = ((GridLayoutManager) manager).findLastVisibleItemPosition();
-
-                        final View child = manager.findViewByPosition(firstPosition);
-                        if (null != child) {
-                            final int firstItemHeight = child.getHeight();
-                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition, lastPosition);
-                        }
-                    } else if (manager instanceof LinearLayoutManager) {
-                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
-                        final int lastPosition = ((LinearLayoutManager) manager).findLastVisibleItemPosition();
-
-                        final View child = manager.findViewByPosition(firstPosition);
-                        if (null != child) {
-                            final int firstItemHeight = child.getHeight();
-                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition, lastPosition);
-                        }
-                    } else {
-//                        final StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
-//                        int[] firstPosition = null;
-//                        firstPosition = temp.findFirstVisibleItemPositions(firstPosition);
 //
-//                        final View child = manager.findViewByPosition(firstPosition[0]);
-//                        if(null != child){
+//                        final View child = manager.findViewByPosition(firstPosition);
+//                        if (null != child) {
 //                            final int firstItemHeight = child.getHeight();
-//                            int[] lastPosition = null;
-//                            lastPosition =  temp.findLastVisibleItemPositions(lastPosition);
-//                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition[0], lastPosition[0]);
+//                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition, lastPosition);
 //                        }
-                    }
-                }
-            });
-        }
+//                    } else {
+////                        final StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
+////                        int[] firstPosition = null;
+////                        firstPosition = temp.findFirstVisibleItemPositions(firstPosition);
+////
+////                        final View child = manager.findViewByPosition(firstPosition[0]);
+////                        if(null != child){
+////                            final int firstItemHeight = child.getHeight();
+////                            int[] lastPosition = null;
+////                            lastPosition =  temp.findLastVisibleItemPositions(lastPosition);
+////                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition[0], lastPosition[0]);
+////                        }
+//                    }
+//                }
+//            });
+//        }
 
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerHolder holder, int position) {
-        switch (holder.getItemViewType()) {
-            case RecyclerHolder.HEAD_VIEW:
-            case RecyclerHolder.NULL_VIEW:
-            case RecyclerHolder.FOOT_VIEW:
-                break;
-            default:
-                final int headCount = getHeadCount();
-                int realPosition = holder.getLayoutPosition() - headCount;
-                onNext(holder, onData().get(realPosition), realPosition);
-                break;
+
+        int itemViewType = holder.getItemViewType();
+        if (itemViewType != RecyclerHolder.HEAD_VIEW && itemViewType != RecyclerHolder.NULL_VIEW && itemViewType != RecyclerHolder.FOOT_VIEW) {
+
+            ViewGroup parent = holder.getParent();
+            if (null == parent) return;
+
+            RecyclerView view = (RecyclerView) parent;
+            int id = view.getId();
+
+            Object tag = view.getTag(id);
+            if (null == tag) {
+                Log.e("list", "11");
+                view.setTag(id, true);
+
+                view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+
+                        onRoll(newState != 0, false);
+                        Log.e("list", "roll = " + newState);
+                    }
+                });
+            } else {
+                Log.e("list", "22");
+            }
+
+            int realPosition = holder.getLayoutPosition() - getHeadCount();
+            onNext(holder, onData().get(realPosition), position);
         }
     }
 
@@ -313,7 +328,9 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     public void onViewAttachedToWindow(RecyclerHolder holder) {
         super.onViewAttachedToWindow(holder);
 
-        if (null == holder) return;
+        if (null == holder)
+            return;
+
         final int viewType = holder.getItemViewType();
         setModelStyle(holder, viewType != RecyclerHolder.NULL_VIEW);
     }
@@ -357,6 +374,8 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
                 break;
             case BaseAnimation.SLIDEIN_RIGHT:
                 mSelectAnimation = new SlideInRightAnimation();
+                break;
+            default:
                 break;
         }
     }
@@ -472,11 +491,11 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     /***********************************       头部API       **************************************/
 
-    private final int getHeadPosition() {
+    private int getHeadPosition() {
         return getHeadCount() == 1 ? -1 : 0;
     }
 
-    public final int getHeadCount() {
+    public int getHeadCount() {
         return (mHeaderLayout == null || mHeaderLayout.getChildCount() == 0) ? 0 : 1;
     }
 
@@ -497,10 +516,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             mHeaderLayout = new LinearLayout(header.getContext());
             if (orientation == LinearLayout.VERTICAL) {
                 mHeaderLayout.setOrientation(LinearLayout.VERTICAL);
-                mHeaderLayout.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+                mHeaderLayout.setLayoutParams(new RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             } else {
                 mHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
-                mHeaderLayout.setLayoutParams(new LayoutParams(WRAP_CONTENT, MATCH_PARENT));
+                mHeaderLayout.setLayoutParams(new RecyclerView.LayoutParams(WRAP_CONTENT, MATCH_PARENT));
             }
         }
         final int childCount = mHeaderLayout.getChildCount();
@@ -508,7 +527,12 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             index = childCount;
         }
         mHeaderLayout.addView(header, index);
-        notifyDataSetChanged();
+        if (mHeaderLayout.getChildCount() == 1) {
+            int position = getHeadPosition();
+            if (position != -1) {
+                notifyItemInserted(position);
+            }
+        }
     }
 
     public void changeHead(View header) {
@@ -585,10 +609,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             mFooterLayout = new LinearLayout(footer.getContext());
             if (orientation == LinearLayout.VERTICAL) {
                 mFooterLayout.setOrientation(LinearLayout.VERTICAL);
-                mFooterLayout.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+                mFooterLayout.setLayoutParams(new RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             } else {
                 mFooterLayout.setOrientation(LinearLayout.HORIZONTAL);
-                mFooterLayout.setLayoutParams(new LayoutParams(WRAP_CONTENT, MATCH_PARENT));
+                mFooterLayout.setLayoutParams(new RecyclerView.LayoutParams(WRAP_CONTENT, MATCH_PARENT));
             }
         }
         final int childCount = mFooterLayout.getChildCount();
@@ -596,7 +620,12 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             index = childCount;
         }
         mFooterLayout.addView(footer, index);
-        notifyDataSetChanged();
+        if (mFooterLayout.getChildCount() == 1) {
+            int position = getFootPosition();
+            if (position != -1) {
+                notifyItemInserted(position);
+            }
+        }
     }
 
     public void changeFoot(View header) {
@@ -665,11 +694,11 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             mEmptyLayout = new FrameLayout(emptyView.getContext());
         }
         if (null == mEmptyLayout.getLayoutParams()) {
-            mEmptyLayout.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            mEmptyLayout.setLayoutParams(new ViewGroup.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
         }
         final ViewGroup.LayoutParams mEmptyParams = mEmptyLayout.getLayoutParams();
-        mEmptyParams.width = LayoutParams.MATCH_PARENT;
-        mEmptyParams.height = LayoutParams.MATCH_PARENT;
+        mEmptyParams.width = RecyclerView.LayoutParams.MATCH_PARENT;
+        mEmptyParams.height = RecyclerView.LayoutParams.MATCH_PARENT;
         mEmptyLayout.removeAllViews();
         mEmptyLayout.addView(emptyView);
 
@@ -725,29 +754,21 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         notifyItemChanged(index + getHeadCount());
     }
 
-    @NonNull
-    public List<T> getData() {
-        return onData();
-    }
-
     /**********************************       抽象方法API     **************************************/
 
     protected abstract @LayoutRes
-    int initItemResId();
+    int onView();
 
-    protected abstract List<T> onData();
+    protected abstract @NonNull
+    List<T> onData();
 
     protected abstract void onNext(RecyclerHolder holder, T model, int position);
 
     /**
-     * @param recycler
-     * @param itemHeight          第一个显示的孩子高度
-     * @param rollHeight          滑动距离
-     * @param rollState           滑动状态
-     * @param fistVisablePosition 第一个显示的孩子索引位置
-     * @param lastVisablePosition 最后一个显示的孩子索引位置
+     * @param roll     是否滚动结束
+     * @param loadmore 是否加载更多
      */
-    protected void onRoll(RecyclerView recycler, int itemHeight, int rollHeight, int rollState, int fistVisablePosition, int lastVisablePosition) {
+    protected void onRoll(boolean roll, boolean loadmore) {
     }
 
     /***********************************       动画API       **************************************/

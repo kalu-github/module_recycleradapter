@@ -1,14 +1,13 @@
 package lib.kalu.adapter.callback;
 
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import lib.kalu.adapter.BaseCommonAdapter;
 import lib.kalu.adapter.BaseCommonDragAdapter;
 import lib.kalu.adapter.BaseLoadDragAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
-import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE;
+import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_IDLE;
 
 /**
  * description: 拖拽

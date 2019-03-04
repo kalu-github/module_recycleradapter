@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.demo.adapter.widget.tab.TextTabLayout
+        android:id="@+id/mine_subscribe_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d40"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/d50"
+        android:paddingRight="@dimen/d50"
+        app:ttl_divider_color="@color/gray_40"
+        app:ttl_divider_padding="@dimen/d10"
+        app:ttl_divider_width="@dimen/d1"
+        app:ttl_indicator_color="@color/color_theme"
+        app:ttl_indicator_corner_radius="@dimen/d5"
+        app:ttl_indicator_height="@dimen/d2"
+        app:ttl_indicator_width_equal_title="true"
+        app:ttl_tab_space_equal="true"
+        app:ttl_text_bold="BOTH"
+        app:ttl_text_color_normal="@color/text_ecru"
+        app:ttl_text_color_select="@color/color_theme"
+        app:ttl_text_size="@dimen/s14"
+        app:ttl_underline_color="@color/gray_40"
+        app:ttl_underline_gravity="BOTTOM"
+        app:ttl_underline_height="@dimen/d1" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mine_subscribe_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

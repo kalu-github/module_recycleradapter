@@ -1,11 +1,12 @@
 package lib.kalu.adapter;
 
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.model.SectionModel;
 import java.util.List;
@@ -18,14 +19,14 @@ public abstract class BaseLoadSectionAdapter<T extends SectionModel> extends Bas
 
     @Override
     protected int getItemModelType(int position) {
-        return getData().get(position).isSection() ? RecyclerHolder.SECTION_VIEW : 0;
+        return onData().get(position).isSection() ? RecyclerHolder.SECTION_VIEW : 0;
     }
 
     @Override
     protected RecyclerHolder createModelHolder(ViewGroup parent, int viewType) {
         if (viewType == RecyclerHolder.SECTION_VIEW) {
-            final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(initSectionResId(), parent, false);
-            return createSimpleHolder(inflate);
+            final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(onHead(), parent, false);
+            return createSimpleHolder(parent, inflate);
         }
         return super.createModelHolder(parent, viewType);
     }
@@ -53,10 +54,10 @@ public abstract class BaseLoadSectionAdapter<T extends SectionModel> extends Bas
         }
     }
 
-    /**********************************************************************************************/
+    protected abstract void onSection(int position);
+
+    /**********************************       抽象方法API     **************************************/
 
     protected abstract @LayoutRes
-    int initSectionResId();
-
-    protected abstract void onSection(int position);
+    int onHead();
 }

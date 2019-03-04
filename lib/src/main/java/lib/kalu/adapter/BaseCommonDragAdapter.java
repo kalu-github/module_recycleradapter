@@ -1,15 +1,15 @@
 package lib.kalu.adapter;
 
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.core.view.MotionEventCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
 /**
@@ -39,7 +39,9 @@ public abstract class BaseCommonDragAdapter<T> extends BaseCommonAdapter<T> {
             if (mToggleViewId != NO_TOGGLE_VIEW) {
                 View toggleView = holder.getView(mToggleViewId);
                 if (toggleView != null) {
-                    toggleView.setTag(RecyclerHolder.HOLDER_ID_TAG, holder);
+
+                    int id = holder.itemView.getId();
+                    toggleView.setTag(id, holder);
                     if (mDragOnLongPress) {
                         toggleView.setOnLongClickListener(mOnToggleViewLongClickListener);
                     } else {
@@ -47,7 +49,9 @@ public abstract class BaseCommonDragAdapter<T> extends BaseCommonAdapter<T> {
                     }
                 }
             } else {
-                holder.itemView.setTag(RecyclerHolder.HOLDER_ID_TAG, holder);
+
+                int id = holder.itemView.getId();
+                holder.itemView.setTag(id, holder);
                 holder.itemView.setOnLongClickListener(mOnToggleViewLongClickListener);
             }
         }
@@ -65,7 +69,9 @@ public abstract class BaseCommonDragAdapter<T> extends BaseCommonAdapter<T> {
                 @Override
                 public boolean onLongClick(View v) {
                     if (mItemTouchHelper != null && itemDragEnabled) {
-                        mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(RecyclerHolder.HOLDER_ID_TAG));
+
+                        int id = v.getId();
+                        mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(id));
                     }
                     return true;
                 }
@@ -77,7 +83,9 @@ public abstract class BaseCommonDragAdapter<T> extends BaseCommonAdapter<T> {
                     if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN
                             && !mDragOnLongPress) {
                         if (mItemTouchHelper != null && itemDragEnabled) {
-                            mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(RecyclerHolder.HOLDER_ID_TAG));
+
+                            int id = v.getId();
+                            mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(id));
                         }
                         return true;
                     } else {
@@ -124,11 +132,11 @@ public abstract class BaseCommonDragAdapter<T> extends BaseCommonAdapter<T> {
 
         if (from < to) {
             for (int i = from; i < to; i++) {
-                Collections.swap(getData(), i, i + 1);
+                Collections.swap(onData(), i, i + 1);
             }
         } else {
             for (int i = from; i > to; i--) {
-                Collections.swap(getData(), i, i - 1);
+                Collections.swap(onData(), i, i - 1);
             }
         }
         notifyItemMoved(source.getAdapterPosition(), target.getAdapterPosition());

@@ -1,10 +1,10 @@
 package lib.kalu.adapter;
 
-import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.LayoutRes;
 import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.model.SectionModel;
 
@@ -16,32 +16,17 @@ public abstract class BaseCommonSectionAdapter<T extends SectionModel> extends B
 
     @Override
     protected int getItemModelType(int position) {
-        return getData().get(position).isSection() ? RecyclerHolder.SECTION_VIEW : 0;
+        return onData().get(position).isSection() ? RecyclerHolder.SECTION_VIEW : 0;
     }
 
     @Override
     protected RecyclerHolder createModelHolder(ViewGroup parent, int viewType) {
         if (viewType == RecyclerHolder.SECTION_VIEW) {
-            final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(initSectionResId(), parent, false);
-            return createSimpleHolder(inflate);
-        } else {
-            return super.createModelHolder(parent, viewType);
+            final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(onHead(), parent, false);
+            return createSimpleHolder(parent, inflate);
         }
-    }
 
-    @Override
-    public void onBindViewHolder(RecyclerHolder holder, int position) {
-        switch (holder.getItemViewType()) {
-            case RecyclerHolder.SECTION_VIEW:
-                setModelStyle(holder, false);
-                final int headCount = getHeadCount();
-                int realPosition = holder.getLayoutPosition() - headCount;
-                onSection(holder, onData().get(realPosition), realPosition);
-                break;
-            default:
-                super.onBindViewHolder(holder, position);
-                break;
-        }
+        return super.createModelHolder(parent, viewType);
     }
 
     @Override
@@ -49,10 +34,8 @@ public abstract class BaseCommonSectionAdapter<T extends SectionModel> extends B
         return super.isModelType(type) && (type != RecyclerHolder.SECTION_VIEW);
     }
 
-    /**********************************************************************************************/
+    /**********************************       抽象方法API     **************************************/
 
     protected abstract @LayoutRes
-    int initSectionResId();
-
-    protected abstract void onSection(RecyclerHolder holder, T model, int position);
+    int onHead();
 }

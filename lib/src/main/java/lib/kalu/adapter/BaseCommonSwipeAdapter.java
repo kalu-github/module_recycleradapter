@@ -1,12 +1,12 @@
 package lib.kalu.adapter;
 
 import android.graphics.Canvas;
-import android.support.annotation.LayoutRes;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import java.util.List;
 
+import androidx.annotation.LayoutRes;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
 /**
@@ -35,11 +35,15 @@ public abstract class BaseCommonSwipeAdapter<T> extends BaseCommonAdapter<T> {
             if (mToggleViewId != NO_TOGGLE_VIEW) {
                 View toggleView = holder.getView(mToggleViewId);
                 if (toggleView != null) {
-                    toggleView.setTag(RecyclerHolder.HOLDER_ID_TAG, holder);
+
+                    int id = holder.itemView.getId();
+                    toggleView.setTag(id, holder);
                     toggleView.setOnTouchListener(mOnToggleViewTouchListener);
                 }
             } else {
-                holder.itemView.setTag(RecyclerHolder.HOLDER_ID_TAG, holder);
+
+                int id = holder.itemView.getId();
+                holder.itemView.setTag(id, holder);
                 holder.itemView.setOnLongClickListener(mOnToggleViewLongClickListener);
             }
         }
@@ -78,7 +82,7 @@ public abstract class BaseCommonSwipeAdapter<T> extends BaseCommonAdapter<T> {
 
     public void onSwipeRemove(RecyclerView.ViewHolder viewHolder) {
         int pos = getViewHolderPosition(viewHolder);
-        getData().remove(pos);
+        onData().remove(pos);
         notifyItemRemoved(viewHolder.getAdapterPosition());
 
         if (!itemSwipeEnabled) return;

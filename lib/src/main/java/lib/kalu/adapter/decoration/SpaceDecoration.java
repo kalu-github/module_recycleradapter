@@ -4,12 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import lib.kalu.adapter.manager.CrashGridLayoutManager;
 import lib.kalu.adapter.manager.CrashLinearLayoutManager;
 
@@ -177,7 +177,7 @@ public final class SpaceDecoration extends RecyclerView.ItemDecoration {
     private void offsetsOfGrid(Rect outRect, CrashGridLayoutManager layoutManager, int viewLayoutPosition) {
         final int spanCount = layoutManager.getSpanCount();
 
-        if (layoutManager.getOrientation() == LinearLayoutManager.VERTICAL) {
+        if (layoutManager.getOrientation() == RecyclerView.VERTICAL) {
             //垂直方向
             if (isLastOfGrid(layoutManager.getItemCount(), viewLayoutPosition, spanCount)/*判断是否是最后一排*/) {
                 //最后一排的item, 不添加底部分割线,为了美观
@@ -235,7 +235,7 @@ public final class SpaceDecoration extends RecyclerView.ItemDecoration {
                 final RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
                 final int viewLayoutPosition = layoutParams.getViewLayoutPosition();//布局时当前View的位置
 
-                if (layoutManager.getOrientation() == LinearLayoutManager.VERTICAL) {
+                if (layoutManager.getOrientation() == RecyclerView.VERTICAL) {
                     //垂直方向
                     if (isLastOfGrid(layoutManager.getItemCount(), viewLayoutPosition, spanCount)/*判断是否是最后一排*/) {
                         //最后一排的item, 不添加底部分割线,为了美观

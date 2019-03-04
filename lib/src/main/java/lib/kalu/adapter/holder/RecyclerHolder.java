@@ -5,13 +5,10 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -23,13 +20,17 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.RecyclerView;
+
 /**
  * description: 不可以被继承
  * created by kalu on 2017/12/12 8:43
  */
 public final class RecyclerHolder extends RecyclerView.ViewHolder {
-
-    public static final int HOLDER_ID_TAG = RecyclerHolder.class.hashCode();
 
     public static final int NULL_VIEW = -1; //空布局
     public static final int HEAD_VIEW = -2; // 头布局
@@ -37,8 +38,15 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
     public static final int LOAD_VIEW = -4; // 加载布局
     public static final int SECTION_VIEW = -5; // 分组布局
 
-    public RecyclerHolder(final View view) {
+    WeakReference<ViewGroup> mNestedRecyclerView;
+
+    public RecyclerHolder(final ViewGroup parent, final View view) {
         super(view);
+        mNestedRecyclerView = new WeakReference<>(parent);
+    }
+
+    public ViewGroup getParent() {
+        return mNestedRecyclerView.get();
     }
 
     public RecyclerHolder setAdapter(int viewId, Adapter adapter) {
@@ -128,7 +136,8 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public RecyclerHolder setText(int viewId, CharSequence value) {
         TextView view = getView(viewId);
-        if (null == view) return this;
+        if (null == view)
+            return this;
         view.setText(value);
         return this;
     }

@@ -3,14 +3,14 @@ apply plugin: 'com.novoda.bintray-release'
 
 android {
 
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 28
+        versionCode 200
+        versionName "2.0.0"
     }
 
     buildTypes {
@@ -27,15 +27,14 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:recyclerview-v7:26.+'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
 
 publish {
     userOrg = 'zhanghang'//bintray.com用户名
     groupId = 'lib.kalu.adapter'//jcenter上的路径
     artifactId = 'recycleradapter'//项目名称
-    publishVersion = '2.0.1'//版本号
+    publishVersion = '2.0.0'//版本号
     desc = 'This is a recyclerview adapter'//描述，不重要
     website = 'https://github.com/153437803/RecyclerAdapter'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }

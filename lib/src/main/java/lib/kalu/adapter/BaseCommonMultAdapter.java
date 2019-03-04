@@ -1,12 +1,11 @@
 package lib.kalu.adapter;
 
-import android.support.annotation.LayoutRes;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import java.util.List;
 
+import androidx.annotation.LayoutRes;
 import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.model.MultModel;
 
@@ -24,7 +23,7 @@ public abstract class BaseCommonMultAdapter<T extends MultModel> extends BaseCom
 
     @Override
     protected int getItemModelType(int position) {
-        Object item = getData().get(position);
+        Object item = onData().get(position);
         return item instanceof MultModel ? ((MultModel) item).getMultType() : MultModel.TYPE_1;
     }
 
@@ -33,7 +32,7 @@ public abstract class BaseCommonMultAdapter<T extends MultModel> extends BaseCom
 
         final int layoutId = getLayoutId(viewType);
         final View itemView = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(layoutId, parent, false);
-        return createSimpleHolder(itemView);
+        return createSimpleHolder(parent, itemView);
     }
 
     private int getLayoutId(int viewType) {
@@ -42,6 +41,11 @@ public abstract class BaseCommonMultAdapter<T extends MultModel> extends BaseCom
 
     protected void addMult(int type, @LayoutRes int layoutResId) {
         mResIdList.put(type, layoutResId);
+    }
+
+    @Override
+    protected int onView() {
+        return 0;
     }
 
     /**

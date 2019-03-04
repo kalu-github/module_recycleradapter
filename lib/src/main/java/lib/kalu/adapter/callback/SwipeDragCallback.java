@@ -1,10 +1,10 @@
 package lib.kalu.adapter.callback;
 
 import android.graphics.Canvas;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import lib.kalu.adapter.BaseCommonAdapter;
 import lib.kalu.adapter.BaseCommonSwipeDragAdapter;
 import lib.kalu.adapter.BaseLoadSwipeDragAdapter;

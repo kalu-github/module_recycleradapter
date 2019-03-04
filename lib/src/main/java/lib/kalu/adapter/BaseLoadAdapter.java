@@ -1,16 +1,18 @@
 package lib.kalu.adapter;
 
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
 /**
@@ -21,35 +23,13 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
     // 加载数据数据完毕了
     private boolean isLoadOver;
-    private boolean isListener;
-
-    private @LayoutRes
-    int loadResId = -1;
-
-    /***********************************     构造器API       **************************************/
-
-    /**
-     * 分类型, 不对外暴露API
-     */
-    BaseLoadAdapter(@Nullable List<T> data, @LayoutRes int loadResId) {
-        super(data);
-        this.loadResId = loadResId;
-    }
-
-    /**
-     * 普通, 对外暴露API
-     */
-    public BaseLoadAdapter(@Nullable List<T> data, @LayoutRes int itemResId, @LayoutRes int loadResId) {
-        super(data, itemResId);
-        this.loadResId = loadResId;
-    }
 
     /***********************************       重写API       **************************************/
 
     @Override
     public int getItemCount() {
 
-        final List<T> list = getData();
+        final List<T> list = onData();
         if (null == list || list.size() == 0) {
             return list.size() + getNullCount() + getHeadCount() + getFootCount();
         } else {
@@ -61,7 +41,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     public int getItemViewType(int position) {
 
         // 没有数据
-        if (null == getData() || getData().size() == 0) {
+        if (null == onData() || onData().size() == 0) {
             return RecyclerHolder.NULL_VIEW;
         }
         // 有数据
@@ -73,7 +53,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
                 // 需要传递的索引位置
                 int realPosition = position - numHead;
-                int numModel = getData().size();
+                int numModel = onData().size();
                 if (realPosition < numModel) {
                     return getItemModelType(realPosition);
                 } else {
@@ -91,17 +71,17 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         final RecyclerHolder holder;
         switch (viewType) {
             case RecyclerHolder.LOAD_VIEW:
-                final View view = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(loadResId, parent, false);
-                holder = createSimpleHolder(view);
+                final View view = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(onFoot(), parent, false);
+                holder = createSimpleHolder(parent, view);
                 break;
             case RecyclerHolder.HEAD_VIEW:
-                holder = createSimpleHolder(mHeaderLayout);
+                holder = createSimpleHolder(parent, mHeaderLayout);
                 break;
             case RecyclerHolder.NULL_VIEW:
-                holder = createSimpleHolder(mEmptyLayout);
+                holder = createSimpleHolder(parent, mEmptyLayout);
                 break;
             case RecyclerHolder.FOOT_VIEW:
-                holder = createSimpleHolder(mFooterLayout);
+                holder = createSimpleHolder(parent, mFooterLayout);
                 break;
             default:
                 holder = createModelHolder(parent, viewType);
@@ -112,21 +92,13 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
     @Override
     public void onBindViewHolder(RecyclerHolder holder, int position) {
-
-        switch (holder.getItemViewType()) {
-            case RecyclerHolder.HEAD_VIEW:
-            case RecyclerHolder.NULL_VIEW:
-            case RecyclerHolder.FOOT_VIEW:
-                break;
-            case RecyclerHolder.LOAD_VIEW:
-                onLoad(holder, isLoadOver, false);
-               // Log.e("onBindViewHolder", "onLoad ==> isLoadOver = " + isLoadOver);
-                break;
-            default:
-                final int headCount = getHeadCount();
-                int realPosition = holder.getLayoutPosition() - headCount;
-                onNext(holder, getData().get(realPosition), realPosition);
-                break;
+        int itemViewType = holder.getItemViewType();
+        if (itemViewType == RecyclerHolder.LOAD_VIEW) {
+            // Log.e("loadmoreac", "onLoad = "+position);
+            onLoad(holder, isLoadOver, false);
+        } else {
+            // Log.e("loadmoreac", "onholder = "+position);
+            super.onBindViewHolder(holder, position);
         }
     }
 
@@ -146,10 +118,10 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
     @Override
     public void clearInsertData(@Nullable List<T> data) {
-        getData().clear();
+        onData().clear();
         mLastPosition = -1;
         if (null != data) {
-            getData().addAll(data);
+            onData().addAll(data);
         }
         notifyDataSetChanged();
     }
@@ -186,21 +158,31 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     /**
      * 加载结束
      */
-    public void loadOverDataSetChanged(RecyclerView recycler) {
+    public void loadOverDataSetChanged(RecyclerHolder holder) {
         isLoadOver = true;
 
-        if (null == recycler) return;
-        final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
+        RecyclerView view = (RecyclerView) holder.getParent();
+        if (null == view)
+            return;
+        // 强制停止RecyclerView滑动
+        view.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
+
+        if (null == view) return;
+        final RecyclerView.LayoutManager manager = view.getLayoutManager();
         if (null == manager) return;
         notifyDataSetChanged();
-        forceLoad(recycler, manager, false);
+        forceLoad(view, manager, false);
     }
 
-    public void loadSuccDataSetChanged(RecyclerView recycler) {
+    public void loadSuccDataSetChanged(RecyclerHolder holder) {
         isLoadOver = false;
 
-        if (null == recycler) return;
-        final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
+        RecyclerView view = (RecyclerView) holder.getParent();
+        if (null == view)
+            return;
+
+        if (null == view) return;
+        final RecyclerView.LayoutManager manager = view.getLayoutManager();
         if (null == manager) return;
         notifyDataSetChanged();
     }
@@ -208,33 +190,35 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     /**
      * 重置加载更多标记
      */
-    public void loadResetDataSetChanged(RecyclerView recycler) {
+    public void loadResetDataSetChanged(RecyclerHolder holder) {
         isLoadOver = false;
 
-        if (null == recycler)
+        RecyclerView view = (RecyclerView) holder.getParent();
+        if (null == view)
             return;
 
-        final RecyclerView.LayoutManager manager = recycler.getLayoutManager();
+        final RecyclerView.LayoutManager manager = view.getLayoutManager();
         if (null == manager)
             return;
 
         notifyDataSetChanged();
-        forceLoad(recycler, manager, true);
+        forceLoad(view, manager, true);
     }
 
-    public void setLoadingText(RecyclerView recycler, String str, int viewId) {
-
-        if (null == recycler)
-            return;
+    public void setLoadingText(RecyclerHolder holder, String str, int viewId) {
 
         if (TextUtils.isEmpty(str))
             return;
 
-        final RecyclerView.LayoutManager layoutManager = recycler.getLayoutManager();
+        RecyclerView view = (RecyclerView) holder.getParent();
+        if (null == view)
+            return;
+
+        final RecyclerView.LayoutManager layoutManager = view.getLayoutManager();
         if (null == layoutManager)
             return;
 
-        final RecyclerView.Adapter adapter = recycler.getAdapter();
+        final RecyclerView.Adapter adapter = view.getAdapter();
         if (null == adapter || adapter.getItemCount() == 0)
             return;
 
@@ -242,27 +226,28 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         if (itemViewType != RecyclerHolder.LOAD_VIEW)
             return;
 
-        final View view = layoutManager.findViewByPosition(adapter.getItemCount() - 1);
-        if (null == view)
+        final View item = layoutManager.findViewByPosition(adapter.getItemCount() - 1);
+        if (null == item)
             return;
 
-        final View text = view.findViewById(viewId);
+        final View text = item.findViewById(viewId);
         if (null == text || !(text instanceof TextView))
             return;
 
         ((TextView) text).setText(str);
     }
 
-    public void setLoadingVisable(RecyclerView recycler, int visibility, int viewId) {
+    public void setLoadingVisable(RecyclerHolder holder, int visibility, int viewId) {
 
-        if (null == recycler)
+        RecyclerView view = (RecyclerView) holder.getParent();
+        if (null == view)
             return;
 
-        final RecyclerView.LayoutManager layoutManager = recycler.getLayoutManager();
+        final RecyclerView.LayoutManager layoutManager = view.getLayoutManager();
         if (null == layoutManager)
             return;
 
-        final RecyclerView.Adapter adapter = recycler.getAdapter();
+        final RecyclerView.Adapter adapter = view.getAdapter();
         if (null == adapter || adapter.getItemCount() == 0)
             return;
 
@@ -270,11 +255,11 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
         if (itemViewType != RecyclerHolder.LOAD_VIEW)
             return;
 
-        final View view = layoutManager.findViewByPosition(adapter.getItemCount() - 1);
-        if (null == view)
+        final View item = layoutManager.findViewByPosition(adapter.getItemCount() - 1);
+        if (null == item)
             return;
 
-        final View bar = view.findViewById(viewId);
+        final View bar = item.findViewById(viewId);
         if (null == bar)
             return;
 
@@ -282,6 +267,9 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     }
 
     /**********************************       抽象方法API     **************************************/
+
+    protected abstract @LayoutRes
+    int onFoot();
 
     /**
      * 加载更多

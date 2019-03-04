@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 165
-        versionName "1.6.5"
+        targetSdkVersion 28
+        versionCode 200
+        versionName "2.0.0"
     }
 
     buildTypes {
@@ -29,10 +29,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib')
-
-    implementation 'com.android.support:appcompat-v7:26.+'
-    implementation 'com.android.support:recyclerview-v7:26.+'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'androidx.core:core:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
