@@ -28,7 +28,7 @@
         app:ttl_underline_gravity="BOTTOM"
         app:ttl_underline_height="@dimen/d1" />
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/mine_subscribe_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
