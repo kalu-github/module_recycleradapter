@@ -51,38 +51,20 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<RecyclerHolder> {
 
     protected static final String TAG = BaseCommonAdapter.class.getSimpleName();
-    private final Interpolator mInterpolator = new LinearInterpolator();
     protected int mLastPosition = -1;
-    // 布局ID
-    protected int mLayoutResId;
+
     protected LinearLayout mHeaderLayout, mFooterLayout;
     protected FrameLayout mEmptyLayout;
     // 是否仅仅第一次加载显示动画
     private boolean isOpenAnimFirstOnly = true;
     // 显示动画
     private boolean isOpenAnim = false;
-    // 动画显示时间
+    // 动画时间
     private int mAnimTime = 300;
+    // 差值器
+    private final Interpolator mInterpolator = new LinearInterpolator();
+    // 默认动画
     private BaseAnimation mSelectAnimation = new AlphaInAnimation();
-    // 数据集合
-    List<T> mModelList;
-
-    /***********************************     构造器API       **************************************/
-
-    /**
-     * 分类型, 不对外暴露API
-     */
-    BaseCommonAdapter(@Nullable List<T> data) {
-        this(data, 0);
-    }
-
-    /**
-     * 普通, 对外暴露API
-     */
-    public BaseCommonAdapter(@Nullable List<T> data, @LayoutRes int layoutResId) {
-        this.mModelList = data;
-        this.mLayoutResId = layoutResId;
-    }
 
     /***********************************       方法API       **************************************/
 
@@ -91,7 +73,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public T getModel(@IntRange(from = 0) int position) {
-        return position < mModelList.size() ? mModelList.get(position) : null;
+        return position < onData().size() ? onData().get(position) : null;
     }
 
     protected int getItemModelType(int position) {
@@ -99,7 +81,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     protected RecyclerHolder createModelHolder(ViewGroup parent, int viewType) {
-        final View itemView = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(mLayoutResId, parent, false);
+        final View itemView = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(initItemResId(), parent, false);
         return createSimpleHolder(itemView);
     }
 
@@ -191,7 +173,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        final int size = mModelList.size();
+        final int size = onData().size();
         return size == 0 ? getNullCount() : size + getNullCount() + getHeadCount() + getFootCount();
     }
 
@@ -199,7 +181,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     public int getItemViewType(int position) {
 
         // 没有数据
-        if (null == mModelList || mModelList.size() == 0) {
+        if (null == onData() || onData().isEmpty()) {
             return RecyclerHolder.NULL_VIEW;
         }
         // 有数据
@@ -210,7 +192,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             } else {
                 // 需要传递的索引位置
                 int realPosition = position - numHead;
-                int numModel = mModelList.size();
+                int numModel = onData().size();
                 return realPosition < numModel ? getItemModelType(realPosition) : RecyclerHolder.FOOT_VIEW;
             }
         }
@@ -322,7 +304,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             default:
                 final int headCount = getHeadCount();
                 int realPosition = holder.getLayoutPosition() - headCount;
-                onNext(holder, mModelList.get(realPosition), realPosition);
+                onNext(holder, onData().get(realPosition), realPosition);
                 break;
         }
     }
@@ -376,8 +358,6 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             case BaseAnimation.SLIDEIN_RIGHT:
                 mSelectAnimation = new SlideInRightAnimation();
                 break;
-            default:
-                break;
         }
     }
 
@@ -399,7 +379,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         trans.setExpanded(true);
         final int tempSize = tempList.size();
         final int tempBegin = position + 1;
-        mModelList.addAll(tempBegin, tempList);
+        onData().addAll(tempBegin, tempList);
 
         if (animate) {
             notifyItemRangeInserted(tempBegin, tempSize);
@@ -413,7 +393,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public void expandAll() {
-        for (int i = mModelList.size() - 1; i >= 0 + getHeadCount(); i--) {
+        for (int i = onData().size() - 1; i >= 0 + getHeadCount(); i--) {
             expand(i, true);
         }
     }
@@ -437,7 +417,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         final int tempSize = tempList.size();
         final int tempBegin = position + 1;
         for (int i = 0; i < tempSize; i++) {
-            mModelList.remove(tempBegin);
+            onData().remove(tempBegin);
         }
 
         if (animate) {
@@ -452,7 +432,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public void collapseAll() {
-        for (int i = mModelList.size() - 1; i >= 0 + getHeadCount(); i--) {
+        for (int i = onData().size() - 1; i >= 0 + getHeadCount(); i--) {
             collapse(i, true);
         }
     }
@@ -461,9 +441,9 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     public int getParentPosition(@NonNull T item) {
 
-        if (null == item || null == mModelList || mModelList.isEmpty()) return -1;
+        if (null == item || null == onData() || onData().isEmpty()) return -1;
 
-        int position = mModelList.indexOf(item);
+        int position = onData().indexOf(item);
         if (position == -1) return -1;
 
         int level = (item instanceof TransModel) ? ((TransModel) item).getLevel() : Integer.MAX_VALUE;
@@ -472,7 +452,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         if (level == -1) return -1;
 
         for (int i = position; i >= 0; i--) {
-            T temp = mModelList.get(i);
+            T temp = onData().get(i);
             if (!(temp instanceof TransModel)) continue;
             TransModel expandable = (TransModel) temp;
             if (expandable.getLevel() >= 0 && expandable.getLevel() < level) return i;
@@ -492,11 +472,11 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     /***********************************       头部API       **************************************/
 
-    private int getHeadPosition() {
+    private final int getHeadPosition() {
         return getHeadCount() == 1 ? -1 : 0;
     }
 
-    public int getHeadCount() {
+    public final int getHeadCount() {
         return (mHeaderLayout == null || mHeaderLayout.getChildCount() == 0) ? 0 : 1;
     }
 
@@ -528,12 +508,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             index = childCount;
         }
         mHeaderLayout.addView(header, index);
-        if (mHeaderLayout.getChildCount() == 1) {
-            int position = getHeadPosition();
-            if (position != -1) {
-                notifyItemInserted(position);
-            }
-        }
+        notifyDataSetChanged();
     }
 
     public void changeHead(View header) {
@@ -584,9 +559,9 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
         final int headCount = getHeadCount();
         if (headCount == 1) {
-            return getHeadCount() + mModelList.size();
+            return getHeadCount() + onData().size();
         }
-        return mModelList.size();
+        return onData().size();
     }
 
     public int getFootCount() {
@@ -621,12 +596,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             index = childCount;
         }
         mFooterLayout.addView(footer, index);
-        if (mFooterLayout.getChildCount() == 1) {
-            int position = getFootPosition();
-            if (position != -1) {
-                notifyItemInserted(position);
-            }
-        }
+        notifyDataSetChanged();
     }
 
     public void changeFoot(View header) {
@@ -674,7 +644,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
         if (mEmptyLayout == null || mEmptyLayout.getChildCount() == 0) return 0;
 
-        if (mModelList.size() != 0) return 0;
+        if (onData().size() != 0) return 0;
         return 1;
     }
 
@@ -725,42 +695,47 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     public void clearInsertData(@Nullable List<T> data) {
 
-        mModelList.clear();
+        onData().clear();
         mLastPosition = -1;
-        mModelList.addAll(data);
+        onData().addAll(data);
         notifyDataSetChanged();
     }
 
     public void addData(@NonNull T data) {
-        mModelList.add(data);
-        notifyItemInserted(mModelList.size() + getHeadCount());
+        onData().add(data);
+        notifyItemInserted(onData().size() + getHeadCount());
         notifyDataSetChanged();
     }
 
     public void addData(@NonNull Collection<? extends T> newData) {
-        mModelList.addAll(newData);
-        notifyItemRangeInserted(mModelList.size() - newData.size() + getHeadCount(), newData.size());
+        onData().addAll(newData);
+        notifyItemRangeInserted(onData().size() - newData.size() + getHeadCount(), newData.size());
         notifyDataSetChanged();
     }
 
     public void remove(@IntRange(from = 0) int position) {
-        mModelList.remove(position);
+        onData().remove(position);
         int internalPosition = position + getHeadCount();
         notifyItemRemoved(internalPosition);
-        notifyItemRangeChanged(internalPosition, mModelList.size() - internalPosition);
+        notifyItemRangeChanged(internalPosition, onData().size() - internalPosition);
     }
 
     public void setData(@IntRange(from = 0) int index, @NonNull T data) {
-        mModelList.set(index, data);
+        onData().set(index, data);
         notifyItemChanged(index + getHeadCount());
     }
 
     @NonNull
     public List<T> getData() {
-        return mModelList;
+        return onData();
     }
 
     /**********************************       抽象方法API     **************************************/
+
+    protected abstract @LayoutRes
+    int initItemResId();
+
+    protected abstract List<T> onData();
 
     protected abstract void onNext(RecyclerHolder holder, T model, int position);
 

@@ -32,12 +32,6 @@ public abstract class BaseLoadSwipeDragAdapter<T> extends BaseLoadAdapter<T> {
 
     /*********************************************************/
 
-    public BaseLoadSwipeDragAdapter(@Nullable List<T> data, @LayoutRes int itemResId, @LayoutRes int loadResId) {
-        super(data, itemResId, loadResId);
-    }
-
-    /*********************************************************/
-
     @Override
     public void onBindViewHolder(RecyclerHolder holder, int positions) {
         super.onBindViewHolder(holder, positions);

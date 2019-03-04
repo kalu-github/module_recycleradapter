@@ -25,12 +25,6 @@ public abstract class BaseCommonSwipeAdapter<T> extends BaseCommonAdapter<T> {
 
     /*********************************************************/
 
-    public BaseCommonSwipeAdapter(List<T> data, @LayoutRes int layoutResId) {
-        super(data, layoutResId);
-    }
-
-    /*********************************************************/
-
     @Override
     public void onBindViewHolder(RecyclerHolder holder, int positions) {
         super.onBindViewHolder(holder, positions);

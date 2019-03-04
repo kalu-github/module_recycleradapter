@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".APP"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,17 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".model.tab.StickyActivity2" />
+        <activity android:name=".LoadActivity" />
         <activity android:name=".ClickActivity" />
-        <activity android:name=".HeadFootActivity" />
         <activity android:name=".SectionActivity" />
-        <activity android:name=".EmptyActivity" />
-        <activity android:name=".DragSwipeActivity" />
-        <activity android:name=".TransActivity" />
-        <activity android:name=".StickyActivity1" />
-        <activity android:name=".MulitActivity" />
-        <activity android:name=".LoadmoreActivity" />
-        <activity android:name=".FloatActivity" />
+        <activity android:name=".HeadFootActivity"></activity>
     </application>
 
 </manifest>

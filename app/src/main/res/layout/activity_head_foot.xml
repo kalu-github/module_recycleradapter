@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/section_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
+        android:background="#660084ff"
+        android:gravity="center"
+        android:clickable="true"
+        android:paddingLeft="20dp"
+        android:text="添加head"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/section_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/section_foot"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
+        android:clickable="true"
+        android:background="#660084ff"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:text="添加foot"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+</LinearLayout>

@@ -16,14 +16,6 @@ import java.util.List;
  */
 public abstract class BaseLoadSectionAdapter<T extends SectionModel> extends BaseLoadAdapter<T> {
 
-    private @LayoutRes
-    int sectionResId;
-
-    public BaseLoadSectionAdapter(@Nullable List<T> data, @LayoutRes int itemResId, @LayoutRes int loadResId, int sectionResId) {
-        super(data, itemResId, loadResId);
-        this.sectionResId = sectionResId;
-    }
-
     @Override
     protected int getItemModelType(int position) {
         return getData().get(position).isSection() ? RecyclerHolder.SECTION_VIEW : 0;
@@ -32,7 +24,7 @@ public abstract class BaseLoadSectionAdapter<T extends SectionModel> extends Bas
     @Override
     protected RecyclerHolder createModelHolder(ViewGroup parent, int viewType) {
         if (viewType == RecyclerHolder.SECTION_VIEW) {
-            final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(sectionResId, parent, false);
+            final View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(initSectionResId(), parent, false);
             return createSimpleHolder(inflate);
         }
         return super.createModelHolder(parent, viewType);
@@ -60,6 +52,11 @@ public abstract class BaseLoadSectionAdapter<T extends SectionModel> extends Bas
                 break;
         }
     }
+
+    /**********************************************************************************************/
+
+    protected abstract @LayoutRes
+    int initSectionResId();
 
     protected abstract void onSection(int position);
 }

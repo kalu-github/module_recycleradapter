@@ -18,8 +18,7 @@ public abstract class BaseCommonMultAdapter<T extends MultModel> extends BaseCom
 
     private final SparseArray<Integer> mResIdList = new SparseArray<>();
 
-    public BaseCommonMultAdapter(List<T> data) {
-        super(data);
+    public BaseCommonMultAdapter() {
         onMult();
     }
 
