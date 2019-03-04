@@ -3,6 +3,8 @@
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ```
 
+# 重要提示：版本依赖基于androidx
+
  [戳我下载 ==>](https://pan.baidu.com/s/1nvAAvpf)
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
