@@ -2,6 +2,7 @@ package com.demo.adapter;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class ClickActivity extends AppCompatActivity {
             list.add(String.valueOf(i));
         }
 
+        final int[] i = {1};
+
         BaseCommonAdapter<String> adapter = new BaseCommonAdapter<String>() {
 
             @Override
@@ -37,6 +40,21 @@ public class ClickActivity extends AppCompatActivity {
             @Override
             protected List<String> onData() {
                 return list;
+            }
+
+            @Override
+            protected void onHolder(final RecyclerView.LayoutManager manager, final RecyclerHolder holder, int type) {
+
+                Log.e("holder", "onHolder = i = "+ i[0]);
+                ++i[0];
+
+                holder.getView(R.id.click_text1).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = manager.getPosition(holder.itemView);
+                        Log.e("holder", "position = " + position);
+                    }
+                });
             }
 
             @Override

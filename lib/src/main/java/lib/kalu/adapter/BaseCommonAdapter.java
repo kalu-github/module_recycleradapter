@@ -210,82 +210,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
                 holder = createModelHolder(parent, viewType);
         }
 
-//        // 设置滑动监听
-//        if (parent instanceof RecyclerView && null == parent.getTag()) {
-//
-//            parent.setTag(true);
-//            final RecyclerView temp = (RecyclerView) parent;
-//            final RecyclerView.LayoutManager manager = temp.getLayoutManager();
-//
-//            final int[] rangeY = {0};
-//
-//            temp.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//
-//                @Override
-//                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                    super.onScrolled(recyclerView, dx, dy);
-//                    rangeY[0] -= dy;
-//
-////                    if (manager instanceof GridLayoutManager) {
-////                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
-////                        final int lastPosition = ((GridLayoutManager) manager).findLastVisibleItemPosition();
-////                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
-////                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition, lastPosition);
-////                    } else if (manager instanceof LinearLayoutManager) {
-////                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
-////                        final int lastPosition = ((LinearLayoutManager) manager).findLastVisibleItemPosition();
-////                        final int firstItemHeight = manager.findViewByPosition(firstPosition).getHeight();
-////                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition, lastPosition);
-////                    } else {
-////                        final StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
-////                        int[] firstPosition = null;
-////                        firstPosition = temp.findFirstVisibleItemPositions(firstPosition);
-////                        final int firstItemHeight = manager.findViewByPosition(firstPosition[0]).getHeight();
-////                        int[] lastPosition = null;
-////                        lastPosition =  temp.findLastVisibleItemPositions(lastPosition);
-////                        onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), recyclerView.getScrollState(), firstPosition[0], lastPosition[0]);
-////                    }
-//                }
-//
-//                @Override
-//                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                    super.onScrollStateChanged(recyclerView, newState);
-//
-//                    if (manager instanceof GridLayoutManager) {
-//                        final int firstPosition = ((GridLayoutManager) manager).findFirstVisibleItemPosition();
-//                        final int lastPosition = ((GridLayoutManager) manager).findLastVisibleItemPosition();
-//
-//                        final View child = manager.findViewByPosition(firstPosition);
-//                        if (null != child) {
-//                            final int firstItemHeight = child.getHeight();
-//                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition, lastPosition);
-//                        }
-//                    } else if (manager instanceof LinearLayoutManager) {
-//                        final int firstPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
-//                        final int lastPosition = ((LinearLayoutManager) manager).findLastVisibleItemPosition();
-//
-//                        final View child = manager.findViewByPosition(firstPosition);
-//                        if (null != child) {
-//                            final int firstItemHeight = child.getHeight();
-//                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition, lastPosition);
-//                        }
-//                    } else {
-////                        final StaggeredGridLayoutManager temp = (StaggeredGridLayoutManager) manager;
-////                        int[] firstPosition = null;
-////                        firstPosition = temp.findFirstVisibleItemPositions(firstPosition);
-////
-////                        final View child = manager.findViewByPosition(firstPosition[0]);
-////                        if(null != child){
-////                            final int firstItemHeight = child.getHeight();
-////                            int[] lastPosition = null;
-////                            lastPosition =  temp.findLastVisibleItemPositions(lastPosition);
-////                            onRoll(recyclerView, firstItemHeight, Math.abs(rangeY[0]), newState, firstPosition[0], lastPosition[0]);
-////                        }
-//                    }
-//                }
-//            });
-//        }
-
+        onHolder(holder.getLayoutManager(), holder, viewType);
         return holder;
     }
 
@@ -769,6 +694,9 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
      * @param loadmore 是否加载更多
      */
     protected void onRoll(boolean roll, boolean loadmore) {
+    }
+
+    protected void onHolder(RecyclerView.LayoutManager manager, RecyclerHolder holder, int type) {
     }
 
     /***********************************       动画API       **************************************/

@@ -49,6 +49,10 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
         return mNestedRecyclerView.get();
     }
 
+    public RecyclerView.LayoutManager getLayoutManager() {
+        return ((RecyclerView) mNestedRecyclerView.get()).getLayoutManager();
+    }
+
     public RecyclerHolder setAdapter(int viewId, Adapter adapter) {
         AdapterView view = getView(viewId);
         view.setAdapter(adapter);
