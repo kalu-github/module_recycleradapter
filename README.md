@@ -16,21 +16,24 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
 ```
+
 BaseCommonAdapter adapter = new BaseCommonAdapter<String>(List数据集合 , item布局文件id) {
 
-        # 设置数据
-        @Override
-        protected void onNext(RecyclerHolder holder, String model, int position) {
-        
-                holder!!.setOnClickListener(View.OnClickListener {
-                    Toast.makeText(applicationContext, "点击第 " + position + " 个item", Toast.LENGTH_SHORT).show()
-                }, R.id.click_text1)
+            @Override
+            protected void onHolder(final RecyclerView.LayoutManager manager, final RecyclerHolder holder, int type) {
 
-                holder!!.setOnClickListener(View.OnClickListener {
-                    Toast.makeText(applicationContext, "点击第 " + position + " 个item - child", Toast.LENGTH_SHORT).show()
-                }, R.id.click_text2)
-        }
-    };
+                Log.e("holder", "onHolder = i = "+ i[0]);
+                ++i[0];
+
+                holder.getView(R.id.click_text1).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = manager.getPosition(holder.itemView);
+                        Log.e("holder", "position = " + position);
+                    }
+                });
+            }
+};
 ```
 
 #
