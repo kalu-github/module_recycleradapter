@@ -17,7 +17,7 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
 ```
 
-BaseCommonAdapter adapter = new BaseCommonAdapter<String>(List数据集合 , item布局文件id) {
+BaseCommonAdapter adapter = new BaseCommonAdapter<String>() {
 
             @Override
             protected void onHolder(final RecyclerView.LayoutManager manager, final RecyclerHolder holder, int type) {
