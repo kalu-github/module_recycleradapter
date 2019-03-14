@@ -133,12 +133,12 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
         if (isModel) {
             if (!isOpenAnim) return;
-            if (!isOpenAnimFirstOnly || holder.getLayoutPosition() > mLastPosition) {
+            if (!isOpenAnimFirstOnly || holder.getAdapterPosition() > mLastPosition) {
                 for (Animator anim : mSelectAnimation.getAnimators(holder.itemView)) {
                     anim.setDuration(mAnimTime).start();
                     anim.setInterpolator(mInterpolator);
                 }
-                mLastPosition = holder.getLayoutPosition();
+                mLastPosition = holder.getAdapterPosition();
             }
         } else {
 
@@ -244,7 +244,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
                 Log.e("list", "22");
             }
 
-            int realPosition = holder.getLayoutPosition() - getHeadCount();
+            int realPosition = holder.getAdapterPosition() - getHeadCount();
             onNext(holder, onData().get(realPosition), position);
         }
     }
