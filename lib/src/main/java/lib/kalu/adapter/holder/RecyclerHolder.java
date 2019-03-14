@@ -42,7 +42,7 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public RecyclerHolder(final ViewGroup parent, final View view) {
         super(view);
-        ((RecyclerView) view).setHasFixedSize(true);
+        ((RecyclerView) view.getParent()).setHasFixedSize(true);
         mNestedRecyclerView = new WeakReference<>(parent);
     }
 
