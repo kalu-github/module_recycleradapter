@@ -3,7 +3,7 @@
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ```
 
-# 重要提示：版本依赖基于androidx
+# 版本依赖基于androidx
 
  [戳我下载 ==>](https://pan.baidu.com/s/1nvAAvpf)
 
