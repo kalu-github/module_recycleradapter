@@ -13,7 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.callback.SwipeDragCallback;
+
+import lib.kalu.adapter.callback.ItemSwipeDragHelperCallback;
 
 public class DragSwipeActivity extends AppCompatActivity {
     private static final String TAG = DragSwipeActivity.class.getSimpleName();
@@ -21,14 +22,14 @@ public class DragSwipeActivity extends AppCompatActivity {
     private List<String> mData;
     private ItemDragAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
-    private SwipeDragCallback mItemDragAndSwipeCallback;
+    private ItemSwipeDragHelperCallback mItemDragAndSwipeCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_touch_use);
         mRecyclerView = findViewById(R.id.rv_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mData = generateData(50);
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -42,11 +43,13 @@ public class DragSwipeActivity extends AppCompatActivity {
                 return mData;
             }
         };
-        mItemDragAndSwipeCallback = new SwipeDragCallback(mAdapter);
+        mItemDragAndSwipeCallback = new ItemSwipeDragHelperCallback(mAdapter);
         mItemTouchHelper = new ItemTouchHelper(mItemDragAndSwipeCallback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
 
+//        mItemDragAndSwipeCallback.setSwipeFlags(ItemTouchHelper.START);
         mItemDragAndSwipeCallback.setSwipeFlags(ItemTouchHelper.START);
+        mItemDragAndSwipeCallback.setDragFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         mAdapter.enableSwipeItem();
         mAdapter.enableDragItem(mItemTouchHelper);
         mRecyclerView.setAdapter(mAdapter);

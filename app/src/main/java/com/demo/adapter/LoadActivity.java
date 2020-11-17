@@ -11,7 +11,6 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import lib.kalu.adapter.BaseLoadAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 
@@ -34,7 +33,7 @@ public final class LoadActivity extends AppCompatActivity {
         final BaseLoadAdapter<String> adapter = new BaseLoadAdapter<String>() {
 
             @Override
-            protected int onFoot() {
+            protected int onLoad() {
                 return R.layout.activity_loadmore_loading;
             }
 
@@ -54,7 +53,7 @@ public final class LoadActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onLoad(final RecyclerHolder holder, boolean isOver, boolean isRefresh) {
+            protected void onLoad(RecyclerHolder holder, boolean isOver, int page) {
                 Log.e("kalu", "onLoad ==> isOver = " + isOver);
 
                 holder.setText(R.id.loading_text, isOver ? "没有更多了" : "加载更多...");
@@ -74,9 +73,9 @@ public final class LoadActivity extends AppCompatActivity {
                                 insertData();
 
                                 if (mDatas.size() > 5) {
-                                    loadOverDataSetChanged(holder);
+                                 //   loadOverDataSetChanged(holder);
                                 } else {
-                                    loadSuccDataSetChanged(holder);
+                                  //  loadSuccDataSetChanged(holder);
                                 }
                             }
                         });

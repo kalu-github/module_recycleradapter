@@ -29,7 +29,7 @@ public class LoadmoreActivity extends AppCompatActivity {
         BaseLoadAdapter<String> adapter = new BaseLoadAdapter<String>() {
 
             @Override
-            protected int onFoot() {
+            protected int onLoad() {
                 return R.layout.activity_loadmore_loading;
             }
 
@@ -50,9 +50,9 @@ public class LoadmoreActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onLoad(final RecyclerHolder holder, boolean isOver, boolean isRefresh) {
+            protected void onLoad(RecyclerHolder holder, boolean over, int page) {
 
-                if (isOver)
+                if (over)
                     return;
 
                 new Thread(new Runnable() {
@@ -65,9 +65,9 @@ public class LoadmoreActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                loadOverDataSetChanged(holder);
-                                holder.setText(R.id.loading_text, "-- 我也是有底线的 --");
-                                holder.setVisible(R.id.loading_cycle, View.GONE);
+//                                loadOverDataSetChanged(holder);
+//                                holder.setText(R.id.loading_text, "-- 我也是有底线的 --");
+//                                holder.setVisible(R.id.loading_cycle, View.GONE);
                             }
                         });
                     }

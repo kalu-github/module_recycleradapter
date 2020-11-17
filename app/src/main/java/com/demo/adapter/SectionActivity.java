@@ -26,14 +26,15 @@ public class SectionActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mData = DataServer.getSampleData();
         BaseCommonSectionAdapter sectionAdapter = new BaseCommonSectionAdapter() {
+
             @Override
-            protected int onView() {
-                return R.layout.activity_section_item;
+            protected int onSection() {
+                return R.layout.activity_section_head;
             }
 
             @Override
-            protected int onHead() {
-                return R.layout.activity_section_head;
+            protected int onView() {
+                return R.layout.activity_section_item;
             }
 
             @NonNull

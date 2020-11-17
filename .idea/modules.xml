@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RecyclerAdapter.iml" filepath="$PROJECT_DIR$/RecyclerAdapter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/RecyclerAdapter.iml" filepath="$PROJECT_DIR$/.idea/modules/RecyclerAdapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/RecyclerAdapter.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/RecyclerAdapter.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/RecyclerAdapter.lib_adapter.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/RecyclerAdapter.lib_adapter.iml" />
     </modules>
   </component>
 </project>

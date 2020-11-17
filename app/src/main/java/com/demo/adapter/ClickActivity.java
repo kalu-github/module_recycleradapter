@@ -63,8 +63,8 @@ public class ClickActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onRoll(boolean roll, boolean loadmore) {
-                Log.e("kalu", "roll = " + roll + ", loadmore = " + loadmore);
+            protected void onScroll(int horizontalOffset, int verticalOffset) {
+                super.onScroll(horizontalOffset, verticalOffset);
             }
         };
 

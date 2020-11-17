@@ -4,9 +4,6 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ```
 
 # 版本依赖基于androidx
-
- [戳我下载 ==>](https://pan.baidu.com/s/1nvAAvpf)
-
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
 
 #
@@ -15,290 +12,38 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
-```
-
-BaseCommonAdapter adapter = new BaseCommonAdapter<String>() {
-
-            @Override
-            protected void onHolder(final RecyclerView.LayoutManager manager, final RecyclerHolder holder, int type) {
-
-                Log.e("holder", "onHolder = i = "+ i[0]);
-                ++i[0];
-
-                holder.getView(R.id.click_text1).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int position = manager.getPosition(holder.itemView);
-                        Log.e("holder", "position = " + position);
-                    }
-                });
-            }
-};
-```
-
 #
 
 # 2.加载更多
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif ) 
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif )
 ```
-# 加载结束, 没有数据了
-loadOverNotifyDataSetChanged(RecyclerView recycler);
-
-# 加载完成, 不显示loading
-loadCompleteNotifyDataSetChanged(RecyclerView recycler);
-
-# 刷新数据, 重置所有标记位
-loadResetNotifyDataSetChanged(RecyclerView recycler);
-
-# 创建adapter
-BaseLoadAdapter adapter = new BaseLoadAdapter<String>(List数据集合 , item布局文件id, load布局文件id) {
-
-        # 设置数据
-        @Override
-        protected void onNext(RecyclerHolder holder, String model, int position) {
-        }
-
-        # 加载监听
-        # isOver，是否需要显示loading，之后自己判断逻辑部分, 服务器告诉没有数据了, 需要调用loadOverNotifyDataSetChanged(recycler)
-        @Override
-        protected void onLoad(RecyclerHolder holder, boolean isOver) {
-        }
-    };
-    
-# 设置adapter
-RecyclerView.setAdapter(adapter);
-```
-
-#
 
 # 3.分类型布局
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif ) 
-```
-# 创建bean, 实现MultModel
-class NewMulitItem implements MultModel {
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif )
 
-    // 布局类型
-    类型private int itemType;
-
-    public void setItemType(int itemType) {
-        this.itemType = itemType;
-    }
-
-    @Override
-    public int getItemType() {
-        return itemType;
-    }
-}
-
-# 创建adapter
-BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<String>(List数据集合) {
-
-        # 合并单元格
-        @Override
-        protected int onMerge(int position) {
-        }
-         
-        # 添加分类型布局
-        @Override
-        protected void onMult() {       
-            addItemType(布局类型(int), item布局文件id);
-        }
-
-        # 设置数据
-        @Override
-        protected void onNext(RecyclerHolder holder, String model, int position) {
-        }
-    };
-    
-# 设置adapter
-RecyclerView.setAdapter(adapter);
-```
-#
 
 # 4.添加头添加尾
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif ) 
-```
-# 添加头
-BaseCommonMultAdapter.addHeadView(headView)
-
-# 添加尾
-BaseCommonMultAdapter.addFootView(footView)
-    
-# 设置adapter
-RecyclerView.setAdapter(adapter);
-```
-#
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif )
 
 # 5.空，加载，错误布局
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif ) 
-```
-#  空布局
-BaseCommonMultAdapter.setNullView(nullView);
-    
-# 设置adapter
-RecyclerView.setAdapter(adapter);
-```
-
-#
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif )
 
 # 6.分组
 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif ) 
-```
-# 创建bean, 实现SectionModel
-class MySection extends SectionModel<Video> {
-    private boolean isMore;
+![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif )
 
-    public MySection(boolean isHeader, String header, boolean isMroe) {
-        super(isHeader, header);
-        this.isMore = isMroe;
-    }
-
-    public MySection(Video t) {
-        super(t);
-    }
-
-    public boolean isMore() {
-        return isMore;
-    }
-
-    public void setMore(boolean mroe) {
-        isMore = mroe;
-    }
-}
-
-# 创建adapter
-BaseCommonSectionAdapter adapter = new BaseCommonSectionAdapter<MySection>(List数据集合, item布局id, section布局id) {
-
-        # 分组
-        @Override
-        protected void onSection(RecyclerHolder holder, int position) {
-        }
-         
-        # 设置数据
-        @Override
-        protected void onNext(RecyclerHolder holder, MySection model, int position) {
-        }
-    };
-    
-# 设置adapter
-RecyclerView.setAdapter(adapter);
-```
-
-#
 
 # 7.多级菜单
 
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif )
-```
-# 创建bean, 实现MultModel, 继承TransModel
-# 一级菜单
-class Level0Item extends TransModel<Level1Item> implements MultModel {
-    public String title;
-    public String subTitle;
-
-    public Level0Item(String title, String subTitle) {
-        this.subTitle = subTitle;
-        this.title = title;
-    }
-
-    @Override
-    public int getItemType() {
-        return TransAdapter.TYPE_LEVEL_0;
-    }
-
-    @Override
-    public int getLevel() {
-        return 0;
-    }
-}
-# 二级菜单
-class Level1Item extends TransModel<Person> implements MultModel {
-    public String title;
-    public String subTitle;
-
-    public Level1Item(String title, String subTitle) {
-        this.subTitle = subTitle;
-        this.title = title;
-    }
-
-    @Override
-    public int getItemType() {
-        return TransAdapter.TYPE_LEVEL_1;
-    }
-
-    @Override
-    public int getLevel() {
-        return 1;
-    }
-}
-# 三级菜单
-class Person implements MultModel {
-    public Person(String name, int age) {
-        this.age = age;
-        this.name = name;
-    }
-
-    public String name;
-    public int age;
-
-    @Override
-    public int getItemType() {
-        return TransAdapter.TYPE_PERSON;
-    }
-}
-
-# 创建adapter
-BaseCommonMultAdapter adapter = new BaseCommonMultAdapter<MySection>(List数据集合) {
-
-         # 添加分类型布局
-        @Override
-        protected void onMult() {       
-            addItemType(一级菜单布局类型(int), 一级菜单item布局文件id);
-            addItemType(二级菜单布局类型(int), 二级菜单item布局文件id);
-            addItemType(三级菜单布局类型(int), 三级菜单item布局文件id);
-        }
-         
-        # 设置数据
-        @Override
-        protected void onNext(RecyclerHolder holder, MySection model, int position) {
-            switch (holder.getItemViewType()) {
-              case: 一级菜单布局类型(int):
-                  break;
-              case: 二级菜单布局类型(int):
-                  break;
-              case: 三级菜单布局类型(int):
-                  break;
-            ｝
-        }
-    };
-    
-# 设置adapter
-RecyclerView.setAdapter(adapter);
-```
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-05.gif )
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-07.gif ) 
-![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-03.gif )
-
-#
-
-# Proguard-Rules
-```
--keep class lib.kalu.adapter.** {
-*;
-}
--keep public class * extends lib.kalu.adapter.BaseCommonAdapter
-```
-
-#
 
 # License
 ```
-Copyright 2017 张航
+Copyright 2017 kalu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
