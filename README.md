@@ -6,39 +6,25 @@ compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 # 版本依赖基于androidx
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-00.png )
 
-#
-
 # 1.点击事件
-
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-12.gif )
 
-#
-
 # 2.加载更多
-
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-11.gif )
-```
 
 # 3.分类型布局
-
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-08.gif )
 
-
 # 4.添加头添加尾
-
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-09.gif )
 
 # 5.空，加载，错误布局
-
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-10.gif )
 
 # 6.分组
-
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-06.gif )
 
-
 # 7.多级菜单
-
 ![image](https://github.com/153437803/RecyclerAdapter/blob/master/Screenrecorder-2017-12-05-04.gif )
 
 # License
