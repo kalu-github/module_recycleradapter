@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion) ![](https://img.shields.io/badge/Build-Passing-green.svg) ![](https://img.shields.io/badge/API%20-14+-green.svg) [ ![](https://img.shields.io/badge/AUTHOR-kalu-red) ](http://www.jianshu.com/u/22a5d2ee8385) ![](https://img.shields.io/badge/EMAIL-153437803@qq.com-red.svg)
+[ ![Download](https://api.bintray.com/packages/zhanghang/maven/recycleradapter/images/download.svg) ](https://bintray.com/zhanghang/maven/recycleradapter/_latestVersion) ![](https://img.shields.io/badge/Build-Passing-green.svg) ![](https://img.shields.io/badge/API%20-14+-green.svg) [ ![](https://img.shields.io/badge/Author-kalu-red) ](http://www.jianshu.com/u/22a5d2ee8385) ![](https://img.shields.io/badge/Email-153437803@qq.com-red.svg)
 ```
 compile 'lib.kalu.adapter:recycleradapter:<latest-version>'
 ```
