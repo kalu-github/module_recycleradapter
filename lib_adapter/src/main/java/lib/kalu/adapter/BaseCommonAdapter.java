@@ -47,6 +47,8 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  */
 public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<RecyclerHolder> {
 
+//    private final RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool();
+
     protected static final String TAG = BaseCommonAdapter.class.getSimpleName();
     private final Interpolator mInterpolator = new LinearInterpolator();
     protected int mLastPosition = -1;
@@ -157,29 +159,37 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     @Override
     public RecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        RecyclerHolder holder;
+        // 添加缓存池
+//        RecyclerView recyclerView = (RecyclerView) parent;
+//        if (null == recyclerView.getRecycledViewPool()) {
+//            Log.e("BaseCommonAdapter", "onCreateViewHolder => 添加缓存池");
+//            recyclerView.setRecycledViewPool(pool);
+//        }
 
         // 空布局
         if (viewType == RecyclerHolder.NULL_VIEW) {
-            holder = new RecyclerHolder(parent, mEmptyLayout);
+            RecyclerHolder holder = new RecyclerHolder(parent, mEmptyLayout);
+            onEvent(holder, parent, viewType);
+            return holder;
         }
         // 头
         else if (viewType == RecyclerHolder.HEAD_VIEW) {
-            holder = new RecyclerHolder(parent, mHeaderLayout);
+            RecyclerHolder holder = new RecyclerHolder(parent, mHeaderLayout);
+            onEvent(holder, parent, viewType);
+            return holder;
         }
         // 脚
         else if (viewType == RecyclerHolder.FOOT_VIEW) {
-            holder = new RecyclerHolder(parent, mFooterLayout);
+            RecyclerHolder holder = new RecyclerHolder(parent, mFooterLayout);
+            onEvent(holder, parent, viewType);
+            return holder;
         }
         // 孩子
         else {
-            holder = createHolder(parent, onView(), viewType);
+            RecyclerHolder holder = createHolder(parent, onView(), viewType);
+            onEvent(holder, parent, viewType);
+            return holder;
         }
-
-        // 事件绑定
-        onEvent(holder, parent, viewType);
-
-        return holder;
     }
 
     @Override
