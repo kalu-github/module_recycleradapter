@@ -4,6 +4,9 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+
 public final class AlphaInAnimation implements BaseAnimation {
 
     private static final float DEFAULT_ALPHA_FROM = 0f;
@@ -18,9 +21,8 @@ public final class AlphaInAnimation implements BaseAnimation {
     }
 
     @Override
-    public Animator[] getAnimators(View view) {
-
-        final ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", mFrom, 1f);
+    public Animator[] getAnimators(@NonNull View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", mFrom, 1f);
         return new Animator[]{animator};
     }
 }

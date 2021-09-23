@@ -79,7 +79,8 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
             RecyclerHolder holder = new RecyclerHolder(parent, inflate);
 
             // 事件绑定
-            onEvent(holder, parent, viewType);
+            RecyclerView.LayoutManager layoutManager = ((RecyclerView) parent).getLayoutManager();
+            onHolder(layoutManager, holder, viewType);
 
             return holder;
         }

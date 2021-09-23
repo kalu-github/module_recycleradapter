@@ -3,14 +3,20 @@ apply plugin: 'com.android.library'
 
 android {
 
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 200
-        versionName "2.0.0"
+        targetSdkVersion 29
+    }
+
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            def type = new String(buildType.name).toLowerCase()
+            def time = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08"))
+            outputFileName = "lib_recycler_adapter_r1.0.0_" + type + "_" + time + ".aar"
+        }
     }
 
     buildTypes {
@@ -27,7 +33,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
+    compileOnly 'androidx.annotation:annotation:1.2.0'
+    compileOnly 'androidx.core:core:1.6.0'
+    compileOnly 'androidx.customview:customview:1.1.0'
 }
 
 //publish {

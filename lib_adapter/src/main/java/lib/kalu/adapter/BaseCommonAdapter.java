@@ -1,5 +1,8 @@
 package lib.kalu.adapter;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.animation.Animator;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -38,9 +41,6 @@ import lib.kalu.adapter.animation.SlideInRightAnimation;
 import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.model.TransModel;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-
 /**
  * description: 没有加载更多
  * created by kalu on 2017/5/26 14:22
@@ -57,11 +57,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     protected FrameLayout mEmptyLayout;
     // 是否仅仅第一次加载显示动画
     private boolean isOpenAnimFirstOnly = true;
-    // 显示动画
-    private boolean isOpenAnim = false;
     // 动画显示时间
     private int mAnimTime = 300;
-    private BaseAnimation mSelectAnimation = new AlphaInAnimation();
+    // 动画
+    private BaseAnimation mAnimation = null;
 
     /***********************************       方法API       **************************************/
 
@@ -80,9 +79,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     protected void setModelStyle(RecyclerView.ViewHolder holder, boolean isModel) {
 
         if (isModel) {
-            if (!isOpenAnim) return;
+            if (null == mAnimation)
+                return;
             if (!isOpenAnimFirstOnly || holder.getAdapterPosition() > mLastPosition) {
-                for (Animator anim : mSelectAnimation.getAnimators(holder.itemView)) {
+                for (Animator anim : mAnimation.getAnimators(holder.itemView)) {
                     anim.setDuration(mAnimTime).start();
                     anim.setInterpolator(mInterpolator);
                 }
@@ -110,16 +110,6 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     protected RecyclerHolder createHolder(@NonNull ViewGroup parent, @LayoutRes int resource, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(resource, parent, false);
         return new RecyclerHolder(parent, inflate);
-    }
-
-    protected void onEvent(@NonNull RecyclerHolder holder, @NonNull ViewGroup parent, int viewType) {
-
-        if (null == holder || null == parent || !(parent instanceof RecyclerView))
-            return;
-
-        // 事件绑定
-        RecyclerView recyclerView = (RecyclerView) parent;
-        onHolder(recyclerView.getLayoutManager(), holder, viewType);
     }
 
     /***********************************       重写API       **************************************/
@@ -169,25 +159,29 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         // 空布局
         if (viewType == RecyclerHolder.NULL_VIEW) {
             RecyclerHolder holder = new RecyclerHolder(parent, mEmptyLayout);
-            onEvent(holder, parent, viewType);
+            RecyclerView.LayoutManager layoutManager = ((RecyclerView) parent).getLayoutManager();
+            onHolder(layoutManager, holder, viewType);
             return holder;
         }
         // 头
         else if (viewType == RecyclerHolder.HEAD_VIEW) {
             RecyclerHolder holder = new RecyclerHolder(parent, mHeaderLayout);
-            onEvent(holder, parent, viewType);
+            RecyclerView.LayoutManager layoutManager = ((RecyclerView) parent).getLayoutManager();
+            onHolder(layoutManager, holder, viewType);
             return holder;
         }
         // 脚
         else if (viewType == RecyclerHolder.FOOT_VIEW) {
             RecyclerHolder holder = new RecyclerHolder(parent, mFooterLayout);
-            onEvent(holder, parent, viewType);
+            RecyclerView.LayoutManager layoutManager = ((RecyclerView) parent).getLayoutManager();
+            onHolder(layoutManager, holder, viewType);
             return holder;
         }
         // 孩子
         else {
             RecyclerHolder holder = createHolder(parent, onView(), viewType);
-            onEvent(holder, parent, viewType);
+            RecyclerView.LayoutManager layoutManager = ((RecyclerView) parent).getLayoutManager();
+            onHolder(layoutManager, holder, viewType);
             return holder;
         }
     }
@@ -300,25 +294,24 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     /***********************************       重写API       **************************************/
 
     public final void setLoadAnimation(@AnimationType int animationType, int animTime, boolean isOpenAnimFirstOnly) {
-        this.isOpenAnim = true;
         this.isOpenAnimFirstOnly = isOpenAnimFirstOnly;
         this.mAnimTime = animTime;
 
         switch (animationType) {
             case BaseAnimation.ALPHAIN:
-                mSelectAnimation = new AlphaInAnimation();
+                mAnimation = new AlphaInAnimation();
                 break;
             case BaseAnimation.SCALEIN:
-                mSelectAnimation = new ScaleInAnimation();
+                mAnimation = new ScaleInAnimation();
                 break;
             case BaseAnimation.SLIDEIN_BOTTOM:
-                mSelectAnimation = new SlideInBottomAnimation();
+                mAnimation = new SlideInBottomAnimation();
                 break;
             case BaseAnimation.SLIDEIN_LEFT:
-                mSelectAnimation = new SlideInLeftAnimation();
+                mAnimation = new SlideInLeftAnimation();
                 break;
             case BaseAnimation.SLIDEIN_RIGHT:
-                mSelectAnimation = new SlideInRightAnimation();
+                mAnimation = new SlideInRightAnimation();
                 break;
             default:
                 break;
