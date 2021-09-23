@@ -11,8 +11,8 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.BaseLoadAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
+import lib.kalu.recyclerview.adapter.BaseLoadAdapter;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
 
 /**
  * description: 加载更多

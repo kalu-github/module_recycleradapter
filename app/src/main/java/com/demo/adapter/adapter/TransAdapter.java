@@ -7,11 +7,9 @@ import com.demo.adapter.entity.Level0Item;
 import com.demo.adapter.entity.Level1Item;
 import com.demo.adapter.entity.Person;
 
-import java.util.List;
-
-import lib.kalu.adapter.BaseCommonMultAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
-import lib.kalu.adapter.model.MultModel;
+import lib.kalu.recyclerview.adapter.BaseCommonMultAdapter;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
+import lib.kalu.recyclerview.model.MultModel;
 
 public abstract class TransAdapter extends BaseCommonMultAdapter<MultModel> {
 

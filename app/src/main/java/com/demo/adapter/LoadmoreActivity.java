@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import lib.kalu.adapter.BaseLoadAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
-import lib.kalu.adapter.manager.CrashLinearLayoutManager;
+import lib.kalu.recyclerview.adapter.BaseLoadAdapter;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
+import lib.kalu.recyclerview.manager.CrashLinearLayoutManager;
 
 public class LoadmoreActivity extends AppCompatActivity {
 

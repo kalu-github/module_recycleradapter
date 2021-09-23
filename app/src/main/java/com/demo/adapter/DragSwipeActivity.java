@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import lib.kalu.adapter.callback.ItemSwipeDragHelperCallback;
+import lib.kalu.recyclerview.callback.ItemSwipeDragHelperCallback;
 
 public class DragSwipeActivity extends AppCompatActivity {
     private static final String TAG = DragSwipeActivity.class.getSimpleName();

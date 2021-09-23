@@ -1,6 +1,5 @@
 package com.demo.adapter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.BaseCommonAdapter;
-import lib.kalu.adapter.decoration.FloatDecoration;
-import lib.kalu.adapter.holder.RecyclerHolder;
-import lib.kalu.adapter.manager.CrashLinearLayoutManager;
+import lib.kalu.recyclerview.adapter.BaseCommonAdapter;
+import lib.kalu.recyclerview.itemdecoration.FloatDecoration;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
+import lib.kalu.recyclerview.manager.CrashLinearLayoutManager;
 
 public class FloatActivity extends AppCompatActivity {
 

@@ -6,8 +6,8 @@ import com.demo.adapter.R;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.BaseCommonSwipeDragAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
+import lib.kalu.recyclerview.adapter.BaseCommonSwipeDragAdapter;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
 
 public abstract class ItemDragAdapter extends BaseCommonSwipeDragAdapter<String> {
 

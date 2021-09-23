@@ -1,6 +1,5 @@
 package com.demo.adapter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,9 +12,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.BaseCommonAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
-import lib.kalu.adapter.manager.CrashGridLayoutManager;
+import lib.kalu.recyclerview.adapter.BaseCommonAdapter;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
+import lib.kalu.recyclerview.manager.CrashGridLayoutManager;
 
 public class MainActivity extends AppCompatActivity {
 

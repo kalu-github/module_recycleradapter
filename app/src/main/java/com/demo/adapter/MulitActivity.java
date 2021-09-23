@@ -9,10 +9,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.BaseCommonMultAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
-import lib.kalu.adapter.manager.CrashGridLayoutManager;
-import lib.kalu.adapter.model.MultModel;
+import lib.kalu.recyclerview.adapter.BaseCommonMultAdapter;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
+import lib.kalu.recyclerview.manager.CrashGridLayoutManager;
+import lib.kalu.recyclerview.model.MultModel;
 
 /**
  * description: 分类型

@@ -20,9 +20,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.BaseCommonAdapter;
-import lib.kalu.adapter.decoration.TabDecoration;
-import lib.kalu.adapter.holder.RecyclerHolder;
+import lib.kalu.recyclerview.adapter.BaseCommonAdapter;
+import lib.kalu.recyclerview.itemdecoration.TabDecoration;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
 
 public class TabSubPresenter implements TabSubContract.Presenter {
 

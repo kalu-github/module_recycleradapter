@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.model.MultModel;
+import lib.kalu.recyclerview.model.MultModel;
 
 /**
  * description: 展开合并

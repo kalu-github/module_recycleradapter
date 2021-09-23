@@ -1,6 +1,6 @@
 package com.demo.adapter.entity;
 
-import lib.kalu.adapter.model.MultModel;
+import lib.kalu.recyclerview.model.MultModel;
 
 public class MultipleItem implements MultModel {
     public static final int TEXT = 1;

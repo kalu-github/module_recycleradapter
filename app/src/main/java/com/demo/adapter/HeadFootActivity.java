@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import lib.kalu.adapter.animation.BaseAnimation;
+import lib.kalu.recyclerview.animation.BaseAnimation;
 
 public class HeadFootActivity extends AppCompatActivity {
 

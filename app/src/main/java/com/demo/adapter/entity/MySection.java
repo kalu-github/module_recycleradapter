@@ -1,6 +1,6 @@
 package com.demo.adapter.entity;
 
-import lib.kalu.adapter.model.SectionModel;
+import lib.kalu.recyclerview.model.SectionModel;
 
 public class MySection implements SectionModel {
     private boolean isMore;

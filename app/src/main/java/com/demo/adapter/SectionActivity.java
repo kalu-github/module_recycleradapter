@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.BaseCommonSectionAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
+import lib.kalu.recyclerview.adapter.BaseCommonSectionAdapter;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
 
 public class SectionActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;

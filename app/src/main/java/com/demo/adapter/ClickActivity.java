@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import lib.kalu.adapter.BaseCommonAdapter;
-import lib.kalu.adapter.decoration.SpaceDecoration;
-import lib.kalu.adapter.holder.RecyclerHolder;
+import lib.kalu.recyclerview.adapter.BaseCommonAdapter;
+import lib.kalu.recyclerview.itemdecoration.SpaceDecoration;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
 
 public class ClickActivity extends AppCompatActivity {
 

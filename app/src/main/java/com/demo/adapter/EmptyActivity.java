@@ -17,8 +17,8 @@ import com.demo.adapter.entity.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.kalu.adapter.BaseCommonAdapter;
-import lib.kalu.adapter.holder.RecyclerHolder;
+import lib.kalu.recyclerview.adapter.BaseCommonAdapter;
+import lib.kalu.recyclerview.viewholder.RecyclerHolder;
 
 public class EmptyActivity extends AppCompatActivity {
 
