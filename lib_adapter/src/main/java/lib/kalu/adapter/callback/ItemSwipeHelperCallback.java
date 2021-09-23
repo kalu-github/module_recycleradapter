@@ -166,7 +166,7 @@ public class ItemSwipeHelperCallback extends ItemTouchHelper.Callback {
             case RecyclerHolder.HEAD_VIEW:
             case RecyclerHolder.LOAD_VIEW:
             case RecyclerHolder.FOOT_VIEW:
-            case RecyclerHolder.NULL_VIEW:
+            case RecyclerHolder.EMPTY_VIEW:
                 return true;
             default:
                 return false;

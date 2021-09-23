@@ -32,12 +32,10 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
     @Override
     public int getItemCount() {
-
-        final List<T> list = onData();
-        if (null == list || list.size() == 0) {
-            return list.size() + getNullCount() + getHeadCount() + getFootCount();
+        if (null == onData() || onData().size() == 0) {
+            return super.getItemCount();
         } else {
-            return list.size() + getNullCount() + getHeadCount() + getFootCount() + 1;
+            return super.getItemCount() + 1;
         }
     }
 
@@ -46,11 +44,11 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
 
         // 没有数据
         if (null == onData() || onData().size() == 0) {
-            return RecyclerHolder.NULL_VIEW;
+            return RecyclerHolder.EMPTY_VIEW;
         }
         // 有数据
         else {
-            int numHead = getHeadCount();
+            int numHead = getHeadViewCount();
             if (position < numHead) {
                 return RecyclerHolder.HEAD_VIEW;
             } else {
@@ -62,7 +60,7 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
                     return getItemModelType(realPosition);
                 } else {
                     realPosition = realPosition - numModel;
-                    int numFoot = getFootCount();
+                    int numFoot = getFootViewCount();
                     return realPosition < numFoot ? RecyclerHolder.FOOT_VIEW : RecyclerHolder.LOAD_VIEW;
                 }
             }
@@ -103,17 +101,8 @@ public abstract class BaseLoadAdapter<T> extends BaseCommonAdapter<T> {
     }
 
     @Override
-    public void onViewAttachedToWindow(RecyclerHolder holder) {
-        super.onViewAttachedToWindow(holder);
-
-        int type = holder.getItemViewType();
-        boolean isModel = (type == RecyclerHolder.NULL_VIEW || type == RecyclerHolder.HEAD_VIEW || type == RecyclerHolder.FOOT_VIEW || type == RecyclerHolder.LOAD_VIEW);
-        setModelStyle(holder, isModel);
-    }
-
-    @Override
-    protected boolean isModelType(int type) {
-        return super.isModelType(type) && (type != RecyclerHolder.LOAD_VIEW);
+    protected boolean isItem(int itemType) {
+        return super.isItem(itemType) && itemType != RecyclerHolder.LOAD_VIEW;
     }
 
     @Override

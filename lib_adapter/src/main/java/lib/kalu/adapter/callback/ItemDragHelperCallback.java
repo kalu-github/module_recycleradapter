@@ -182,13 +182,14 @@ public class ItemDragHelperCallback extends ItemTouchHelper.Callback {
 
     private boolean isViewCreateByAdapter(RecyclerView.ViewHolder viewHolder) {
 
-        if (null == viewHolder) return false;
+        if (null == viewHolder)
+            return false;
 
         switch (viewHolder.getItemViewType()) {
             case RecyclerHolder.HEAD_VIEW:
             case RecyclerHolder.LOAD_VIEW:
             case RecyclerHolder.FOOT_VIEW:
-            case RecyclerHolder.NULL_VIEW:
+            case RecyclerHolder.EMPTY_VIEW:
                 return true;
             default:
                 return false;

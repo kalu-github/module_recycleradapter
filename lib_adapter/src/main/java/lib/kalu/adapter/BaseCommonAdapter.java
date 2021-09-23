@@ -88,9 +88,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     @Override
     public int getItemCount() {
         int dataCount = onData().size();
-        int headCount = getHeadCount();
-        int footCount = getFootCount();
-        return dataCount + headCount + footCount;
+        int emptyViewCount = getEmptyViewCount();
+        int headCount = getHeadViewCount();
+        int footCount = getFootViewCount();
+        return dataCount + emptyViewCount + headCount + footCount;
     }
 
     @Override
@@ -102,7 +103,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         }
         // 有数据
         else {
-            int numHead = getHeadCount();
+            int numHead = getHeadViewCount();
             if (position < numHead) {
                 return RecyclerHolder.HEAD_VIEW;
             } else {
@@ -157,8 +158,8 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(@NonNull RecyclerHolder holder, int position) {
         // 赋值
-        if (null != holder && holder.isValid()) {
-            int realPosition = holder.getBindingAdapterPosition() - getHeadCount();
+        if (null != holder && holder.isItem()) {
+            int realPosition = holder.getBindingAdapterPosition() - getHeadViewCount();
             onNext(holder, onData().get(realPosition), position);
         }
     }
@@ -182,29 +183,32 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     @Override
     public void onViewAttachedToWindow(@NonNull RecyclerHolder holder) {
         super.onViewAttachedToWindow(holder);
-        if (null != holder && null != holder.itemView && holder.getItemViewType() == RecyclerHolder.EMPTY_VIEW) {
-            try {
-                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-                layoutParams.setFullSpan(true);
-            } catch (Exception e) {
-            }
-        } else if (null != holder && null != holder.itemView && holder.getItemViewType() != RecyclerHolder.EMPTY_VIEW) {
-
-            if (null != mAnimation) {
-                boolean isOnce = mAnimation.isOnce();
-                int bindingAdapterPosition = holder.getBindingAdapterPosition();
-                if (!isOnce || bindingAdapterPosition > mLastPosition) {
-                    long duration = mAnimation.getDuration();
-                    Interpolator interpolator = mAnimation.getInterpolator();
-                    Animator[] animators = mAnimation.getAnimators(holder.itemView);
-                    for (Animator anim : animators) {
-                        anim.setDuration(duration);
-                        if (null != interpolator) {
-                            anim.setInterpolator(interpolator);
+        if (null != holder) {
+            int itemType = holder.getItemViewType();
+            boolean isItem = isItem(itemType);
+            if (isItem) {
+                if (null != mAnimation) {
+                    boolean isOnce = mAnimation.isOnce();
+                    int bindingAdapterPosition = holder.getBindingAdapterPosition();
+                    if (!isOnce || bindingAdapterPosition > mLastPosition) {
+                        long duration = mAnimation.getDuration();
+                        Interpolator interpolator = mAnimation.getInterpolator();
+                        Animator[] animators = mAnimation.getAnimators(holder.itemView);
+                        for (Animator anim : animators) {
+                            anim.setDuration(duration);
+                            if (null != interpolator) {
+                                anim.setInterpolator(interpolator);
+                            }
+                            anim.start();
                         }
-                        anim.start();
+                        mLastPosition = bindingAdapterPosition;
                     }
-                    mLastPosition = bindingAdapterPosition;
+                }
+            } else {
+                try {
+                    StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+                    layoutParams.setFullSpan(true);
+                } catch (Exception e) {
                 }
             }
         }
@@ -265,8 +269,8 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
                 @Override
                 public int getSpanSize(int position) {
                     int type = getItemViewType(position);
-                    boolean isValid = (type != RecyclerHolder.HEAD_VIEW && type != RecyclerHolder.FOOT_VIEW && type != RecyclerHolder.EMPTY_VIEW);
-                    return isValid ? onMerge(position - getHeadCount()) : gridManager.getSpanCount();
+                    boolean isValid = isItem(type);
+                    return isValid ? onMerge(position - getHeadViewCount()) : gridManager.getSpanCount();
                 }
             });
         }
@@ -278,10 +282,30 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         this.mAnimation = animation;
     }
 
+    public final void setLoadAnimation(@BaseAnimation.BaseAnimationType int animationType) {
+        switch (animationType) {
+            case BaseAnimation.ALPHAIN:
+                setLoadAnimation(new AlphaInAnimation());
+                break;
+            case BaseAnimation.SCALEIN:
+                setLoadAnimation(new ScaleInAnimation());
+                break;
+            case BaseAnimation.SLIDEIN_BOTTOM:
+                setLoadAnimation(new SlideInBottomAnimation());
+                break;
+            case BaseAnimation.SLIDEIN_LEFT:
+                setLoadAnimation(new SlideInLeftAnimation());
+                break;
+            case BaseAnimation.SLIDEIN_RIGHT:
+                setLoadAnimation(new SlideInRightAnimation());
+                break;
+        }
+    }
+
     /***********************************       展开API       **************************************/
 
     public void expand(@IntRange(from = 0) int position, boolean animate) {
-        position -= getHeadCount();
+        position -= getHeadViewCount();
 
         final T model = getModel(position);
         if (null == model || !(model instanceof TransModel)) return;
@@ -310,7 +334,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public void expandAll() {
-        for (int i = onData().size() - 1; i >= 0 + getHeadCount(); i--) {
+        for (int i = onData().size() - 1; i >= 0 + getHeadViewCount(); i--) {
             expand(i, true);
         }
     }
@@ -318,7 +342,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     /***********************************       折叠API       **************************************/
 
     public void collapse(@IntRange(from = 0) int position, boolean animate) {
-        position -= getHeadCount();
+        position -= getHeadViewCount();
 
         final T model = getModel(position);
         if (null == model || !(model instanceof TransModel)) return;
@@ -349,7 +373,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public void collapseAll() {
-        for (int i = onData().size() - 1; i >= 0 + getHeadCount(); i--) {
+        for (int i = onData().size() - 1; i >= 0 + getHeadViewCount(); i--) {
             collapse(i, true);
         }
     }
@@ -390,10 +414,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     /***********************************       头部API       **************************************/
 
     private int getHeadPosition() {
-        return getHeadCount() == 1 ? -1 : 0;
+        return getHeadViewCount() == 1 ? -1 : 0;
     }
 
-    public int getHeadCount() {
+    public int getHeadViewCount() {
         return (mHeaderLayout == null || mHeaderLayout.getChildCount() == 0) ? 0 : 1;
     }
 
@@ -471,7 +495,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public void removeHead(View header) {
-        if (getHeadCount() == 0) return;
+        if (getHeadViewCount() == 0) return;
 
         mHeaderLayout.removeView(header);
         if (mHeaderLayout.getChildCount() == 0) {
@@ -483,7 +507,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public void removeAllHead() {
-        if (getHeadCount() == 0) return;
+        if (getHeadViewCount() == 0) return;
 
         mHeaderLayout.removeAllViews();
         int position = getHeadPosition();
@@ -496,17 +520,17 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     private int getFootPosition() {
 
-        final int footCount = getFootCount();
+        final int footCount = getFootViewCount();
         if (footCount != 1) return -1;
 
-        final int headCount = getHeadCount();
+        final int headCount = getHeadViewCount();
         if (headCount == 1) {
-            return getHeadCount() + onData().size();
+            return getHeadViewCount() + onData().size();
         }
         return onData().size();
     }
 
-    public int getFootCount() {
+    public int getFootViewCount() {
         return (mFooterLayout == null || mFooterLayout.getChildCount() == 0) ? 0 : 1;
     }
 
@@ -578,7 +602,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public void removeFoot(View footer) {
-        if (getFootCount() == 0) return;
+        if (getFootViewCount() == 0) return;
 
         mFooterLayout.removeView(footer);
         if (mFooterLayout.getChildCount() == 0) {
@@ -590,7 +614,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public void removeAllFoot() {
-        if (getFootCount() == 0) return;
+        if (getFootViewCount() == 0) return;
 
         mFooterLayout.removeAllViews();
         int position = getFootPosition();
@@ -624,13 +648,12 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             mEmptyLayout = new FrameLayout(view.getContext());
         }
 
-        StaggeredGridLayoutManager.LayoutParams layoutParams;
+        RecyclerView.LayoutParams layoutParams;
         if (null == mEmptyLayout.getLayoutParams()) {
-            layoutParams = new StaggeredGridLayoutManager.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+            layoutParams = new RecyclerView.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         } else {
-            layoutParams = (StaggeredGridLayoutManager.LayoutParams) mEmptyLayout.getLayoutParams();
+            layoutParams = (RecyclerView.LayoutParams) mEmptyLayout.getLayoutParams();
         }
-        layoutParams.setFullSpan(true);
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         mEmptyLayout.setLayoutParams(layoutParams);
@@ -642,7 +665,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             return;
 
         int position = 0;
-        if (getHeadCount() != 0) {
+        if (getHeadViewCount() != 0) {
             position++;
         }
         notifyItemInserted(position);
@@ -703,26 +726,26 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     public void addData(@NonNull T data) {
         onData().add(data);
-        notifyItemInserted(onData().size() + getHeadCount());
+        notifyItemInserted(onData().size() + getHeadViewCount());
         notifyDataSetChanged();
     }
 
     public void addData(@NonNull Collection<? extends T> newData) {
         onData().addAll(newData);
-        notifyItemRangeInserted(onData().size() - newData.size() + getHeadCount(), newData.size());
+        notifyItemRangeInserted(onData().size() - newData.size() + getHeadViewCount(), newData.size());
         notifyDataSetChanged();
     }
 
     public void remove(@IntRange(from = 0) int position) {
         onData().remove(position);
-        int internalPosition = position + getHeadCount();
+        int internalPosition = position + getHeadViewCount();
         notifyItemRemoved(internalPosition);
         notifyItemRangeChanged(internalPosition, onData().size() - internalPosition);
     }
 
     public void setData(@IntRange(from = 0) int index, @NonNull T data) {
         onData().set(index, data);
-        notifyItemChanged(index + getHeadCount());
+        notifyItemChanged(index + getHeadViewCount());
     }
 
     /**********************************       抽象方法API     **************************************/
@@ -744,6 +767,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     protected void onScroll(int horizontalOffset, int verticalOffset) {
     }
 
+    protected boolean isItem(int itemType) {
+        return itemType != RecyclerHolder.HEAD_VIEW && itemType != RecyclerHolder.FOOT_VIEW && itemType != RecyclerHolder.EMPTY_VIEW;
+    }
+
     /**
      * 滑动状态
      *
@@ -753,6 +780,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     protected void onHolder(RecyclerView.LayoutManager manager, RecyclerHolder holder, int type) {
+    }
+
+    protected int getViewHolderPosition(RecyclerView.ViewHolder viewHolder) {
+        return viewHolder.getBindingAdapterPosition() - getHeadViewCount();
     }
 
     /***********************************       动画API       **************************************/

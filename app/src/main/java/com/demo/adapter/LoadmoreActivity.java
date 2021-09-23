@@ -10,6 +10,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import lib.kalu.adapter.BaseLoadAdapter;
 import lib.kalu.adapter.holder.RecyclerHolder;
 import lib.kalu.adapter.manager.CrashLinearLayoutManager;
@@ -65,9 +66,8 @@ public class LoadmoreActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-//                                loadOverDataSetChanged(holder);
-//                                holder.setText(R.id.loading_text, "-- 我也是有底线的 --");
-//                                holder.setVisible(R.id.loading_cycle, View.GONE);
+                                holder.setText(R.id.loading_text, "-- 我也是有底线的 --");
+                                holder.setVisible(R.id.loading_cycle, View.GONE);
                             }
                         });
                     }
@@ -75,7 +75,7 @@ public class LoadmoreActivity extends AppCompatActivity {
             }
         };
 
-        final RecyclerView view = findViewById(R.id.list);
+        RecyclerView view = findViewById(R.id.list);
         view.setLayoutManager(new CrashLinearLayoutManager(getApplicationContext()));
         view.setAdapter(adapter);
     }

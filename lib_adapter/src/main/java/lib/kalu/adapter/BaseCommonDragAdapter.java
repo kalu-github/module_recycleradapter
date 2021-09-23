@@ -35,7 +35,7 @@ public abstract class BaseCommonDragAdapter<T> extends BaseCommonAdapter<T> {
         int viewType = holder.getItemViewType();
 
         if (mItemTouchHelper != null && itemDragEnabled && viewType != RecyclerHolder.LOAD_VIEW && viewType != RecyclerHolder.HEAD_VIEW
-                && viewType != RecyclerHolder.NULL_VIEW && viewType != RecyclerHolder.FOOT_VIEW) {
+                && viewType != RecyclerHolder.EMPTY_VIEW && viewType != RecyclerHolder.FOOT_VIEW) {
             if (mToggleViewId != NO_TOGGLE_VIEW) {
                 View toggleView = holder.getView(mToggleViewId);
                 if (toggleView != null) {
@@ -123,10 +123,6 @@ public abstract class BaseCommonDragAdapter<T> extends BaseCommonAdapter<T> {
 
     public boolean isItemDraggable() {
         return itemDragEnabled;
-    }
-
-    public int getViewHolderPosition(RecyclerView.ViewHolder viewHolder) {
-        return viewHolder.getAdapterPosition() - getHeadCount();
     }
 
     public void onItemDragStart(RecyclerView.ViewHolder viewHolder) {

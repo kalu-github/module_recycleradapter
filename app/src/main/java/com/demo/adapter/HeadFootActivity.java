@@ -9,6 +9,7 @@ import com.demo.adapter.adapter.HeadFootAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import lib.kalu.adapter.animation.BaseAnimation;
 
 public class HeadFootActivity extends AppCompatActivity {
@@ -52,7 +53,7 @@ public class HeadFootActivity extends AppCompatActivity {
 
     private void initAdapter() {
         headFootAdapter = new HeadFootAdapter();
-        headFootAdapter.setLoadAnimation(BaseAnimation.ALPHAIN, 500, true);
+        headFootAdapter.setLoadAnimation(BaseAnimation.ALPHAIN);
         mRecyclerView.setAdapter(headFootAdapter);
     }
 }

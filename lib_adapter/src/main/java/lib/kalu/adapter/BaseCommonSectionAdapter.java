@@ -29,8 +29,8 @@ public abstract class BaseCommonSectionAdapter<T extends SectionModel> extends B
     }
 
     @Override
-    protected boolean isModelType(int type) {
-        return super.isModelType(type) && (type != RecyclerHolder.SECTION_VIEW);
+    protected boolean isItem(int itemType) {
+        return super.isItem(itemType) && itemType != RecyclerHolder.SECTION_VIEW;
     }
 
     /**********************************       抽象方法API     **************************************/

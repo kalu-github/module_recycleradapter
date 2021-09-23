@@ -62,7 +62,7 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public final boolean isValid(){
+    public final boolean isItem(){
         return getItemViewType() != RecyclerHolder.HEAD_VIEW && getItemViewType() != RecyclerHolder.EMPTY_VIEW && getItemViewType() != RecyclerHolder.FOOT_VIEW;
     }
 

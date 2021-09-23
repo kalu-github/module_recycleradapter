@@ -6,18 +6,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.demo.adapter.adapter.EmptyAdapter;
-import com.demo.adapter.data.DataServer;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.demo.adapter.data.DataServer;
+import com.demo.adapter.entity.Status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import lib.kalu.adapter.BaseCommonAdapter;
+import lib.kalu.adapter.holder.RecyclerHolder;
+
 public class EmptyActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private EmptyAdapter mEmptyAdapter;
     private View nullView;
+    private ArrayList<Status> arrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +46,32 @@ public class EmptyActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        mEmptyAdapter.clearAddData(DataServer.getSampleData(10));
+                        List<Status> sampleData = DataServer.getSampleData(10);
+                        arrayList.addAll(sampleData);
+                        mRecyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }, 2000);
             }
         });
 
-        mEmptyAdapter = new EmptyAdapter();
-        mEmptyAdapter.setNullView(nullView);
+        BaseCommonAdapter mEmptyAdapter = new BaseCommonAdapter<Status>() {
+            @Override
+            protected int onView() {
+                return R.layout.activity_empty_item;
+            }
+
+            @NonNull
+            @Override
+            protected List<Status> onData() {
+                return arrayList;
+            }
+
+            @Override
+            protected void onNext(RecyclerHolder helper, Status item, int position) {
+                helper.setText(R.id.empty_text, "我是第 => " + position + " <= 个孩子");
+            }
+        };
+        mEmptyAdapter.setEmptyView(nullView);
         mRecyclerView.setAdapter(mEmptyAdapter);
 
         new Handler().postDelayed(new Runnable() {
