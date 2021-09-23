@@ -1,2 +1,2 @@
 include ':app'
-include ':lib_recycleradapter'
+include ':lib_recyclerviewadapter'

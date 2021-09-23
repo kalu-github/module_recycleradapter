@@ -15,7 +15,7 @@ android {
         variant.outputs.all {
             def type = new String(buildType.name).toLowerCase()
             def time = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08"))
-            outputFileName = "lib_recycler_adapter_r1.0.0_" + type + "_" + time + ".aar"
+            outputFileName = "lib_recyclerview_adapter_r1.0.0_" + type + "_" + time + ".aar"
         }
     }
 

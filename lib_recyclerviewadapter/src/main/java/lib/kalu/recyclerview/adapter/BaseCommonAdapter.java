@@ -8,6 +8,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -184,6 +185,13 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         if (null != holder) {
             int itemType = holder.getItemViewType();
             boolean isItem = isItem(itemType);
+
+            ViewGroup viewGroup = (ViewGroup) holder.itemView.getParent();
+            viewGroup.setEnabled(itemType != RecyclerHolder.EMPTY_VIEW);
+            viewGroup.setClickable(itemType != RecyclerHolder.EMPTY_VIEW);
+            viewGroup.setFocusable(itemType != RecyclerHolder.EMPTY_VIEW);
+            viewGroup.setFocusableInTouchMode(itemType != RecyclerHolder.EMPTY_VIEW);
+
             if (isItem) {
                 if (null != mAnimation) {
                     boolean isOnce = mAnimation.isOnce();
@@ -201,12 +209,6 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
                         }
                         mLastPosition = bindingAdapterPosition;
                     }
-                }
-            } else {
-                try {
-                    StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-                    layoutParams.setFullSpan(true);
-                } catch (Exception e) {
                 }
             }
         }
@@ -267,8 +269,8 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
                 @Override
                 public int getSpanSize(int position) {
                     int type = getItemViewType(position);
-                    boolean isValid = isItem(type);
-                    return isValid ? onMerge(position - getHeadViewCount()) : gridManager.getSpanCount();
+                    boolean isItem = isItem(type);
+                    return isItem ? onMerge(position - getHeadViewCount()) : gridManager.getSpanCount();
                 }
             });
         }
