@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -50,15 +51,11 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 //    private final RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool();
 
     protected static final String TAG = BaseCommonAdapter.class.getSimpleName();
-    private final Interpolator mInterpolator = new LinearInterpolator();
     protected int mLastPosition = -1;
-    // 布局ID
-    protected LinearLayout mHeaderLayout, mFooterLayout;
-    protected FrameLayout mEmptyLayout;
-    // 是否仅仅第一次加载显示动画
-    private boolean isOpenAnimFirstOnly = true;
-    // 动画显示时间
-    private int mAnimTime = 300;
+    // 布局
+    private LinearLayout mHeaderLayout;
+    private LinearLayout mFooterLayout;
+    private FrameLayout mEmptyLayout;
     // 动画
     private BaseAnimation mAnimation = null;
 
@@ -76,37 +73,6 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         return super.getItemViewType(position);
     }
 
-    protected void setModelStyle(RecyclerView.ViewHolder holder, boolean isModel) {
-
-        if (isModel) {
-            if (null == mAnimation)
-                return;
-            if (!isOpenAnimFirstOnly || holder.getAdapterPosition() > mLastPosition) {
-                for (Animator anim : mAnimation.getAnimators(holder.itemView)) {
-                    anim.setDuration(mAnimTime).start();
-                    anim.setInterpolator(mInterpolator);
-                }
-                mLastPosition = holder.getAdapterPosition();
-            }
-        } else {
-
-            if (null == holder || null == holder.itemView) return;
-
-            final ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-            if (null == layoutParams) return;
-
-            final boolean isStaggeredGridLayoutManager = (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams);
-            if (!isStaggeredGridLayoutManager) return;
-
-            StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) layoutParams;
-            params.setFullSpan(true);
-        }
-    }
-
-    protected boolean isModelType(int type) {
-        return type != RecyclerHolder.HEAD_VIEW && type != RecyclerHolder.FOOT_VIEW && type != RecyclerHolder.NULL_VIEW;
-    }
-
     protected RecyclerHolder createHolder(@NonNull ViewGroup parent, @LayoutRes int resource, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext().getApplicationContext()).inflate(resource, parent, false);
         return new RecyclerHolder(parent, inflate);
@@ -121,8 +87,10 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        final int size = onData().size();
-        return size == 0 ? getNullCount() : size + getNullCount() + getHeadCount() + getFootCount();
+        int dataCount = onData().size();
+        int headCount = getHeadCount();
+        int footCount = getFootCount();
+        return dataCount + headCount + footCount;
     }
 
     @Override
@@ -130,7 +98,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
         // 没有数据
         if (null == onData() || onData().size() == 0) {
-            return RecyclerHolder.NULL_VIEW;
+            return RecyclerHolder.EMPTY_VIEW;
         }
         // 有数据
         else {
@@ -157,7 +125,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 //        }
 
         // 空布局
-        if (viewType == RecyclerHolder.NULL_VIEW) {
+        if (viewType == RecyclerHolder.EMPTY_VIEW) {
             RecyclerHolder holder = new RecyclerHolder(parent, mEmptyLayout);
             RecyclerView.LayoutManager layoutManager = ((RecyclerView) parent).getLayoutManager();
             onHolder(layoutManager, holder, viewType);
@@ -187,17 +155,12 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     @Override
-    public void onBindViewHolder(RecyclerHolder holder, int position) {
-
-        if (null == holder)
-            return;
-
-        if (holder.getItemViewType() == RecyclerHolder.HEAD_VIEW || holder.getItemViewType() == RecyclerHolder.NULL_VIEW || holder.getItemViewType() == RecyclerHolder.FOOT_VIEW)
-            return;
-
+    public void onBindViewHolder(@NonNull RecyclerHolder holder, int position) {
         // 赋值
-        int realPosition = holder.getBindingAdapterPosition() - getHeadCount();
-        onNext(holder, onData().get(realPosition), position);
+        if (null != holder && holder.isValid()) {
+            int realPosition = holder.getBindingAdapterPosition() - getHeadCount();
+            onNext(holder, onData().get(realPosition), position);
+        }
     }
 
     /**
@@ -214,17 +177,37 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
     /**
      * 复用itemview
      *
-     * @param holder
+     * @param holder Holder of the view being attached
      */
     @Override
-    public void onViewAttachedToWindow(RecyclerHolder holder) {
+    public void onViewAttachedToWindow(@NonNull RecyclerHolder holder) {
         super.onViewAttachedToWindow(holder);
-        // Log.e("basecommonadapter", "onViewAttachedToWindow =>");
+        if (null != holder && null != holder.itemView && holder.getItemViewType() == RecyclerHolder.EMPTY_VIEW) {
+            try {
+                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
+            } catch (Exception e) {
+            }
+        } else if (null != holder && null != holder.itemView && holder.getItemViewType() != RecyclerHolder.EMPTY_VIEW) {
 
-        if (null == holder)
-            return;
-
-        setModelStyle(holder, holder.getItemViewType() != RecyclerHolder.NULL_VIEW);
+            if (null != mAnimation) {
+                boolean isOnce = mAnimation.isOnce();
+                int bindingAdapterPosition = holder.getBindingAdapterPosition();
+                if (!isOnce || bindingAdapterPosition > mLastPosition) {
+                    long duration = mAnimation.getDuration();
+                    Interpolator interpolator = mAnimation.getInterpolator();
+                    Animator[] animators = mAnimation.getAnimators(holder.itemView);
+                    for (Animator anim : animators) {
+                        anim.setDuration(duration);
+                        if (null != interpolator) {
+                            anim.setInterpolator(interpolator);
+                        }
+                        anim.start();
+                    }
+                    mLastPosition = bindingAdapterPosition;
+                }
+            }
+        }
     }
 
     @Override
@@ -274,48 +257,25 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
             }
         });
 
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        if (!(manager instanceof GridLayoutManager))
-            return;
-
         // 网格布局
-        final GridLayoutManager gridManager = ((GridLayoutManager) manager);
-        gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-
-                int type = getItemViewType(position);
-                boolean modelType = isModelType(type);
-                return modelType ? onMerge(position - getHeadCount()) : gridManager.getSpanCount();
-            }
-        });
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int type = getItemViewType(position);
+                    boolean isValid = (type != RecyclerHolder.HEAD_VIEW && type != RecyclerHolder.FOOT_VIEW && type != RecyclerHolder.EMPTY_VIEW);
+                    return isValid ? onMerge(position - getHeadCount()) : gridManager.getSpanCount();
+                }
+            });
+        }
     }
 
     /***********************************       重写API       **************************************/
 
-    public final void setLoadAnimation(@AnimationType int animationType, int animTime, boolean isOpenAnimFirstOnly) {
-        this.isOpenAnimFirstOnly = isOpenAnimFirstOnly;
-        this.mAnimTime = animTime;
-
-        switch (animationType) {
-            case BaseAnimation.ALPHAIN:
-                mAnimation = new AlphaInAnimation();
-                break;
-            case BaseAnimation.SCALEIN:
-                mAnimation = new ScaleInAnimation();
-                break;
-            case BaseAnimation.SLIDEIN_BOTTOM:
-                mAnimation = new SlideInBottomAnimation();
-                break;
-            case BaseAnimation.SLIDEIN_LEFT:
-                mAnimation = new SlideInLeftAnimation();
-                break;
-            case BaseAnimation.SLIDEIN_RIGHT:
-                mAnimation = new SlideInRightAnimation();
-                break;
-            default:
-                break;
-        }
+    public final <T extends BaseAnimation> void setLoadAnimation(@NonNull T animation) {
+        this.mAnimation = animation;
     }
 
     /***********************************       展开API       **************************************/
@@ -641,40 +601,43 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
 
     /***********************************       空布局API      **************************************/
 
-    public int getNullCount() {
-
-        if (mEmptyLayout == null || mEmptyLayout.getChildCount() == 0) return 0;
-
-        if (onData().size() != 0) return 0;
-        return 1;
+    public int getEmptyViewCount() {
+        if (onData().size() == 0 && null != mEmptyLayout) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
-    public void setNullView(Context context, int layoutResId) {
-        View view = LayoutInflater.from(context).inflate(layoutResId, null, false);
-        setNullView(view);
+    public void setEmptyView(@NonNull Context context, @LayoutRes int layoutResId) {
+        View inflate = LayoutInflater.from(context).inflate(layoutResId, null, false);
+        setEmptyView(inflate);
     }
 
-    public View getNullView() {
+    public View getEmptyView() {
         return mEmptyLayout;
     }
 
-
-    // TODO: 2018/8/10
-    public void setNullView(View emptyView) {
+    public void setEmptyView(@NonNull View view) {
 
         if (null == mEmptyLayout) {
-            mEmptyLayout = new FrameLayout(emptyView.getContext());
+            mEmptyLayout = new FrameLayout(view.getContext());
         }
-        if (null == mEmptyLayout.getLayoutParams()) {
-            mEmptyLayout.setLayoutParams(new ViewGroup.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
-        }
-        final ViewGroup.LayoutParams mEmptyParams = mEmptyLayout.getLayoutParams();
-        mEmptyParams.width = RecyclerView.LayoutParams.MATCH_PARENT;
-        mEmptyParams.height = RecyclerView.LayoutParams.MATCH_PARENT;
-        mEmptyLayout.removeAllViews();
-        mEmptyLayout.addView(emptyView);
 
-        final int nullCount = getNullCount();
+        StaggeredGridLayoutManager.LayoutParams layoutParams;
+        if (null == mEmptyLayout.getLayoutParams()) {
+            layoutParams = new StaggeredGridLayoutManager.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        } else {
+            layoutParams = (StaggeredGridLayoutManager.LayoutParams) mEmptyLayout.getLayoutParams();
+        }
+        layoutParams.setFullSpan(true);
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        mEmptyLayout.setLayoutParams(layoutParams);
+        mEmptyLayout.removeAllViews();
+        mEmptyLayout.addView(view);
+
+        int nullCount = getEmptyViewCount();
         if (nullCount != 1)
             return;
 
@@ -685,14 +648,14 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         notifyItemInserted(position);
     }
 
-    public void removeNullView() {
+    public void clearEmptyView() {
 
         if (null == mEmptyLayout) return;
         mEmptyLayout.removeAllViews();
         mEmptyLayout.setVisibility(View.GONE);
     }
 
-    public void setNullText(int viewId, @StringRes int strid) {
+    public void setEmptyText(int viewId, @StringRes int strid) {
 
         if (null == mEmptyLayout)
             return;
@@ -704,7 +667,7 @@ public abstract class BaseCommonAdapter<T> extends RecyclerView.Adapter<Recycler
         ((TextView) text).setText(strid);
     }
 
-    public void setNullImage(int viewId, @DrawableRes int strid) {
+    public void setEmptyImage(int viewId, @DrawableRes int strid) {
 
         if (null == mEmptyLayout)
             return;

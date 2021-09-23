@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public final class RecyclerHolder extends RecyclerView.ViewHolder {
 
-    public static final int NULL_VIEW = -1; //空布局
+    public static final int EMPTY_VIEW = -1; // 空布局
     public static final int HEAD_VIEW = -2; // 头布局
     public static final int FOOT_VIEW = -3; // 脚布局
     public static final int LOAD_VIEW = -4; // 加载布局
@@ -59,6 +59,11 @@ public final class RecyclerHolder extends RecyclerView.ViewHolder {
     public @Nullable
     RecyclerView getRecyclerView() {
         return recyclerView;
+    }
+
+
+    public final boolean isValid(){
+        return getItemViewType() != RecyclerHolder.HEAD_VIEW && getItemViewType() != RecyclerHolder.EMPTY_VIEW && getItemViewType() != RecyclerHolder.FOOT_VIEW;
     }
 
     /**********************************************************************************************/
