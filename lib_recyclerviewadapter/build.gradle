@@ -33,9 +33,7 @@ android {
 }
 
 dependencies {
-    compileOnly 'androidx.annotation:annotation:1.2.0'
-    compileOnly 'androidx.core:core:1.6.0'
-    compileOnly 'androidx.customview:customview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 }
 
 //publish {
